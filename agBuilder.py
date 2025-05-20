@@ -45,14 +45,14 @@ def compute_risk_analysis(vuln_ids, vulns_list):
     for expl_s in exploit_scores:
         lambda_exploit_scores.append(1/expl_s)
     
-    lik_risk = 0
-    MTAO = sum(lambda_exploit_scores)
-    # MTAO = (sum(lambda_exploit_scores)-min(lambda_exploit_scores))/sum(lambda_exploit_scores)
-    if MTAO>0:
-        argument = (MTAO-min(lambda_exploit_scores))/MTAO
-        lik_risk = (-20)*math.log(argument,10)
+    # lik_risk = 0
+    # MTAO = sum(lambda_exploit_scores)
+    # # MTAO = (sum(lambda_exploit_scores)-min(lambda_exploit_scores))/sum(lambda_exploit_scores)
+    # if MTAO>0:
+    #     argument = (MTAO-min(lambda_exploit_scores))/MTAO
+    #     lik_risk = (-20)*math.log(argument,10)
             
-    # lik_risk = (sum(lambda_exploit_scores)-min(lambda_exploit_scores))/sum(lambda_exploit_scores) if len(lambda_exploit_scores)>0 else 0
+    lik_risk = (sum(lambda_exploit_scores)-min(lambda_exploit_scores))/sum(lambda_exploit_scores) if len(lambda_exploit_scores)>0 else 0
     imp_risk = (impact_scores[len(impact_scores)-1])/max(impact_scores) if len(impact_scores)>0 and max(impact_scores)>0 else 0
 
     # if lik_risk>1: lik_risk=1
@@ -167,5 +167,70 @@ def build_multiag(network_file):
     nx.write_graphml_lxml(G, "data/ag.graphml")
     return G
 
+def build_alertag(folderML):
+    G = nx.MultiDiGraph()
+    
+    for file in os.listdir(folderML):
+        # df = pd.read_csv(folderML+"/"+file, encoding='utf-8', errors='ignore')
+        with open(folderML+"/"+file, 'r', encoding='utf-8', errors='ignore') as f: df = pd.read_csv(f)
+        df = df[df[' Label'] != "BENIGN"]
+        df = df[df[' Label'] != "NaN"]
+        df = df[df[' Source IP'] != "NaN"]
+        df = df[df[' Destination IP'] != "NaN"]
+                
+        for index, row in df.iterrows():
+            srcID = row[" Source IP"]
+            dstID = row[" Destination IP"]
+            vulnID = str(row[" Protocol"])+"-"+str(row[" Label"])+"-"+str(row[" CWE Flag Count"])
+            G.add_edge(srcID,dstID,vuln=vulnID,key=str(srcID)+vulnID+str(dstID))
+            
+    nx.write_graphml_lxml(G, "data/agAlert.graphml")
+    
+    G_alert = nx.read_graphml("data/agAlert.graphml")
+    if "nan" in G_alert: G_alert.remove_node("nan")
+    nx.write_graphml_lxml(G_alert, "data/agAlert.graphml")
+    return G_alert
+
+def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
+    allGvulns = nx.get_edge_attributes(G, "vuln")
+    if len(sources)==0: sources=G.nodes
+    if len(goals)==0: goals=G.nodes
+      
+    attack_paths = []
+    startTime = time.perf_counter()
+    for s in list(sources):
+        for t in list(goals):
+            if s==t or s not in G.nodes or t not in G.nodes or not nx.has_path(G,s,t): continue
+            # all_paths = list(nx.all_simple_edge_paths(G, source=s, target=t))
+            all_paths = list(nx.all_shortest_paths(G, source=s, target=t))
+            for p in all_paths:
+                vulns_path = []
+                for e in G.edges:
+                    for i in range(1,len(p)):
+                        if e[0] == p[i-1] and e[1]==p[i]:
+                            vulns_path.append(allGvulns[e])
+                            # print(allGvulns[e])
+                
+                # for e in p: vulns_path.append(allGvulns[e])
+                risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
+                risk_p["path"] = p
+                attack_paths.append(risk_p)
+                
+        with open(filePath, "w") as outfile:
+            json_data = json.dumps({"paths":attack_paths},
+                default=lambda o: o.__dict__, indent=2)
+            outfile.write(json_data)
+    endTime = time.perf_counter()
+
+
 if __name__ == "__main__":
-    G = build_multiag("data/CiC17Net.json")
+    # G_std = build_multiag("data/CiC17Net.json")
+    # G_alert = build_alertag("data/TrafficLabelling")
+    
+    with open("data/CiC17Net.json") as nf:
+        vulnerabilities = json.load(nf)["vulnerabilities"]
+    
+    G_std = nx.read_graphml("data/ag.graphml")
+    compute_paths(G_std,vulnerabilities,"data/paths.json",sources=[],goals=[])
+    
+    G_alert = nx.read_graphml("data/agAlert.graphml")
