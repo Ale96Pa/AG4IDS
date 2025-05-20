@@ -1,6 +1,9 @@
 # Ours ignores
 ag.png
 
+data/MachineLearningCVE
+data/TrafficLabelling
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
