@@ -211,9 +211,9 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
                             vulns_path.append(allGvulns[e])
                             # print(allGvulns[e])
                 
+                risk_p = {}
                 # for e in p: vulns_path.append(allGvulns[e])
                 # risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
-                risk_p = {}
                 risk_p["path"] = p
                 attack_paths.append(risk_p)
                 
