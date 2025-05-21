@@ -4,10 +4,14 @@ ag.png
 data/MachineLearningCVE
 data/TrafficLabelling
 
+data/tue_data.csv
+data/wed_data.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+.DS_Store
 
 # C extensions
 *.so
