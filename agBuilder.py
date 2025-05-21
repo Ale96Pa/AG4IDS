@@ -212,7 +212,8 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
                             # print(allGvulns[e])
                 
                 # for e in p: vulns_path.append(allGvulns[e])
-                risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
+                # risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
+                risk_p = {}
                 risk_p["path"] = p
                 attack_paths.append(risk_p)
                 
@@ -221,6 +222,8 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
                 default=lambda o: o.__dict__, indent=2)
             outfile.write(json_data)
     endTime = time.perf_counter()
+    
+    print(endTime-startTime)
 
 
 if __name__ == "__main__":
@@ -231,6 +234,7 @@ if __name__ == "__main__":
         vulnerabilities = json.load(nf)["vulnerabilities"]
     
     G_std = nx.read_graphml("data/ag.graphml")
-    compute_paths(G_std,vulnerabilities,"data/paths.json",sources=[],goals=[])
+    compute_paths(G_std,vulnerabilities,"data/pathsFake1.json",sources=[],goals=[])
     
     G_alert = nx.read_graphml("data/agAlert.graphml")
+    compute_paths(G_std,vulnerabilities,"data/pathsFake2.json",sources=[],goals=[])
