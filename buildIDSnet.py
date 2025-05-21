@@ -5,6 +5,7 @@ URL_CVE = "https://services.nvd.nist.gov/rest/json/cves/2.0?"
 SERVICES={
     "kali":"kali 2025.1a",
     "win81":"windows 8.1",
+    "win8":"windows 8",
     "dns":"Win Server 2016",
     "ubu12":"Ubuntu 12",
     "ubu16":"Ubuntu 16",
@@ -14,6 +15,7 @@ SERVICES={
     "winvista":"Windows vista",
     "win10":"Windows 10 pro",
     "fw": "fortinet",
+    "mac": "macOS Ventura 13.6.1"
 }
 
 def get_dump_nvd(vulnFile):
@@ -66,6 +68,10 @@ def generate_devices(network_file,vulnerabilityFile):
             ips = ["192.168.10.50"]#,"205.174.165.68"]
             hostname = "WebServer"
             typeHost = "server"
+        elif service=="win8":
+            ips = ["192.168.10.5"]
+            hostname = "workstationWin8"
+            typeHost = "client"
         elif service=="ubu164":
             ips = ["192.168.10.16","192.168.10.12"]
             hostname = "workstationUbuntu16"
@@ -90,6 +96,10 @@ def generate_devices(network_file,vulnerabilityFile):
             ips = ["205.174.165.80"]
             hostname = "Fortinet"
             typeHost = "firewall"
+        elif service=="mac":
+            ips = ["192.168.10.25"]
+            hostname = "MAC"
+            typeHost = "client"
         
         for ip in ips:
             all_devs.append(
@@ -168,6 +178,7 @@ def getVulnsByService(servicename, vulnfile):
     with open(vulnfile) as vulnf:
         services = json.load(vulnf)["services"]
     
+    if servicename == "win8": servicename="win81"
     vulnsID=[]
     for cve in services[servicename]: vulnsID.append(cve["id"])
     return vulnsID, services[servicename]
