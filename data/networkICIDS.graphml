@@ -1,9 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><graph edgedefault="directed"><node id="kali-205.174.165.73"/>
-<node id="win7-192.168.10.9"/>
-<node id="winvista-192.168.10.8"/>
-<node id="win10-192.168.10.14"/>
-<node id="win10-192.168.10.15"/>
 <node id="fw-205.174.165.80"/>
 <node id="win81-205.174.165.69"/>
 <node id="win81-205.174.165.70"/>
@@ -13,61 +9,23 @@
 <node id="ubu164-192.168.10.12"/>
 <node id="ubu144-192.168.10.19"/>
 <node id="ubu144-192.168.10.17"/>
+<node id="win7-192.168.10.9"/>
+<node id="winvista-192.168.10.8"/>
+<node id="win10-192.168.10.14"/>
+<node id="win10-192.168.10.15"/>
 <node id="mac-192.168.10.25"/>
 <node id="ubu12-192.168.10.51"/>
 <node id="ubu16-192.168.10.50"/>
 <node id="dns-192.168.10.3"/>
-<edge source="kali-205.174.165.73" target="win7-192.168.10.9"/>
-<edge source="kali-205.174.165.73" target="winvista-192.168.10.8"/>
-<edge source="kali-205.174.165.73" target="win10-192.168.10.14"/>
-<edge source="kali-205.174.165.73" target="win10-192.168.10.15"/>
 <edge source="kali-205.174.165.73" target="fw-205.174.165.80"/>
-<edge source="win7-192.168.10.9" target="kali-205.174.165.73"/>
-<edge source="win7-192.168.10.9" target="win8-192.168.10.5"/>
-<edge source="win7-192.168.10.9" target="ubu164-192.168.10.16"/>
-<edge source="win7-192.168.10.9" target="ubu164-192.168.10.12"/>
-<edge source="win7-192.168.10.9" target="ubu144-192.168.10.19"/>
-<edge source="win7-192.168.10.9" target="ubu144-192.168.10.17"/>
-<edge source="win7-192.168.10.9" target="winvista-192.168.10.8"/>
-<edge source="win7-192.168.10.9" target="win10-192.168.10.14"/>
-<edge source="win7-192.168.10.9" target="win10-192.168.10.15"/>
-<edge source="win7-192.168.10.9" target="mac-192.168.10.25"/>
-<edge source="winvista-192.168.10.8" target="kali-205.174.165.73"/>
-<edge source="winvista-192.168.10.8" target="win8-192.168.10.5"/>
-<edge source="winvista-192.168.10.8" target="ubu164-192.168.10.16"/>
-<edge source="winvista-192.168.10.8" target="ubu164-192.168.10.12"/>
-<edge source="winvista-192.168.10.8" target="ubu144-192.168.10.19"/>
-<edge source="winvista-192.168.10.8" target="ubu144-192.168.10.17"/>
-<edge source="winvista-192.168.10.8" target="win7-192.168.10.9"/>
-<edge source="winvista-192.168.10.8" target="win10-192.168.10.14"/>
-<edge source="winvista-192.168.10.8" target="win10-192.168.10.15"/>
-<edge source="winvista-192.168.10.8" target="mac-192.168.10.25"/>
-<edge source="win10-192.168.10.14" target="kali-205.174.165.73"/>
-<edge source="win10-192.168.10.14" target="win8-192.168.10.5"/>
-<edge source="win10-192.168.10.14" target="ubu164-192.168.10.16"/>
-<edge source="win10-192.168.10.14" target="ubu164-192.168.10.12"/>
-<edge source="win10-192.168.10.14" target="ubu144-192.168.10.19"/>
-<edge source="win10-192.168.10.14" target="ubu144-192.168.10.17"/>
-<edge source="win10-192.168.10.14" target="win7-192.168.10.9"/>
-<edge source="win10-192.168.10.14" target="winvista-192.168.10.8"/>
-<edge source="win10-192.168.10.14" target="win10-192.168.10.15"/>
-<edge source="win10-192.168.10.14" target="mac-192.168.10.25"/>
-<edge source="win10-192.168.10.15" target="kali-205.174.165.73"/>
-<edge source="win10-192.168.10.15" target="win8-192.168.10.5"/>
-<edge source="win10-192.168.10.15" target="ubu164-192.168.10.16"/>
-<edge source="win10-192.168.10.15" target="ubu164-192.168.10.12"/>
-<edge source="win10-192.168.10.15" target="ubu144-192.168.10.19"/>
-<edge source="win10-192.168.10.15" target="ubu144-192.168.10.17"/>
-<edge source="win10-192.168.10.15" target="win7-192.168.10.9"/>
-<edge source="win10-192.168.10.15" target="winvista-192.168.10.8"/>
-<edge source="win10-192.168.10.15" target="win10-192.168.10.14"/>
-<edge source="win10-192.168.10.15" target="mac-192.168.10.25"/>
 <edge source="fw-205.174.165.80" target="kali-205.174.165.73"/>
 <edge source="fw-205.174.165.80" target="win81-205.174.165.69"/>
 <edge source="fw-205.174.165.80" target="win81-205.174.165.70"/>
 <edge source="fw-205.174.165.80" target="win81-205.174.165.71"/>
 <edge source="fw-205.174.165.80" target="ubu12-192.168.10.51"/>
 <edge source="fw-205.174.165.80" target="ubu16-192.168.10.50"/>
+<edge source="fw-205.174.165.80" target="mac-192.168.10.25"/>
+<edge source="fw-205.174.165.80" target="win8-192.168.10.5"/>
 <edge source="win81-205.174.165.69" target="fw-205.174.165.80"/>
 <edge source="win81-205.174.165.70" target="fw-205.174.165.80"/>
 <edge source="win81-205.174.165.71" target="fw-205.174.165.80"/>
@@ -80,6 +38,7 @@
 <edge source="win8-192.168.10.5" target="win10-192.168.10.14"/>
 <edge source="win8-192.168.10.5" target="win10-192.168.10.15"/>
 <edge source="win8-192.168.10.5" target="mac-192.168.10.25"/>
+<edge source="win8-192.168.10.5" target="fw-205.174.165.80"/>
 <edge source="ubu164-192.168.10.16" target="win8-192.168.10.5"/>
 <edge source="ubu164-192.168.10.16" target="ubu164-192.168.10.12"/>
 <edge source="ubu164-192.168.10.16" target="ubu144-192.168.10.19"/>
@@ -116,6 +75,42 @@
 <edge source="ubu144-192.168.10.17" target="win10-192.168.10.14"/>
 <edge source="ubu144-192.168.10.17" target="win10-192.168.10.15"/>
 <edge source="ubu144-192.168.10.17" target="mac-192.168.10.25"/>
+<edge source="win7-192.168.10.9" target="win8-192.168.10.5"/>
+<edge source="win7-192.168.10.9" target="ubu164-192.168.10.16"/>
+<edge source="win7-192.168.10.9" target="ubu164-192.168.10.12"/>
+<edge source="win7-192.168.10.9" target="ubu144-192.168.10.19"/>
+<edge source="win7-192.168.10.9" target="ubu144-192.168.10.17"/>
+<edge source="win7-192.168.10.9" target="winvista-192.168.10.8"/>
+<edge source="win7-192.168.10.9" target="win10-192.168.10.14"/>
+<edge source="win7-192.168.10.9" target="win10-192.168.10.15"/>
+<edge source="win7-192.168.10.9" target="mac-192.168.10.25"/>
+<edge source="winvista-192.168.10.8" target="win8-192.168.10.5"/>
+<edge source="winvista-192.168.10.8" target="ubu164-192.168.10.16"/>
+<edge source="winvista-192.168.10.8" target="ubu164-192.168.10.12"/>
+<edge source="winvista-192.168.10.8" target="ubu144-192.168.10.19"/>
+<edge source="winvista-192.168.10.8" target="ubu144-192.168.10.17"/>
+<edge source="winvista-192.168.10.8" target="win7-192.168.10.9"/>
+<edge source="winvista-192.168.10.8" target="win10-192.168.10.14"/>
+<edge source="winvista-192.168.10.8" target="win10-192.168.10.15"/>
+<edge source="winvista-192.168.10.8" target="mac-192.168.10.25"/>
+<edge source="win10-192.168.10.14" target="win8-192.168.10.5"/>
+<edge source="win10-192.168.10.14" target="ubu164-192.168.10.16"/>
+<edge source="win10-192.168.10.14" target="ubu164-192.168.10.12"/>
+<edge source="win10-192.168.10.14" target="ubu144-192.168.10.19"/>
+<edge source="win10-192.168.10.14" target="ubu144-192.168.10.17"/>
+<edge source="win10-192.168.10.14" target="win7-192.168.10.9"/>
+<edge source="win10-192.168.10.14" target="winvista-192.168.10.8"/>
+<edge source="win10-192.168.10.14" target="win10-192.168.10.15"/>
+<edge source="win10-192.168.10.14" target="mac-192.168.10.25"/>
+<edge source="win10-192.168.10.15" target="win8-192.168.10.5"/>
+<edge source="win10-192.168.10.15" target="ubu164-192.168.10.16"/>
+<edge source="win10-192.168.10.15" target="ubu164-192.168.10.12"/>
+<edge source="win10-192.168.10.15" target="ubu144-192.168.10.19"/>
+<edge source="win10-192.168.10.15" target="ubu144-192.168.10.17"/>
+<edge source="win10-192.168.10.15" target="win7-192.168.10.9"/>
+<edge source="win10-192.168.10.15" target="winvista-192.168.10.8"/>
+<edge source="win10-192.168.10.15" target="win10-192.168.10.14"/>
+<edge source="win10-192.168.10.15" target="mac-192.168.10.25"/>
 <edge source="mac-192.168.10.25" target="win8-192.168.10.5"/>
 <edge source="mac-192.168.10.25" target="ubu164-192.168.10.16"/>
 <edge source="mac-192.168.10.25" target="ubu164-192.168.10.12"/>
@@ -125,6 +120,7 @@
 <edge source="mac-192.168.10.25" target="winvista-192.168.10.8"/>
 <edge source="mac-192.168.10.25" target="win10-192.168.10.14"/>
 <edge source="mac-192.168.10.25" target="win10-192.168.10.15"/>
+<edge source="mac-192.168.10.25" target="fw-205.174.165.80"/>
 <edge source="ubu12-192.168.10.51" target="fw-205.174.165.80"/>
 <edge source="ubu12-192.168.10.51" target="dns-192.168.10.3"/>
 <edge source="ubu16-192.168.10.50" target="fw-205.174.165.80"/>
