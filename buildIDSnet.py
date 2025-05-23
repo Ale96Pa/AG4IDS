@@ -143,27 +143,36 @@ def generate_devices(network_file,vulnerabilityFile):
             if idSrc==idDst: continue
             
             if "entryPoint" in hostSrc and "firewall" in typeDst:
-                edges.append([idSrc,idDst])
-                edges.append([idDst,idSrc])
-            if "kali" in idSrc and "workstationWindows" in devDst["hostname"]:
-                edges.append([idSrc,idDst])
-                edges.append([idDst,idSrc])
+                edges.append({"host_link":[idSrc,idDst]})
+                edges.append({"host_link":[idDst,idSrc]})
+            # if "kali" in idSrc and "workstationWindows" in devDst["hostname"]:
+            #     edges.append({"host_link":[idSrc,idDst])
+            #     edges.append({"host_link":[idDst,idSrc])
             if "client" in typeSrc and "client" in typeDst:
-                edges.append([idSrc,idDst])
-                edges.append([idDst,idSrc])
+                edges.append({"host_link":[idSrc,idDst]})
+                edges.append({"host_link":[idDst,idSrc]})
             
-    edges.append(["fw-205.174.165.80","ubu12-192.168.10.51"])
-    edges.append(["ubu12-192.168.10.51","fw-205.174.165.80"])
-    edges.append(["fw-205.174.165.80","ubu16-192.168.10.50"])
-    edges.append(["ubu16-192.168.10.50","fw-205.174.165.80"])
+    edges.append({"host_link":["fw-205.174.165.80","ubu12-192.168.10.51"]})
+    edges.append({"host_link":["ubu12-192.168.10.51","fw-205.174.165.80"]})
+    edges.append({"host_link":["fw-205.174.165.80","ubu16-192.168.10.50"]})
+    edges.append({"host_link":["ubu16-192.168.10.50","fw-205.174.165.80"]})
     
-    edges.append(["dns-192.168.10.3","ubu12-192.168.10.51"])
-    edges.append(["ubu12-192.168.10.51","dns-192.168.10.3"])
-    edges.append(["dns-192.168.10.3","ubu16-192.168.10.50"])
-    edges.append(["ubu16-192.168.10.50","dns-192.168.10.3"])
+    edges.append({"host_link":["dns-192.168.10.3","ubu12-192.168.10.51"]})
+    edges.append({"host_link":["ubu12-192.168.10.51","dns-192.168.10.3"]})
+    edges.append({"host_link":["dns-192.168.10.3","ubu16-192.168.10.50"]})
+    edges.append({"host_link":["ubu16-192.168.10.50","dns-192.168.10.3"]})
     
+    edges.append({"host_link":["fw-205.174.165.80","mac-192.168.10.25"]})
+    edges.append({"host_link":["mac-192.168.10.25","fw-205.174.165.80"]})
+    edges.append({"host_link":["fw-205.174.165.80","win8-192.168.10.5"]})
+    edges.append({"host_link":["win8-192.168.10.5","fw-205.174.165.80"]})
+    
+    
+    edgesG=[]
+    for e in edges:
+        edgesG.append(e["host_link"])
     G = nx.DiGraph()
-    G.add_edges_from(edges)
+    G.add_edges_from(edgesG)
     nx.write_graphml(G, "data/networkICIDS.graphml")
             
     with open(network_file, "w") as outfile:
@@ -181,7 +190,7 @@ def getVulnsByService(servicename, vulnfile):
     if servicename == "win8": servicename="win81"
     vulnsID=[]
     for cve in services[servicename]: vulnsID.append(cve["id"])
-    return vulnsID, services[servicename]
+    return vulnsID[-7:], services[servicename][-7:] #TODO: remove 7
 
 
 if __name__=="__main__":
