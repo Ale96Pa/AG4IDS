@@ -182,7 +182,7 @@ def generate_devices(network_file,vulnerabilityFile):
             default=lambda o: o.__dict__, indent=2)
         outfile.write(json_data)
     
-
+import random
 def getVulnsByService(servicename, vulnfile):
     with open(vulnfile) as vulnf:
         services = json.load(vulnf)["services"]
@@ -190,7 +190,9 @@ def getVulnsByService(servicename, vulnfile):
     if servicename == "win8": servicename="win81"
     vulnsID=[]
     for cve in services[servicename]: vulnsID.append(cve["id"])
-    return vulnsID[-7:], services[servicename][-7:] #TODO: remove 7
+    # return vulnsID, services[servicename]
+    if len(vulnsID)>7: return random.sample(vulnsID, 7), random.sample(services[servicename], 7)
+    else: return vulnsID, services[servicename]
 
 
 if __name__=="__main__":
