@@ -191,7 +191,7 @@ def getVulnsByService(servicename, vulnfile):
     vulnsID=[]
     for cve in services[servicename]: vulnsID.append(cve["id"])
     # return vulnsID, services[servicename]
-    if len(vulnsID)>7: return random.sample(vulnsID, 7), random.sample(services[servicename], 7)
+    if len(vulnsID)>7: return random.sample(vulnsID, 7), services[servicename]
     else: return vulnsID, services[servicename]
 
 

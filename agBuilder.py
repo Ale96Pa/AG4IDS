@@ -148,7 +148,8 @@ def build_multiag(network_file):
     vulnerabilities = content_network["vulnerabilities"]
 
     G = nx.MultiDiGraph()
-    for r_edge in reachability_edges:
+    for edge in reachability_edges:
+        r_edge = edge["host_link"]
         src_id = r_edge[0]
         dst_id = r_edge[1]
         for host in devices:
@@ -227,14 +228,14 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
 
 
 if __name__ == "__main__":
-    # G_std = build_multiag("data/CiC17Net.json")
     # G_alert = build_alertag("data/TrafficLabelling")
     
+    G_std = build_multiag("data/CiC17Net.json")
     with open("data/CiC17Net.json") as nf:
         vulnerabilities = json.load(nf)["vulnerabilities"]
     
-    G_std = nx.read_graphml("data/ag.graphml")
-    compute_paths(G_std,vulnerabilities,"data/pathsFake1.json",sources=[],goals=[])
+    # G_std = nx.read_graphml("data/ag.graphml")
+    compute_paths(G_std,vulnerabilities,"data/paths.json",sources=[],goals=[])
     
-    G_alert = nx.read_graphml("data/agAlert.graphml")
-    compute_paths(G_std,vulnerabilities,"data/pathsFake2.json",sources=[],goals=[])
+    # G_alert = nx.read_graphml("data/agAlert.graphml")
+    # compute_paths(G_std,vulnerabilities,"data/pathsFake2.json",sources=[],goals=[])
