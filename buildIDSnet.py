@@ -104,8 +104,8 @@ def generate_devices(network_file,vulnerabilityFile):
         for ip in ips:
             all_devs.append(
                 {
-                    "id": service+"-"+ip,
-                    "hostname": hostname,
+                    "id": hostname+"-"+service+"-"+ip,
+                    "hostname": service+"-"+ip,
                     "type": typeHost,
                     "network_interfaces": [
                         {
@@ -142,15 +142,15 @@ def generate_devices(network_file,vulnerabilityFile):
             hostDst = devDst["hostname"]
             if idSrc==idDst: continue
             
-            if "entryPoint" in hostSrc and "firewall" in typeDst:
-                edges.append({"host_link":[idSrc,idDst]})
-                edges.append({"host_link":[idDst,idSrc]})
-            # if "kali" in idSrc and "workstationWindows" in devDst["hostname"]:
-            #     edges.append({"host_link":[idSrc,idDst])
-            #     edges.append({"host_link":[idDst,idSrc])
+            if "entryPoint" in idSrc and "firewall" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})
+            # if "kali" in idSrc and "workstationWindows" in idDst:
+            #     edges.append({"host_link":[hostSrc,hostDst])
+            #     edges.append({"host_link":[hostDst,hostSrc])
             if "client" in typeSrc and "client" in typeDst:
-                edges.append({"host_link":[idSrc,idDst]})
-                edges.append({"host_link":[idDst,idSrc]})
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})
             
     edges.append({"host_link":["fw-205.174.165.80","ubu12-192.168.10.51"]})
     edges.append({"host_link":["ubu12-192.168.10.51","fw-205.174.165.80"]})
