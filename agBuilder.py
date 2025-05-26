@@ -153,7 +153,7 @@ def build_multiag(network_file):
         src_id = r_edge[0]
         dst_id = r_edge[1]
         for host in devices:
-            if host["id"] == dst_id:
+            if host["hostname"] == dst_id:
                 dst_vulns = get_vulns_from_host(host)
                 for v in dst_vulns:
                     vuln,req,gain = retrieve_privileges(v,vulnerabilities)
@@ -209,12 +209,13 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
                 for e in G.edges:
                     for i in range(1,len(p)):
                         if e[0] == p[i-1] and e[1]==p[i]:
+                            print
                             vulns_path.append(allGvulns[e])
                             # print(allGvulns[e])
                 
-                risk_p = {}
+                # risk_p = {}
                 # for e in p: vulns_path.append(allGvulns[e])
-                # risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
+                risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
                 risk_p["path"] = p
                 attack_paths.append(risk_p)
                 
@@ -226,16 +227,75 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
     
     print(endTime-startTime)
 
+def plot_risk(metric):
+    victims_ip={
+        "Web srv 16":["192.168.10.50"],
+        "Ubu srv 12":["192.168.10.51"],
+        "Ubu14 32B":['192.168.10.19'],
+        "Ubu14 64B":['192.168.10.17'],
+        "Ubu16 32B":['192.168.10.16'],
+        "Ubu16 64B":['192.168.10.12'],
+        "Win7 Pro 64B":['192.168.10.9'],
+        "Win8.1 64B":['192.168.10.5'],
+        "WinVista 64B":['192.168.10.8'],
+        "Win10pro 32B":['192.168.10.14'],
+        "Win10 64B":['192.168.10.15'],
+        "MAC":['192.168.10.25']
+    }
+    victims_risk = {}
+    
+    with open("data/paths.json") as nf:
+        paths = json.load(nf)["paths"]
+    for p in paths:
+        stepsP = p["path"]
+        for v in victims_ip.keys():
+            for ipV in victims_ip[v]:
+                if ipV in stepsP[len(stepsP)-1]:
+                    if v not in victims_risk.keys(): victims_risk[v] = [p[metric]]
+                    else: victims_risk[v].append(p[metric])
+    
+    victims = list(victims_risk.keys())
+    ag_risk_values = []
+    for v in victims:
+        avgAGrisk = round(sum(victims_risk[v])/len(victims_risk[v]),2)
+        ag_risk_values.append(avgAGrisk)
+        
+        #TODO HERE PUT CORRESPONDING IDS-AG
+    
+    models = {
+        'AG': ag_risk_values,
+        'IDS-based AG': (0.79, 0.83, 0.50,0.5, 0.43, 0.98,0.5, 0.43) #TODO
+    }
+
+    x = np.arange(len(victims))  # the label locations
+    width = 0.25  # the width of the bars
+    multiplier = 0
+
+    fig, ax = plt.subplots(layout='constrained')
+
+    for attribute, measurement in models.items():
+        offset = width * multiplier
+        rects = ax.bar(x + offset, measurement, width, label=attribute)
+        ax.bar_label(rects, padding=3, fontsize=9)
+        multiplier += 1
+
+    ax.set_ylabel('Avg. risk')
+    ax.set_xlabel('Victims')
+    ax.set_xticks(x + width, victims, rotation=90)
+    ax.set_yticks(np.arange(0, 1.1, 0.2))
+    ax.legend(loc='upper left')
+    ax.set_ylim(0, 1.2)
+
+    plt.savefig("results/"+metric+".png")
 
 if __name__ == "__main__":
-    # G_alert = build_alertag("data/TrafficLabelling")
     
     G_std = build_multiag("data/CiC17Net.json")
     with open("data/CiC17Net.json") as nf:
         vulnerabilities = json.load(nf)["vulnerabilities"]
-    
-    # G_std = nx.read_graphml("data/ag.graphml")
     compute_paths(G_std,vulnerabilities,"data/paths.json",sources=[],goals=[])
+    plot_risk("risk") #{impact, likelihood, risk}
     
+    # G_alert = build_alertag("data/TrafficLabelling")
     # G_alert = nx.read_graphml("data/agAlert.graphml")
     # compute_paths(G_std,vulnerabilities,"data/pathsFake2.json",sources=[],goals=[])
