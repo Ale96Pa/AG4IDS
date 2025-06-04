@@ -6,6 +6,7 @@ data/TrafficLabelling
 
 data/tue_data.csv
 data/wed_data.csv
+data/Tuesday-WorkingHours.pcap
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
