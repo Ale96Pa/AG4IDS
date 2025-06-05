@@ -3,7 +3,7 @@
 
 # Define the URLs for the Emerging Threats rule files
 RULE_FILES=(
-    "https://rules.emergingthreats.net/open/snort-2.9.0/rules/emerging-ftp.rules"
+    "https://rules.emergingthreats.net/open/snort-2.9.0/rules/emerging-dos.rules"
 )
 
 # Directory to store downloaded rules
@@ -16,7 +16,7 @@ for url in "${RULE_FILES[@]}"; do
 done
 
 # File to store CVE-tagged rules
-CVE_RULES_FILE="cve_tagged_rules.rules"
+CVE_RULES_FILE="cve_tagged_dos_rules.rules"
 > $CVE_RULES_FILE
 
 # Extract rules containing CVE references
