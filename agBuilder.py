@@ -202,7 +202,7 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
     for s in list(sources):
         for t in list(goals):
             if s==t or s not in G.nodes or t not in G.nodes or not nx.has_path(G,s,t): continue
-            # all_paths = list(nx.all_simple_edge_paths(G, source=s, target=t))
+            # all_paths = list(nx.all_simple_paths(G, source=s, target=t))
             all_paths = list(nx.all_shortest_paths(G, source=s, target=t))
             for p in all_paths:
                 vulns_path = []
@@ -227,7 +227,7 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
     
     print(endTime-startTime)
 
-def plot_risk(metric):
+def plot_risk(metric, pathFile, alertPathFile):
     victims_ip={
         "Web srv 16":["192.168.10.50"],
         "Ubu srv 12":["192.168.10.51"],
@@ -243,8 +243,9 @@ def plot_risk(metric):
         "MAC":['192.168.10.25']
     }
     victims_risk = {}
+    victims_risk_alert = {}
     
-    with open("data/paths.json") as nf:
+    with open(pathFile) as nf:
         paths = json.load(nf)["paths"]
     for p in paths:
         stepsP = p["path"]
@@ -253,18 +254,30 @@ def plot_risk(metric):
                 if ipV in stepsP[len(stepsP)-1]:
                     if v not in victims_risk.keys(): victims_risk[v] = [p[metric]]
                     else: victims_risk[v].append(p[metric])
+                    
+    with open(alertPathFile) as nfAl:
+        pathsAlert = json.load(nfAl)["paths"]
+    for pAl in pathsAlert:
+        stepsP = pAl["path"]
+        for v in victims_ip.keys():
+            for ipV in victims_ip[v]:
+                if ipV in stepsP[len(stepsP)-1]:
+                    if v not in victims_risk_alert.keys(): victims_risk_alert[v] = [pAl[metric]]
+                    else: victims_risk_alert[v].append(pAl[metric])
     
     victims = list(victims_risk.keys())
     ag_risk_values = []
+    ag_risk_alues_alert = []
     for v in victims:
         avgAGrisk = round(sum(victims_risk[v])/len(victims_risk[v]),2)
         ag_risk_values.append(avgAGrisk)
         
-        #TODO HERE PUT CORRESPONDING IDS-AG
-    
+        avgAGriskAlert = round(sum(victims_risk_alert[v])/len(victims_risk_alert[v]),2)
+        ag_risk_alues_alert.append(avgAGriskAlert)
+            
     models = {
         'AG': ag_risk_values,
-        'IDS-based AG': (0.79, 0.83, 0.50,0.5, 0.43, 0.98,0.5, 0.43) #TODO
+        'IDS-based AG': ag_risk_alues_alert
     }
 
     x = np.arange(len(victims))  # the label locations
@@ -276,7 +289,7 @@ def plot_risk(metric):
     for attribute, measurement in models.items():
         offset = width * multiplier
         rects = ax.bar(x + offset, measurement, width, label=attribute)
-        ax.bar_label(rects, padding=3, fontsize=9)
+        ax.bar_label(rects, padding=3, fontsize=9, rotation=45)
         multiplier += 1
 
     ax.set_ylabel('Avg. risk')
@@ -289,13 +302,25 @@ def plot_risk(metric):
     plt.savefig("results/"+metric+".png")
 
 if __name__ == "__main__":
+    netFile = "data/CiC17Net.json"
+    alertNetFile = "data/CiC17NetAlert.json"
     
-    G_std = build_multiag("data/CiC17Net.json")
-    with open("data/CiC17Net.json") as nf:
+    G_std = build_multiag(netFile)
+    G_alert = build_multiag(alertNetFile)
+    with open(netFile) as nf:
         vulnerabilities = json.load(nf)["vulnerabilities"]
-    compute_paths(G_std,vulnerabilities,"data/paths.json",sources=[],goals=[])
-    plot_risk("risk") #{impact, likelihood, risk}
+    with open(alertNetFile) as nfAl:
+        vulnerabilitiesAlert = json.load(nfAl)["vulnerabilities"]
+        
+    pathFile = "data/paths.json"
+    alertPathFile = "data/pathsAlert.json"
+    # compute_paths(G_std,vulnerabilities,pathFile,sources=['guest@fw-205.174.165.80', 'user@fw-205.174.165.80', 'root@fw-205.174.165.80'],
+    #               goals=['guest@ubu164-192.168.10.16', 'user@win8-192.168.10.5', 'guest@ubu164-192.168.10.12', 'guest@ubu144-192.168.10.19', 'guest@ubu144-192.168.10.17', 'guest@win8-192.168.10.5', 'guest@win7-192.168.10.9', 'user@win7-192.168.10.9', 'user@winvista-192.168.10.8', 'root@winvista-192.168.10.8', 'guest@winvista-192.168.10.8', 'user@win10-192.168.10.14', 'guest@win10-192.168.10.14', 'user@win10-192.168.10.15', 'guest@win10-192.168.10.15', 'guest@mac-192.168.10.25', 'user@ubu164-192.168.10.16', 'user@ubu164-192.168.10.12', 'user@mac-192.168.10.25', 'user@ubu12-192.168.10.51', 'root@ubu12-192.168.10.51', 'guest@ubu12-192.168.10.51', 'user@ubu16-192.168.10.50', 'root@ubu16-192.168.10.50', 'guest@ubu16-192.168.10.50', 'root@mac-192.168.10.25', 'root@win8-192.168.10.5'])
+    # compute_paths(G_alert,vulnerabilitiesAlert,alertPathFile,sources=['guest@fw-205.174.165.80', 'user@fw-205.174.165.80', 'root@fw-205.174.165.80'],
+    #               goals=['guest@ubu164-192.168.10.16', 'user@win8-192.168.10.5', 'guest@ubu164-192.168.10.12', 'guest@ubu144-192.168.10.19', 'guest@ubu144-192.168.10.17', 'guest@win8-192.168.10.5', 'guest@win7-192.168.10.9', 'user@win7-192.168.10.9', 'user@winvista-192.168.10.8', 'root@winvista-192.168.10.8', 'guest@winvista-192.168.10.8', 'user@win10-192.168.10.14', 'guest@win10-192.168.10.14', 'user@win10-192.168.10.15', 'guest@win10-192.168.10.15', 'guest@mac-192.168.10.25', 'user@ubu164-192.168.10.16', 'user@ubu164-192.168.10.12', 'user@mac-192.168.10.25', 'user@ubu12-192.168.10.51', 'root@ubu12-192.168.10.51', 'guest@ubu12-192.168.10.51', 'user@ubu16-192.168.10.50', 'root@ubu16-192.168.10.50', 'guest@ubu16-192.168.10.50', 'root@mac-192.168.10.25', 'root@win8-192.168.10.5'])
+    compute_paths(G_std,vulnerabilities,pathFile,sources=[],goals=[])
+    compute_paths(G_alert,vulnerabilitiesAlert,alertPathFile,sources=[],goals=[])
     
-    # G_alert = build_alertag("data/TrafficLabelling")
-    # G_alert = nx.read_graphml("data/agAlert.graphml")
-    # compute_paths(G_std,vulnerabilities,"data/pathsFake2.json",sources=[],goals=[])
+    plot_risk("risk",pathFile,alertPathFile) #{impact, likelihood, risk}
+    # plot_risk("impact",pathFile,alertPathFile)
+    # plot_risk("likelihood",pathFile,alertPathFile)
