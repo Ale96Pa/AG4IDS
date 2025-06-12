@@ -270,6 +270,13 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
     
     print(endTime-startTime)
 
+def renameModel(strFile):
+    if "alertNet" in strFile: return "onlyAlert"
+    if "CiC17" in strFile: return "AG"
+    if "fullNet" in strFile: return "IDS-based AG"
+    if "partialAlertNet" in strFile: return "onlyAlert (partial)"
+    else: return "IDS-based AG (partial)"
+
 def plot_risk(metric, listNetFile):
     victims_ip={
         "Web srv 16":["192.168.10.50"],
@@ -301,7 +308,7 @@ def plot_risk(metric, listNetFile):
                         if v not in victims_risk.keys(): victims_risk[v] = [p[metric]]
                         else: victims_risk[v].append(p[metric])
         
-        model = pathFile.split("paths/")[1]
+        model = renameModel(pathFile.split("paths/")[1])
         dictVictimRisk[model] = victims_risk
     
     # with open(pathFile) as nf:
@@ -355,10 +362,10 @@ def plot_risk(metric, listNetFile):
 
     x = np.arange(len(victims))  # the label locations
     num_in_group = len(dictVictimRisk.keys())
-    gap = 0.2
+    gap = 0.25
     width = (1 - gap) / num_in_group  # the width of the bars
     # width = 0.25  # the width of the bars
-    multiplier = 0
+    multiplier = 1.5
 
     fig, ax = plt.subplots(layout='constrained')
 
@@ -366,15 +373,15 @@ def plot_risk(metric, listNetFile):
         # offset = width * multiplier
         offset = width * multiplier - (1 - gap) / 2
         rects = ax.bar(x + offset, measurement, width, label=attribute)
-        # ax.bar_label(rects, padding=3, fontsize=9, rotation=45)
+        ax.bar_label(rects, padding=3, fontsize=9, rotation=90)
         multiplier += 1
 
     ax.set_ylabel('Avg. risk')
     ax.set_xlabel('Victims')
     ax.set_xticks(x + width, victims, rotation=90)
     ax.set_yticks(np.arange(0, 1.1, 0.2))
-    ax.legend(loc='upper left')
-    ax.set_ylim(0, 2)
+    ax.legend(loc='upper left', ncol=3)
+    ax.set_ylim(0, 1.1)
 
     plt.savefig("results/"+metric+".png")
 
@@ -400,7 +407,7 @@ if __name__ == "__main__":
     #         '192.168.10.15','192.168.10.25'
     #         ])
     
-    plot_risk("risk",[originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet]) #{impact, likelihood, risk}
-    plot_risk("impact",[originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet])
-    plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet])
+    plot_risk("risk",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet]) #{impact, likelihood, risk}
+    plot_risk("impact",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet])
+    plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet])
     
