@@ -1,4 +1,4 @@
-import json, math, time, csv, sys, os
+import json, math, time, csv, sys, os, itertools, random
 import pandas as pd
 import networkx as nx
 import numpy as np
@@ -150,6 +150,7 @@ def build_multiag(network_file,ag_file):
 
     G = nx.MultiDiGraph()
     for edge in reachability_edges:
+        # print("EDGE", edge)
         r_edge = edge["host_link"]
         src_id = r_edge[0]
         dst_id = r_edge[1]
@@ -165,34 +166,38 @@ def build_multiag(network_file,ag_file):
                     if gain_state_node not in G.nodes(): G.add_node(gain_state_node, type="state")
                     G.add_edge(req_state_node,gain_state_node,vuln=vuln_edge,key=str(src_id)+vuln_edge+str(dst_id))
                     
-                    #TODO: add inner edges
+                    G.add_edge("root@"+str(src_id),"user@"+str(src_id),vuln="CVE-any",key=str(src_id)+"CVE-any"+str(src_id))
+                    G.add_edge("user@"+str(src_id),"guest@"+str(src_id),vuln="CVE-any",key=str(src_id)+"CVE-any"+str(src_id))
+                    G.add_edge("root@"+str(dst_id),"user@"+str(dst_id),vuln="CVE-any",key=str(dst_id)+"CVE-any"+str(dst_id))
+                    G.add_edge("user@"+str(dst_id),"guest@"+str(dst_id),vuln="CVE-any",key=str(dst_id)+"CVE-any"+str(dst_id))
+                    # print("AG", req_state_node,gain_state_node)
                         
     nx.write_graphml_lxml(G, ag_file)
     return G
 
-def build_alertag(folderML):
-    G = nx.MultiDiGraph()
+# def build_alertag(folderML):
+#     G = nx.MultiDiGraph()
     
-    for file in os.listdir(folderML):
-        # df = pd.read_csv(folderML+"/"+file, encoding='utf-8', errors='ignore')
-        with open(folderML+"/"+file, 'r', encoding='utf-8', errors='ignore') as f: df = pd.read_csv(f)
-        df = df[df[' Label'] != "BENIGN"]
-        df = df[df[' Label'] != "NaN"]
-        df = df[df[' Source IP'] != "NaN"]
-        df = df[df[' Destination IP'] != "NaN"]
+#     for file in os.listdir(folderML):
+#         # df = pd.read_csv(folderML+"/"+file, encoding='utf-8', errors='ignore')
+#         with open(folderML+"/"+file, 'r', encoding='utf-8', errors='ignore') as f: df = pd.read_csv(f)
+#         df = df[df[' Label'] != "BENIGN"]
+#         df = df[df[' Label'] != "NaN"]
+#         df = df[df[' Source IP'] != "NaN"]
+#         df = df[df[' Destination IP'] != "NaN"]
                 
-        for index, row in df.iterrows():
-            srcID = row[" Source IP"]
-            dstID = row[" Destination IP"]
-            vulnID = str(row[" Protocol"])+"-"+str(row[" Label"])+"-"+str(row[" CWE Flag Count"])
-            G.add_edge(srcID,dstID,vuln=vulnID,key=str(srcID)+vulnID+str(dstID))
+#         for index, row in df.iterrows():
+#             srcID = row[" Source IP"]
+#             dstID = row[" Destination IP"]
+#             vulnID = str(row[" Protocol"])+"-"+str(row[" Label"])+"-"+str(row[" CWE Flag Count"])
+#             G.add_edge(srcID,dstID,vuln=vulnID,key=str(srcID)+vulnID+str(dstID))
             
-    nx.write_graphml_lxml(G, "data/agAlert.graphml")
+#     nx.write_graphml_lxml(G, "data/agAlert.graphml")
     
-    G_alert = nx.read_graphml("data/agAlert.graphml")
-    if "nan" in G_alert: G_alert.remove_node("nan")
-    nx.write_graphml_lxml(G_alert, "data/agAlert.graphml")
-    return G_alert
+#     G_alert = nx.read_graphml("data/agAlert.graphml")
+#     if "nan" in G_alert: G_alert.remove_node("nan")
+#     nx.write_graphml_lxml(G_alert, "data/agAlert.graphml")
+#     return G_alert
 
 def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
     allGvulns = nx.get_edge_attributes(G, "vuln")
@@ -216,22 +221,46 @@ def compute_paths(G,vulnerabilities,filePath,sources=[],goals=[]):
     for s in list(sources):
         for t in list(goals):
             if s==t or s not in G.nodes or t not in G.nodes or not nx.has_path(G,s,t): continue
+            paths = list(nx.all_shortest_paths(G, source=s, target=t))
+                    
+            for p in paths:
+                vuln_ids = []
+                list_comb = []
+                for i in range(len(p) - 1):
+                    node1 = p[i]
+                    node2 = p[i + 1]
+                    archs = G.get_edge_data(node1, node2)
+
+                    triad = [(node1, key, node2) for key in archs]
+                    
+                    list_comb.append(triad)
+            
+                for combination in itertools.product(*list_comb):
+                    vuln_ids = []
+                    path_str = ""
+                    for node1, key, node2 in combination:
+                        path_str += f"{node1}#{key}#"
+                        vuln_ids.append(key)
+                    
+                    path_str += str(t)
+            
+                    risk_p = compute_risk_analysis(vuln_ids, vulnerabilities)     
+                    risk_p["path"] = p
+                    risk_p["path_str"] = path_str
+                    attack_paths.append(risk_p)
             # all_paths = list(nx.all_simple_paths(G, source=s, target=t))
-            all_paths = list(nx.all_shortest_paths(G, source=s, target=t))
-            for p in all_paths:
-                vulns_path = []
-                for e in G.edges:
-                    for i in range(1,len(p)):
-                        if e[0] == p[i-1] and e[1]==p[i]:
-                            print
-                            vulns_path.append(allGvulns[e])
-                            # print(allGvulns[e])
-                
-                # risk_p = {}
-                # for e in p: vulns_path.append(allGvulns[e])
-                risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
-                risk_p["path"] = p
-                attack_paths.append(risk_p)
+            # all_paths = list(nx.all_shortest_paths(G, source=s, target=t))    
+    #         for p in all_paths:
+    #             vulns_path = []
+    #             for e in G.edges:
+    #                 for i in range(1,len(p)):
+    #                     if e[0] == p[i-1] and e[1]==p[i]:
+    #                         vulns_path.append(allGvulns[e])
+    #             # risk_p = {}
+    #             # for e in p: vulns_path.append(allGvulns[e])
+    #             risk_p = compute_risk_analysis(vulns_path,vulnerabilities)
+    #             risk_p["path"] = p
+    #             attack_paths.append(risk_p)
                 
         with open(filePath, "w") as outfile:
             json_data = json.dumps({"paths":attack_paths},
@@ -245,10 +274,10 @@ def plot_risk(metric, listNetFile):
     victims_ip={
         "Web srv 16":["192.168.10.50"],
         "Ubu srv 12":["192.168.10.51"],
-        "Ubu14 32B":['192.168.10.19'],
-        "Ubu14 64B":['192.168.10.17'],
-        "Ubu16 32B":['192.168.10.16'],
-        "Ubu16 64B":['192.168.10.12'],
+        # "Ubu14 32B":['192.168.10.19'],
+        # "Ubu14 64B":['192.168.10.17'],
+        # "Ubu16 32B":['192.168.10.16'],
+        # "Ubu16 64B":['192.168.10.12'],
         "Win7 Pro 64B":['192.168.10.9'],
         "Win8.1 64B":['192.168.10.5'],
         "WinVista 64B":['192.168.10.8'],
@@ -356,44 +385,22 @@ if __name__ == "__main__":
     partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
     fullNet = "data/networks/fullNet.json"
     
-    for netfile in [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet,originalNet]:
-        graphfile = netfile.replace("networks","ags").replace(".json","AG.graphml")
-        G = build_multiag(netfile,graphfile)
-        with open(netfile) as nf:
-            vulnerabilities = json.load(nf)["vulnerabilities"]
-        pathfile = netfile.replace("networks","paths").replace(".json","Path.json")
-        compute_paths(G,vulnerabilities,pathfile,sources=["kali","win81"],
-            goals=[
-            "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16',
-            '192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14',
-            '192.168.10.15','192.168.10.25'
-            ])
+    # for netfile in [originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet]:
+    #     graphfile = netfile.replace("networks","ags").replace(".json","AG.graphml")
+    #     G = build_multiag(netfile,graphfile)
+    #     with open(netfile) as nf:
+    #         vulnerabilities = json.load(nf)["vulnerabilities"]
+    #     pathfile = netfile.replace("networks","paths").replace(".json","Path.json")
+    #     compute_paths(G,vulnerabilities,pathfile,sources=[
+    #         "kali","fw","win81"
+    #         ],
+    #         goals=[
+    #         "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16',
+    #         '192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14',
+    #         '192.168.10.15','192.168.10.25'
+    #         ])
     
-    # G_std = build_multiag(originalNet)
-    # with open(originalNet) as nf:
-    #     vulnerabilities = json.load(nf)["vulnerabilities"]
-        
-    # G_alert = build_multiag(alertNetFile)
-    # with open(alertNetFile) as nfAl:
-    #     vulnerabilitiesAlert = json.load(nfAl)["vulnerabilities"]
-        
-    # pathFile = "data/paths.json"
-    # alertPathFile = "data/pathsAlert.json"
-    # # # compute_paths(G_std,vulnerabilities,pathFile,sources=['guest@fw-205.174.165.80', 'user@fw-205.174.165.80', 'root@fw-205.174.165.80'],
-    # # #               goals=['guest@ubu164-192.168.10.16', 'user@win8-192.168.10.5', 'guest@ubu164-192.168.10.12', 'guest@ubu144-192.168.10.19', 'guest@ubu144-192.168.10.17', 'guest@win8-192.168.10.5', 'guest@win7-192.168.10.9', 'user@win7-192.168.10.9', 'user@winvista-192.168.10.8', 'root@winvista-192.168.10.8', 'guest@winvista-192.168.10.8', 'user@win10-192.168.10.14', 'guest@win10-192.168.10.14', 'user@win10-192.168.10.15', 'guest@win10-192.168.10.15', 'guest@mac-192.168.10.25', 'user@ubu164-192.168.10.16', 'user@ubu164-192.168.10.12', 'user@mac-192.168.10.25', 'user@ubu12-192.168.10.51', 'root@ubu12-192.168.10.51', 'guest@ubu12-192.168.10.51', 'user@ubu16-192.168.10.50', 'root@ubu16-192.168.10.50', 'guest@ubu16-192.168.10.50', 'root@mac-192.168.10.25', 'root@win8-192.168.10.5'])
-    # # # compute_paths(G_alert,vulnerabilitiesAlert,alertPathFile,sources=['guest@fw-205.174.165.80', 'user@fw-205.174.165.80', 'root@fw-205.174.165.80'],
-    # # #               goals=['guest@ubu164-192.168.10.16', 'user@win8-192.168.10.5', 'guest@ubu164-192.168.10.12', 'guest@ubu144-192.168.10.19', 'guest@ubu144-192.168.10.17', 'guest@win8-192.168.10.5', 'guest@win7-192.168.10.9', 'user@win7-192.168.10.9', 'user@winvista-192.168.10.8', 'root@winvista-192.168.10.8', 'guest@winvista-192.168.10.8', 'user@win10-192.168.10.14', 'guest@win10-192.168.10.14', 'user@win10-192.168.10.15', 'guest@win10-192.168.10.15', 'guest@mac-192.168.10.25', 'user@ubu164-192.168.10.16', 'user@ubu164-192.168.10.12', 'user@mac-192.168.10.25', 'user@ubu12-192.168.10.51', 'root@ubu12-192.168.10.51', 'guest@ubu12-192.168.10.51', 'user@ubu16-192.168.10.50', 'root@ubu16-192.168.10.50', 'guest@ubu16-192.168.10.50', 'root@mac-192.168.10.25', 'root@win8-192.168.10.5'])
-    # compute_paths(G_std,vulnerabilities,pathFile,sources=["kali","win81"],
-    #               goals=[
-    #                 "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16','192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14','192.168.10.15','192.168.10.25'
-    #               ])
-    # compute_paths(G_alert,vulnerabilitiesAlert,alertPathFile,sources=["kali","win81"],
-    #               goals=[
-    #                 "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16','192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14','192.168.10.15','192.168.10.25'
-    #               ])
-    
-    plot_risk("risk",[onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet,originalNet])
-    # plot_risk("risk",pathFile,alertPathFile) #{impact, likelihood, risk}
-    # plot_risk("impact",pathFile,alertPathFile)
-    # plot_risk("likelihood",pathFile,alertPathFile)
+    plot_risk("risk",[originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet]) #{impact, likelihood, risk}
+    plot_risk("impact",[originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet])
+    plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet])
     
