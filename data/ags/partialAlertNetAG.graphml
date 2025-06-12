@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d1" for="edge" attr.name="vuln" attr.type="string"/>
+<key id="d0" for="node" attr.name="type" attr.type="string"/>
+<graph edgedefault="directed"><node id="user@kali-205.174.165.73">
+  <data key="d0">state</data>
+</node>
+<node id="user@fw-205.174.165.80">
+  <data key="d0">state</data>
+</node>
+<node id="guest@kali-205.174.165.73">
+  <data key="d0">state</data>
+</node>
+<node id="user@win81-205.174.165.69">
+  <data key="d0">state</data>
+</node>
+<node id="guest@win81-205.174.165.69">
+  <data key="d0">state</data>
+</node>
+<node id="user@win81-205.174.165.70">
+  <data key="d0">state</data>
+</node>
+<node id="guest@win81-205.174.165.70">
+  <data key="d0">state</data>
+</node>
+<node id="user@win81-205.174.165.71">
+  <data key="d0">state</data>
+</node>
+<node id="guest@win81-205.174.165.71">
+  <data key="d0">state</data>
+</node>
+<node id="user@ubu12-192.168.10.51">
+  <data key="d0">state</data>
+</node>
+<node id="guest@ubu12-192.168.10.51">
+  <data key="d0">state</data>
+</node>
+<node id="guest@fw-205.174.165.80">
+  <data key="d0">state</data>
+</node>
+<node id="user@ubu16-192.168.10.50">
+  <data key="d0">state</data>
+</node>
+<node id="guest@ubu16-192.168.10.50">
+  <data key="d0">state</data>
+</node>
+<node id="guest@dns-192.168.10.3">
+  <data key="d0">state</data>
+</node>
+<node id="user@mac-192.168.10.25">
+  <data key="d0">state</data>
+</node>
+<node id="guest@mac-192.168.10.25">
+  <data key="d0">state</data>
+</node>
+<node id="user@win8-192.168.10.5">
+  <data key="d0">state</data>
+</node>
+<node id="guest@win8-192.168.10.5">
+  <data key="d0">state</data>
+</node>
+<edge source="user@kali-205.174.165.73" target="user@fw-205.174.165.80" id="kali-205.174.165.73CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@kali-205.174.165.73" target="user@fw-205.174.165.80" id="kali-205.174.165.73CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@kali-205.174.165.73" target="user@fw-205.174.165.80" id="kali-205.174.165.73CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@kali-205.174.165.73" target="user@fw-205.174.165.80" id="kali-205.174.165.73CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@kali-205.174.165.73" target="user@fw-205.174.165.80" id="kali-205.174.165.73CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+<edge source="user@win81-205.174.165.69" target="user@fw-205.174.165.80" id="win81-205.174.165.69CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@win81-205.174.165.69" target="user@fw-205.174.165.80" id="win81-205.174.165.69CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@win81-205.174.165.69" target="user@fw-205.174.165.80" id="win81-205.174.165.69CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@win81-205.174.165.69" target="user@fw-205.174.165.80" id="win81-205.174.165.69CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@win81-205.174.165.69" target="user@fw-205.174.165.80" id="win81-205.174.165.69CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+<edge source="user@win81-205.174.165.70" target="user@fw-205.174.165.80" id="win81-205.174.165.70CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@win81-205.174.165.70" target="user@fw-205.174.165.80" id="win81-205.174.165.70CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@win81-205.174.165.70" target="user@fw-205.174.165.80" id="win81-205.174.165.70CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@win81-205.174.165.70" target="user@fw-205.174.165.80" id="win81-205.174.165.70CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@win81-205.174.165.70" target="user@fw-205.174.165.80" id="win81-205.174.165.70CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+<edge source="user@win81-205.174.165.71" target="user@fw-205.174.165.80" id="win81-205.174.165.71CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@win81-205.174.165.71" target="user@fw-205.174.165.80" id="win81-205.174.165.71CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@win81-205.174.165.71" target="user@fw-205.174.165.80" id="win81-205.174.165.71CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@win81-205.174.165.71" target="user@fw-205.174.165.80" id="win81-205.174.165.71CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@win81-205.174.165.71" target="user@fw-205.174.165.80" id="win81-205.174.165.71CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+<edge source="user@ubu12-192.168.10.51" target="user@fw-205.174.165.80" id="ubu12-192.168.10.51CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@ubu12-192.168.10.51" target="user@fw-205.174.165.80" id="ubu12-192.168.10.51CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@ubu12-192.168.10.51" target="user@fw-205.174.165.80" id="ubu12-192.168.10.51CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@ubu12-192.168.10.51" target="user@fw-205.174.165.80" id="ubu12-192.168.10.51CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@ubu12-192.168.10.51" target="user@fw-205.174.165.80" id="ubu12-192.168.10.51CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+<edge source="guest@fw-205.174.165.80" target="user@ubu16-192.168.10.50" id="fw-205.174.165.80CVE-2006-6723ubu16-192.168.10.50">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@fw-205.174.165.80" target="user@ubu16-192.168.10.50" id="fw-205.174.165.80CVE-1999-0345ubu16-192.168.10.50">
+  <data key="d1">CVE-1999-0345</data>
+</edge>
+<edge source="guest@fw-205.174.165.80" target="user@ubu16-192.168.10.50" id="fw-205.174.165.80CVE-2012-0002ubu16-192.168.10.50">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@fw-205.174.165.80" target="user@ubu16-192.168.10.50" id="fw-205.174.165.80CVE-2010-0569ubu16-192.168.10.50">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@fw-205.174.165.80" target="user@ubu16-192.168.10.50" id="fw-205.174.165.80CVE-2019-9515ubu16-192.168.10.50">
+  <data key="d1">CVE-2019-9515</data>
+</edge>
+<edge source="user@ubu16-192.168.10.50" target="user@fw-205.174.165.80" id="ubu16-192.168.10.50CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@ubu16-192.168.10.50" target="user@fw-205.174.165.80" id="ubu16-192.168.10.50CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@ubu16-192.168.10.50" target="user@fw-205.174.165.80" id="ubu16-192.168.10.50CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@ubu16-192.168.10.50" target="user@fw-205.174.165.80" id="ubu16-192.168.10.50CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@ubu16-192.168.10.50" target="user@fw-205.174.165.80" id="ubu16-192.168.10.50CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+<edge source="guest@dns-192.168.10.3" target="user@ubu16-192.168.10.50" id="dns-192.168.10.3CVE-2006-6723ubu16-192.168.10.50">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@dns-192.168.10.3" target="user@ubu16-192.168.10.50" id="dns-192.168.10.3CVE-1999-0345ubu16-192.168.10.50">
+  <data key="d1">CVE-1999-0345</data>
+</edge>
+<edge source="guest@dns-192.168.10.3" target="user@ubu16-192.168.10.50" id="dns-192.168.10.3CVE-2012-0002ubu16-192.168.10.50">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@dns-192.168.10.3" target="user@ubu16-192.168.10.50" id="dns-192.168.10.3CVE-2010-0569ubu16-192.168.10.50">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@dns-192.168.10.3" target="user@ubu16-192.168.10.50" id="dns-192.168.10.3CVE-2019-9515ubu16-192.168.10.50">
+  <data key="d1">CVE-2019-9515</data>
+</edge>
+<edge source="user@mac-192.168.10.25" target="user@fw-205.174.165.80" id="mac-192.168.10.25CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@mac-192.168.10.25" target="user@fw-205.174.165.80" id="mac-192.168.10.25CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@mac-192.168.10.25" target="user@fw-205.174.165.80" id="mac-192.168.10.25CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@mac-192.168.10.25" target="user@fw-205.174.165.80" id="mac-192.168.10.25CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@mac-192.168.10.25" target="user@fw-205.174.165.80" id="mac-192.168.10.25CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+<edge source="user@win8-192.168.10.5" target="user@fw-205.174.165.80" id="win8-192.168.10.5CVE-2009-4019fw-205.174.165.80">
+  <data key="d1">CVE-2009-4019</data>
+</edge>
+<edge source="guest@win8-192.168.10.5" target="user@fw-205.174.165.80" id="win8-192.168.10.5CVE-2006-6723fw-205.174.165.80">
+  <data key="d1">CVE-2006-6723</data>
+</edge>
+<edge source="guest@win8-192.168.10.5" target="user@fw-205.174.165.80" id="win8-192.168.10.5CVE-2010-0569fw-205.174.165.80">
+  <data key="d1">CVE-2010-0569</data>
+</edge>
+<edge source="guest@win8-192.168.10.5" target="user@fw-205.174.165.80" id="win8-192.168.10.5CVE-2012-0002fw-205.174.165.80">
+  <data key="d1">CVE-2012-0002</data>
+</edge>
+<edge source="guest@win8-192.168.10.5" target="user@fw-205.174.165.80" id="win8-192.168.10.5CVE-2009-0696fw-205.174.165.80">
+  <data key="d1">CVE-2009-0696</data>
+</edge>
+</graph></graphml>

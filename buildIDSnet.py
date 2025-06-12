@@ -65,7 +65,6 @@ def get_dump_cveList(ruleFolder, vulnFile):
                                         if "CVE-CVE-" in cveID: cveID.replace("CVE-CVE-","CVE-")
                                         if "CVE-" in cveID and cveID not in dictAttackCve[attackType]: 
                                             dictAttackCve[attackType].append(cveID)
-    
     dump_cve={}
     headers = {'content-type': 'application/json'}
     for attack in dictAttackCve.keys():
@@ -241,7 +240,74 @@ def getVulnsByService(servicename, vulnfile):
     if len(vulnsID)>7: return random.sample(vulnsID, 7), services[servicename]
     else: return vulnsID, services[servicename]
 
-def getVulnsByAlert(alertFolder, vulnFile, netFile, newNetFile):
+def writePartialNet(content,dictDevAttack,attacks,filename):
+    devices = content["devices"]
+    vulnerabilities = content["vulnerabilities"]
+    edges = content["edges"]
+    
+    all_devs=[]
+    added_vulns=[]
+    for dev in devices:
+        ifaceObjs=[]
+        for iface in dev["network_interfaces"]:
+            ip = iface["ipaddress"]
+            cveAttackList=[]
+            if ip in dictDevAttack.keys():
+                for atck in dictDevAttack[ip]:
+                    for cve in attacks[atck]:
+                        if cve["id"] not in cveAttackList:
+                            cveAttackList.append(cve["id"])
+                            added_vulns.append(cve)
+            allCVE=[]
+            for port in iface["ports"]:
+                for srv in port["services"]:
+                    oldCve = srv["cve_list"]
+                    
+                    partialCveList = random.sample(cveAttackList, 5) if len(cveAttackList)>5 else []
+                    if "alertNet" in filename: allCVE+=cveAttackList
+                    elif "partialAlertNet" in filename: allCVE+=partialCveList
+                    elif "partialAlertOriginalNet" in filename: allCVE+=oldCve+partialCveList
+                    else: allCVE += oldCve+cveAttackList
+            
+            ifaceObjs.append({
+                "ipaddress": ip,
+                "macaddress": "ff:ff:ff:ff:ff:ff",
+                "ports": [
+                    {
+                        "number": 0,
+                        "state": "open",
+                        "protocol": "TCP",
+                        "services": [
+                            {
+                                "name": "all",
+                                "cpe_list": [],
+                                "cve_list": allCVE
+                            }
+                        ]
+                    }
+                ]
+                }
+            )
+        
+        all_devs.append(
+                {
+                    "id": dev["id"],
+                    "hostname": dev["hostname"],
+                    "type": dev["type"],
+                    "network_interfaces": ifaceObjs,
+                    "local_applications": []
+                }     
+        )
+    
+    with open(filename, "w") as outfile:
+        json_data = json.dumps({"devices":all_devs,
+                                "vulnerabilities":vulnerabilities+added_vulns,
+                                "edges":edges}, 
+            default=lambda o: o.__dict__, indent=2)
+        outfile.write(json_data)
+    
+
+def getVulnsByAlert(alertFolder, vulnFile, netFile, listPartialNets):
     dictDevAttack = {}
     allAttacks = []
     
@@ -276,81 +342,31 @@ def getVulnsByAlert(alertFolder, vulnFile, netFile, newNetFile):
     with open(vulnFile) as vulnf: attacks = json.load(vulnf)["attacks"]
     with open(netFile) as netf: content = json.load(netf)
     
-    devices = content["devices"]
-    vulnerabilities = content["vulnerabilities"]
-    edges = content["edges"]
-    
-    all_devs=[]
-    added_vulns=[]
-    for dev in devices:
-        ifaceObjs=[]
-        for iface in dev["network_interfaces"]:
-            ip = iface["ipaddress"]
-            cveAttackList=[]
-            if ip in dictDevAttack.keys():
-                for atck in dictDevAttack[ip]:
-                    for cve in attacks[atck]:
-                        if cve["id"] not in cveAttackList:
-                            cveAttackList.append(cve["id"])
-                            added_vulns.append(cve)
-            for port in iface["ports"]:
-                for srv in port["services"]:
-                    oldCve = srv["cve_list"]
-                    allCVE = oldCve+cveAttackList
-            
-            ifaceObjs.append({
-                "ipaddress": ip,
-                "macaddress": "ff:ff:ff:ff:ff:ff",
-                "ports": [
-                    {
-                        "number": 0,
-                        "state": "open",
-                        "protocol": "TCP",
-                        "services": [
-                            {
-                                "name": "all",
-                                "cpe_list": [],
-                                "cve_list": allCVE
-                            }
-                        ]
-                    }
-                ]
-                }
-            )
-        
-        all_devs.append(
-                {
-                    "id": dev["id"],
-                    "hostname": dev["hostname"],
-                    "type": dev["type"],
-                    "network_interfaces": ifaceObjs,
-                    "local_applications": []
-                }     
-        )
-    
-    with open(newNetFile, "w") as outfile:
-        json_data = json.dumps({"devices":all_devs,
-                                "vulnerabilities":vulnerabilities+added_vulns,
-                                "edges":edges}, 
-            default=lambda o: o.__dict__, indent=2)
-        outfile.write(json_data)
+    for fileN in listPartialNets:
+        writePartialNet(content,dictDevAttack,attacks,fileN)
     
 
 if __name__=="__main__":
-    network_file = "data/CiC17Net.json"
-    alertNetworkFile = "data/CiC17NetAlert.json"
+    originalNet = "data/networks/CiC17Net.json"
+    onlyAlertNet = "data/networks/alertNet.json"
+    partialAlertNet = "data/networks/partialAlertNet.json"
+    partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
+    fullNet = "data/networks/fullNet.json"
+    
+    # alertNetworkFile = "data/CiC17NetAlert.json"
     
     """First generation of network inventory from CIC-IDS"""
     # vulnerabilityFile = "data/vulns.json"
     # get_dump_nvd(vulnerabilityFile)
     # listCve = getVulnsByService("ubu16")
-    # generate_devices(network_file,vulnerabilityFile)
+    # generate_devices(originalNet,vulnerabilityFile)
     
     """Retrieving vulnerabilities from the rule dataset"""
     # rule_folder = "emerging_rules/"
-    # get_dump_cveList(rule_folder, "vulnsAttack.json")
+    # get_dump_cveList(rule_folder, "data/vulnsAttack.json")
     
-    """Build the alert-based network inventory"""
+    # """Build the alert-based network inventory"""
     vulnAttackFile = "data/vulnsAttack.json"
     alert_folder = "data/TrafficLabelling/"
-    getVulnsByAlert(alert_folder, vulnAttackFile, network_file, alertNetworkFile)
+    getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
+            [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
