@@ -87,6 +87,8 @@ def clean_data_with_scenarios(scenario, full_data):
     elif scenario=="benign_dos_ftp_scan":
         label_list = ['BENIGN', 'DoS Hulk', 'DoS GoldenEye', 'DoS slowloris', 'DoS Slowhttptest', 'FTP-Patator', 'PortScan']
     
+    print(f"BUILDING DATA FOR SCENARIO {scenario}\n")
+
     selected_data = full_data[full_data['Label'].isin(label_list)]
     rows, cols = selected_data.shape
     print("Selected dataset dimension:")
@@ -145,6 +147,11 @@ def dt_trainer(train_data, test_data, test_flow_dict):
     print(f"Classification Report: \n {classification_report(y_test, y_pred)}")
 
     # Print flow ID, ground truth label and predicted label
+    with open('prediction_mismatches.txt', 'w') as f:
+        for idx, val in y_test.items():
+            # print(f"Index: {idx}, Value: {val}")
+            if val != y_pred[idx]:
+                print(f"Index is: {idx} | Ground truth is: {val} | Predicted label by DT is: {y_pred[idx]} | Corresponding FLOW ID is: {list(test_flow_dict.values())[idx]}", file=f)
 
 
 if __name__ == "__main__":
