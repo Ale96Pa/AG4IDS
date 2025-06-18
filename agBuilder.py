@@ -407,7 +407,5 @@ if __name__ == "__main__":
     #         '192.168.10.15','192.168.10.25'
     #         ])
     
-    plot_risk("risk",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet]) #{impact, likelihood, risk}
-    plot_risk("impact",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet])
-    plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet])
+    plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet]) #{impact, likelihood, risk}
     
