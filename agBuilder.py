@@ -383,7 +383,7 @@ def plot_risk(metric, listNetFile):
     ax.legend(loc='upper left', ncol=3)
     ax.set_ylim(0, 1.1)
 
-    plt.savefig("results/"+metric+".png")
+    plt.savefig("results/risk.png")
 
 if __name__ == "__main__":
     originalNet = "data/networks/CiC17Net.json"
