@@ -146,11 +146,19 @@ def dt_trainer(train_data, test_data, test_flow_dict):
     print(f"DT Accuracy: {accuracy}")
     print(f"Classification Report: \n {classification_report(y_test, y_pred)}")
 
-    # Print flow ID, ground truth label and predicted label
+    # Print flow ID, ground truth label and predicted label for mismatches
     with open('prediction_mismatches.txt', 'w') as f:
         for idx, val in y_test.items():
             # print(f"Index: {idx}, Value: {val}")
             if val != y_pred[idx]:
+                print(f"Index is: {idx} | Ground truth is: {val} | Predicted label by DT is: {y_pred[idx]} | Corresponding FLOW ID is: {list(test_flow_dict.values())[idx]}", file=f)
+
+    # Print flow ID, ground truth label and predicted label for attack predictions by DT
+    attack_labels = [1, 2, 3, 4, 5]
+    with open('prediction_of_attacks.txt', 'w') as f:
+        for idx, val in enumerate(y_pred):
+            # print(f"Index: {idx}, Value: {val}")
+            if val in attack_labels:
                 print(f"Index is: {idx} | Ground truth is: {val} | Predicted label by DT is: {y_pred[idx]} | Corresponding FLOW ID is: {list(test_flow_dict.values())[idx]}", file=f)
 
 
