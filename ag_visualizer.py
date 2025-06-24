@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 
-G = nx.read_graphml('data/ag.graphml')
+G = nx.read_graphml('data/ags/alertNetAG.graphml')
 print('Nodes: {}'.format(list(G.nodes(data=True))))
 print('Edges: {}'.format(list(G.edges(data=True))))
 
@@ -76,7 +76,7 @@ print('total_paths: {}'.format(total_paths))
 print('existing_paths: {}'.format(existing_paths))
 
 all_paths_dict = dict(nx.all_pairs_shortest_path(G))
-print('{}'.format(all_paths_dict['guest@ubu144-192.168.10.19']['user@win7-192.168.10.9']))
+# print('{}'.format(all_paths_dict['guest@ubu144-192.168.10.19']['user@win7-192.168.10.9']))
 
 
 sources = ['root@fw-205.174.165.80', 'user@fw-205.174.165.80', 'guest@fw-205.174.165.80']
