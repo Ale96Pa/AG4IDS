@@ -4,11 +4,16 @@ ag.png
 data/MachineLearningCVE
 data/TrafficLabelling
 
+data/csvs
 data/Monday-WorkingHours.pcap_ISCX.csv
 data/Tuesday-WorkingHours.pcap_ISCX.csv
 data/Wednesday-WorkingHours.pcap_ISCX.csv
 data/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv
 data/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv
+
+results
+plots
+prediction_mismatches.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
