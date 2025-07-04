@@ -39,7 +39,7 @@ def run_all_orange_box():
 
 
 def run_all_orange_box_parallel(n_parallel_processes: int = 5):
-    ags = ['alertNetAG', 'CiC17NetAG'] # 'alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG']
+    ags = ['alertNetAG', 'CiC17NetAG'] # ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG']
     ag_path_probs = [0.001, 0.01, 0.05, 0.1]
     train_percentages = [0.2, 0.4, 0.6, 0.8]
     features_modes = ['top_10', 'top_20', 'top_50', 'top_80', 'all']
