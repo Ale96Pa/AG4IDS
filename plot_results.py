@@ -15,7 +15,7 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
                             box_mode = 'orange_box',
                             plot_mode = 'ids_params'):
     assert box_mode in ['orange_box', 'blue_box']
-    assert plot_mode in ['ids_params']
+    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params']
     mechanism_name = r'$IDS \rightarrow AG$' if box_mode == 'orange_box' else r'$IDS[AG]$' if box_mode == 'blue_box' else None
 
     metrics = list(with_mechanism.keys())
@@ -29,6 +29,8 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
 
     fig, ax = plt.subplots(figsize=(10, 6))
     ax2 = ax.twinx()
+    mins = [1000., 1000.]
+    maxs = [0., 0.]
 
     # Plot bars for each metric
     for i, metric in enumerate(metrics):
@@ -37,18 +39,34 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
             if metric in ['Accuracy', 'F1-score']:
                 ax.bar(x_pos, with_mechanism[metric], width, label=f'{metric} (With {mechanism_name})', color=cmap(i*2))
                 ax.bar(x_pos, without_mechanism[metric], 0.75*width, label=f'{metric} (Without {mechanism_name})', hatch='//', color=cmap(i*2+1))
+                if min(with_mechanism[metric]) < mins[0]: mins[0] = min(with_mechanism[metric])
+                if min(without_mechanism[metric]) < mins[0]: mins[0] = min(without_mechanism[metric])
+                if max(with_mechanism[metric]) > maxs[0]: maxs[0] = max(with_mechanism[metric])
+                if max(without_mechanism[metric]) > maxs[0]: maxs[0] = max(without_mechanism[metric])
             elif metric in ['FPR']:
                 ax2.bar(x_pos, with_mechanism[metric], width, label=f'{metric} (With)', color=cmap(i*2))
                 ax2.bar(x_pos, without_mechanism[metric], 0.75*width, label=f'{metric} (Without {mechanism_name})', hatch='//', color=cmap(i*2+1))
+                if min(with_mechanism[metric]) < mins[1]: mins[1] = min(with_mechanism[metric])
+                if min(without_mechanism[metric]) < mins[1]: mins[1] = min(without_mechanism[metric])
+                if max(with_mechanism[metric]) > maxs[1]: maxs[1] = max(with_mechanism[metric])
+                if max(without_mechanism[metric]) > maxs[1]: maxs[1] = max(without_mechanism[metric])
             else:
                 raise ValueError('Metric "{}" not found during plot!'.format(metric))
         else:
             if metric in ['Accuracy', 'F1-score']:
                 ax.bar(x_pos, without_mechanism[metric], width, label=f'{metric} (Without {mechanism_name})', hatch='//', color=cmap(i*2+1))
                 ax.bar(x_pos, with_mechanism[metric], 0.75*width, label=f'{metric} (With {mechanism_name})', color=cmap(i*2))
+                if min(with_mechanism[metric]) < mins[0]: mins[0] = min(with_mechanism[metric])
+                if min(without_mechanism[metric]) < mins[0]: mins[0] = min(without_mechanism[metric])
+                if max(with_mechanism[metric]) > maxs[0]: maxs[0] = max(with_mechanism[metric])
+                if max(without_mechanism[metric]) > maxs[0]: maxs[0] = max(without_mechanism[metric])
             elif metric in ['FPR']:
                 ax2.bar(x_pos, without_mechanism[metric], width, label=f'{metric} (Without {mechanism_name})', hatch='//', color=cmap(i*2+1))
                 ax2.bar(x_pos, with_mechanism[metric], 0.75*width, label=f'{metric} (With {mechanism_name})', color=cmap(i*2))
+                if min(with_mechanism[metric]) < mins[1]: mins[1] = min(with_mechanism[metric])
+                if min(without_mechanism[metric]) < mins[1]: mins[1] = min(without_mechanism[metric])
+                if max(with_mechanism[metric]) > maxs[1]: maxs[1] = max(with_mechanism[metric])
+                if max(without_mechanism[metric]) > maxs[1]: maxs[1] = max(without_mechanism[metric])
             else:
                 raise ValueError('Metric "{}" not found during plot!'.format(metric))
 
@@ -75,17 +93,46 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
                     raise ValueError('Metric "{}" not found during plot!'.format(metric))
 
     # Add labels and title
-    xlabel = 'IDS Hyperparameters (depth x splits x leaves)' if plot_mode == 'ids_params' else ''
+    xlabel = 'IDS Hyperparameters (depth x splits x leaves)' if plot_mode == 'ids_params' else \
+            'Probability of Random Path Addition' if plot_mode == 'path_prob_params' else \
+            'IDS Training Features' if plot_mode in ['feat_params_top', 'feat_params_worst'] else \
+            'AG used for {}'.format(mechanism_name) if plot_mode == 'ag_params' else \
+            None
     ax.set_xlabel(xlabel)
     ax.set_ylabel('IDS Performance (Accuracy and F1-score)')
     ax2.set_ylabel('IDS Performance (FPR)')
     # ax.set_title('IDS Performance With and Without AG-Based Refinement')
     ax.set_xticks(x)
-    ax.set_xticklabels(parameters, rotation=60)
-
-    # TODO: Automatic setting of y-axis limits
-    ax.set_ylim(94, 97)
-    ax2.set_ylim(0, 0.5)
+    if plot_mode == 'ids_params':
+        ax.set_xticklabels(parameters, rotation=60)
+    elif plot_mode == 'path_prob_params':
+        ax.set_xticklabels(parameters)
+    elif plot_mode == 'feat_params_top':
+        ax.set_xticklabels(parameters)
+    elif plot_mode == 'feat_params_worst':
+        ax.set_xticklabels(parameters)
+    elif plot_mode == 'ag_params':
+        ax.set_xticklabels(parameters)
+    else:
+        raise ValueError('Something went wrong!')
+    
+    if plot_mode == 'ids_params':
+        ax.set_ylim(mins[0]-0.5, maxs[0]+1.1)
+        ax2.set_ylim(0., maxs[1]+1.1)
+    elif plot_mode == 'path_prob_params':
+        ax.set_ylim(mins[0]-0.5, maxs[0]+0.85)
+        ax2.set_ylim(0., maxs[1]+0.85)
+    elif plot_mode == 'feat_params_top': 
+        ax.set_ylim(mins[0]-0.5, maxs[0]+1.3)
+        ax2.set_ylim(0., maxs[1]+1.3)
+    elif plot_mode == 'feat_params_worst': 
+        ax.set_ylim(mins[0]-0.5, maxs[0]+1.3)
+        ax2.set_ylim(0., maxs[1]+1.3)
+    elif plot_mode == 'ag_params':
+        ax.set_ylim(mins[0]-0.5, maxs[0]+0.85)
+        ax2.set_ylim(0., maxs[1]+0.85)
+    else:
+        raise ValueError('Something went wrong!')
     
     labels = ['{} ({})'.format(metrics[int(i/2)], 'With {}'.format(mechanism_name)) if i%2 == 0 else '{} ({})'.format(metrics[math.floor(i/2)], 'Without {}'.format(mechanism_name)) for i in range(2*len(metrics))]
     handles = [plt.Rectangle((0,0),1,1, color=cmap(i), hatch='x') if i%2 != 0 else plt.Rectangle((0,0),1,1, color=cmap(i)) for i, label in enumerate(labels)]
@@ -96,22 +143,26 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
                     box.width, box.height * 0.9])
 
     # Put a legend below current axis
-    lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.25),
-            fancybox=True, shadow=True, ncol=len(metrics))
+    if plot_mode == 'ids_params':
+        lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.25),
+                fancybox=True, shadow=False, ncol=len(metrics))
+    else:
+        lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.1),
+                fancybox=True, shadow=False, ncol=len(metrics))
 
     ax.grid(True, linestyle='--', alpha=0.5)
 
     plt.tight_layout()
     os.makedirs('plots/{}'.format(box_mode), exist_ok=True)
     plt.savefig('plots/{}/{}_bar_chart.pdf'.format(box_mode, plot_mode), bbox_extra_artists=(lgd,), bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
 
 def plot_radar_chart(parameters, without_mechanism, with_mechanism,
                             box_mode = 'orange_box',
                             plot_mode = 'ids_params'):
     assert box_mode in ['orange_box', 'blue_box']
-    assert plot_mode in ['ids_params']
+    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params']
     mechanism_name = r'$IDS \rightarrow AG$' if box_mode == 'orange_box' else r'$IDS[AG]$' if box_mode == 'blue_box' else None
 
     metrics = list(with_mechanism.keys())
@@ -130,11 +181,18 @@ def plot_radar_chart(parameters, without_mechanism, with_mechanism,
     # Flatten axes for easy iteration
     axes = axes.flatten()
 
+    mins = 1000.
+    maxs = 0.
+
     # Plot each metric
     for idx, metric in enumerate(metrics):
         ax = axes[idx]
         values_with = with_mechanism[metric] + [with_mechanism[metric][0]]
         values_without = without_mechanism[metric] + [without_mechanism[metric][0]]
+        if min(with_mechanism[metric]) < mins: mins = min(with_mechanism[metric])
+        if min(without_mechanism[metric]) < mins: mins = min(without_mechanism[metric])
+        if max(with_mechanism[metric]) > maxs: maxs = max(with_mechanism[metric])
+        if max(without_mechanism[metric]) > maxs: maxs = max(without_mechanism[metric])
 
         ax.plot(angles, values_with, label='With {}'.format(mechanism_name), color=cmap(0))
         ax.fill(angles, values_with, color=cmap(0), alpha=0.25)
@@ -142,10 +200,9 @@ def plot_radar_chart(parameters, without_mechanism, with_mechanism,
         ax.plot(angles, values_without, label='Without {}'.format(mechanism_name), color=cmap(4), linestyle='dashed')
         ax.fill(angles, values_without, color=cmap(4), alpha=0.15)
 
-        # TODO: Automatic setting of y-axis limits
         if metric in ['Accuracy', 'F1-score']:
-            ax.set_ylim(bottom=94)
-            ax.set_yticks([94, 94.5, 95, 95.5, 96])
+            ax.set_ylim(bottom = math.floor(mins), top = math.ceil(maxs))
+            ax.set_yticks(np.linspace(math.floor(mins), math.ceil(maxs), num=4))
 
         ax.set_title(metric, size=14, y=1.1)
 
@@ -172,12 +229,13 @@ def plot_radar_chart(parameters, without_mechanism, with_mechanism,
     plt.tight_layout()
     os.makedirs('plots/{}'.format(box_mode), exist_ok=True)
     plt.savefig('plots/{}/{}_radar_chart.pdf'.format(box_mode, plot_mode))
-    plt.show()
+    # plt.show()
 
 
 
-def extract_results_for_params(params, box_mode='orange_box'):
+def extract_results_for_params(params, box_mode='orange_box', plot_mode='ids_params'):
     assert box_mode in ['orange_box', 'blue_box']
+    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params']
     results_folder = 'results/{}'.format(box_mode)
     # parameter_values = ['{}x{}x{}'.format(depth, split, leaf) for depth in dt_depth for split in min_samples_split for leaf in min_samples_leaf]
     metrics = ['Accuracy', 'F1-score', 'FPR']
@@ -192,12 +250,49 @@ def extract_results_for_params(params, box_mode='orange_box'):
                         any('min_split_{}_'.format(sp) in f.path for sp in params['min_samples_split']) and 
                         any('min_leaf_{}-'.format(le) in f.path for le in params['min_samples_leaf'])]
     # print(relevant_results)
+    if plot_mode == 'ids_params':
+        sorting_func = lambda x: (int(x.split('depth_')[-1].split('_')[0]), 
+                                int(x.split('min_split_')[-1].split('_')[0]),
+                                int(x.split('min_leaf_')[-1].split('-')[0]))
+    elif plot_mode == 'path_prob_params':
+        sorting_func = lambda x: float(x.split('additional_path_prob_')[-1].split('-')[0])
+    elif plot_mode in ['feat_params_top', 'feat_params_worst']:
+        sorting_func = lambda x: x.split('feat_')[-1].split('-')[0].split('_')[-1]
+    elif plot_mode == 'ag_params':
+        # order_list = ['alertNetAG', 'CiC17NetAG']
+        sorting_func = lambda x: x.split('AG:type_')[-1].split('_')[0]
+    else:
+        raise ValueError('Something went wrong!')
+    
+    relevant_results = sorted(relevant_results, key=sorting_func)
     parameter_values = []
     for exp_setting in relevant_results:
-        # print(exp_setting)
-        parameter_values.append('{} x {} x {}'.format(exp_setting.split('depth_')[-1].split('_')[0],
-                                                exp_setting.split('min_split_')[-1].split('_')[0],
-                                                exp_setting.split('min_leaf_')[-1].split('-')[0],))
+        print(plot_mode)
+        if plot_mode == 'ids_params':
+            param_label = '{} x {} x {}'.format(exp_setting.split('depth_')[-1].split('_')[0],
+                                                    exp_setting.split('min_split_')[-1].split('_')[0],
+                                                    exp_setting.split('min_leaf_')[-1].split('-')[0],)
+        elif plot_mode == 'path_prob_params':
+            param_label = r'$p = {}$'.format(exp_setting.split('additional_path_prob_')[-1].split('-')[0])
+        elif plot_mode in ['feat_params_top', 'feat_params_worst']:
+            feat_mode_name = exp_setting.split('feat_')[-1].split('_')[0]
+            if feat_mode_name in ['top', 'worst']:
+                param_label = '{}-{}'.format(exp_setting.split('feat_')[-1].split('_')[0].capitalize(),
+                                            exp_setting.split('feat_')[-1].split('-')[0].split('_')[-1])
+            elif feat_mode_name == 'all':
+                param_label = '{}'.format(exp_setting.split('feat_')[-1].split('_')[0].capitalize())
+        elif plot_mode == 'ag_params':
+            ag_name = exp_setting.split('AG:type_')[-1].split('_')[0]
+            if ag_name == 'alertNetAG':
+                param_label = 'Emerging Threats'
+            elif ag_name == 'CiC17NetAG':
+                param_label = 'Scraping'
+            else:
+                param_label = 'Mix'
+        else:
+            raise ValueError('Something went wrong!')
+        print('param_label: {}'.format(param_label))
+        parameter_values.append(param_label)
         file_name_template = 'unrefined_results_*.json' if box_mode == 'orange_box' else 'uninjected_results_*.json' if box_mode == 'blue_box' else None
         unrefined_results_files = glob(os.path.join(exp_setting, file_name_template))
         # print(unrefined_results_files)
@@ -234,7 +329,7 @@ def extract_results_for_params(params, box_mode='orange_box'):
 
 
 def plot_for_mode_and_params(plot_mode, params, box_mode='orange_box'):
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode)
+    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode=plot_mode)
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
                         with_mechanism=with_mechanism,
@@ -258,17 +353,73 @@ def plot_all():
                                                         'dt_depth': [5, 20],
                                                         'min_samples_split': [2, 10],
                                                         'min_samples_leaf': [1, 10],},
+                                        'path_prob_params': 
+                                                        {'ag': ['alertNetAG'],
+                                                        'ag_path_prob': [0.0, 0.001, 0.01, 0.05, 0.1],
+                                                        'train_percentage': [0.6],
+                                                        'features_mode': ['top_20'],
+                                                        'dt_depth': [20],
+                                                        'min_samples_split': [2],
+                                                        'min_samples_leaf': [1],},
+                                        'feat_params_top': 
+                                                        {'ag': ['alertNetAG'],
+                                                        'ag_path_prob': [0.0],
+                                                        'train_percentage': [0.6],
+                                                        'features_mode': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
+                                                        'dt_depth': [20],
+                                                        'min_samples_split': [2],
+                                                        'min_samples_leaf': [1],},
+                                        # 'feat_params_worst': 
+                                        #                 {'ag': ['alertNetAG'],
+                                        #                 'ag_path_prob': [0.0],
+                                        #                 'train_percentage': [0.6],
+                                        #                 'features_mode': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
+                                        #                 'dt_depth': [20],
+                                        #                 'min_samples_split': [2],
+                                        #                 'min_samples_leaf': [1],},
+                                        # 'ag_params': 
+                                        #                 {'ag': ['alertNetAG', 'CiC17NetAG'],
+                                        #                 'ag_path_prob': [0.0],
+                                        #                 'train_percentage': [0.6],
+                                        #                 'features_mode': ['top_20'],
+                                        #                 'dt_depth': [20],
+                                        #                 'min_samples_split': [2],
+                                        #                 'min_samples_leaf': [1],},
                                     },
-                        # 'blue_box': {
-                        #                 'ids_params': 
-                        #                                 {'ag': ['alertNetAG'],
-                        #                                 'ag_path_prob': [0.0],
-                        #                                 'train_percentage': [0.2],
-                        #                                 'features_mode': ['top_10'],
-                        #                                 'dt_depth': [5, 20],
-                        #                                 'min_samples_split': [2, 10],
-                        #                                 'min_samples_leaf': [1, 10],},
-                        #             }
+                        'blue_box': {
+                                        'path_prob_params': 
+                                                        {'ag': ['alertNetAG'],
+                                                        'ag_path_prob': [0.0, 0.001, 0.01, 0.05, 0.1],
+                                                        'train_percentage': [0.6],
+                                                        'features_mode': ['worst_30'],
+                                                        'dt_depth': [20],
+                                                        'min_samples_split': [2],
+                                                        'min_samples_leaf': [1],},
+                                        # 'feat_params_top': 
+                                        #                 {'ag': ['alertNetAG'],
+                                        #                 'ag_path_prob': [0.0],
+                                        #                 'train_percentage': [0.6],
+                                        #                 'features_mode': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
+                                        #                 'dt_depth': [20],
+                                        #                 'min_samples_split': [2],
+                                        #                 'min_samples_leaf': [1],},
+                                        'feat_params_worst': 
+                                                        {'ag': ['alertNetAG'],
+                                                        'ag_path_prob': [0.0],
+                                                        'train_percentage': [0.6],
+                                                        'features_mode': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
+                                                        'dt_depth': [20],
+                                                        'min_samples_split': [2],
+                                                        'min_samples_leaf': [1],},
+                                        'ag_params': 
+                                                        {'ag': ['alertNetAG', 'CiC17NetAG'],
+                                                        'ag_path_prob': [0.0],
+                                                        'train_percentage': [0.6],
+                                                        'features_mode': ['worst_30'],
+                                                        'dt_depth': [20],
+                                                        'min_samples_split': [2],
+                                                        'min_samples_leaf': [1],},
+                                    }
                         }
     for box_mode in box_modes:
         all_mode_params = all_plots_params[box_mode]
@@ -286,7 +437,7 @@ def plot_for_dt_params(box_mode='orange_box'):
             'dt_depth': [5, 20],
             'min_samples_split': [2, 10],
             'min_samples_leaf': [1, 10],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode)
+    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='ids_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
                         with_mechanism=with_mechanism,
@@ -299,25 +450,46 @@ def plot_for_dt_params(box_mode='orange_box'):
                     plot_mode='ids_params')
 
 
-def plot_for_feat_params(box_mode='orange_box'):
+def plot_for_feat_params_top(box_mode='orange_box'):
     params = {'ag': ['alertNetAG'],
             'ag_path_prob': [0.0],
             'train_percentage': [0.2],
-            'features_mode': ['top_10', 'top_20', 'top_50', 'top_80', 'all'],
+            'features_mode': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
             'dt_depth': [20],
             'min_samples_split': [2],
             'min_samples_leaf': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode)
+    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='feat_params_top')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
                         with_mechanism=with_mechanism,
                         box_mode=box_mode,
-                        plot_mode='feat_params')
+                        plot_mode='feat_params_top')
     plot_radar_chart(parameters=parameter_values,
                     without_mechanism=without_mechanism,
                     with_mechanism=with_mechanism,
                     box_mode=box_mode,
-                    plot_mode='feat_params')
+                    plot_mode='feat_params_top')
+    
+
+def plot_for_feat_params_worst(box_mode='orange_box'):
+    params = {'ag': ['alertNetAG'],
+            'ag_path_prob': [0.0],
+            'train_percentage': [0.2],
+            'features_mode': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
+            'dt_depth': [20],
+            'min_samples_split': [2],
+            'min_samples_leaf': [1],}
+    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='feat_params_worst')
+    plot_grouped_bar_chart(parameters=parameter_values,
+                        without_mechanism=without_mechanism,
+                        with_mechanism=with_mechanism,
+                        box_mode=box_mode,
+                        plot_mode='feat_params_worst')
+    plot_radar_chart(parameters=parameter_values,
+                    without_mechanism=without_mechanism,
+                    with_mechanism=with_mechanism,
+                    box_mode=box_mode,
+                    plot_mode='feat_params_worst')
 
 
 def plot_for_train_perc_params(box_mode='orange_box'):
@@ -328,7 +500,7 @@ def plot_for_train_perc_params(box_mode='orange_box'):
             'dt_depth': [20],
             'min_samples_split': [2],
             'min_samples_leaf': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode)
+    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='train_perc_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
                         with_mechanism=with_mechanism,
@@ -349,7 +521,7 @@ def plot_for_path_prob_params(box_mode='orange_box'):
             'dt_depth': [20],
             'min_samples_split': [2],
             'min_samples_leaf': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode)
+    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='path_prob_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
                         with_mechanism=with_mechanism,
@@ -370,7 +542,7 @@ def plot_for_ag_params(box_mode='orange_box'):
             'dt_depth': [20],
             'min_samples_split': [2],
             'min_samples_leaf': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode)
+    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='ag_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
                         with_mechanism=with_mechanism,

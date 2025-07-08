@@ -12,6 +12,7 @@ data/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv
 data/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv
 
 results
+results_back
 plots
 prediction_mismatches.txt
 prediction_of_attacks.txt
