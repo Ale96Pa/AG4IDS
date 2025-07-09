@@ -345,6 +345,48 @@ def getVulnsByAlert(alertFolder, vulnFile, netFile, listPartialNets):
     for fileN in listPartialNets:
         writePartialNet(content,dictDevAttack,attacks,fileN)
     
+    
+def internal_net(originalNet): #TODO: delete
+    with open(originalNet) as f: 
+        content = json.load(f)
+    
+    devices = content["devices"]
+    vulnerabilities = content["vulnerabilities"]
+    edges = content["edges"]
+    
+    newDevs = []
+    newEdges = []
+    newVulns = []
+    includedCves = []
+    removedHostnames = []
+    for dev in devices:
+        if "entryPoint" not in dev["id"]: 
+            newDevs.append(dev)
+            for iface in dev["network_interfaces"]:
+                for port in iface["ports"]:
+                    for srv in port["services"]:
+                        cve_list = srv["cve_list"]
+                        for cve in cve_list:
+                            if cve not in includedCves: includedCves.append(cve)           
+        else: removedHostnames.append(dev["hostname"])
+    
+    considered={}
+    for v in vulnerabilities:
+        if v["id"] in includedCves and not v["id"] in considered.keys(): 
+            newVulns.append(v)
+            considered[v["id"]] = True
+    
+    for e in edges:
+        listE = e["host_link"]
+        if listE[0] in removedHostnames or listE[1] in removedHostnames: continue
+        else: newEdges.append(e)
+        
+    with open("tmpInternalCIC.json", "w") as outfile:
+        json_data = json.dumps({"devices":newDevs,
+                                "vulnerabilities":newVulns,
+                                "edges":newEdges}, 
+            default=lambda o: o.__dict__, indent=2)
+        outfile.write(json_data)
 
 if __name__=="__main__":
     originalNet = "data/networks/CiC17Net.json"
@@ -352,6 +394,8 @@ if __name__=="__main__":
     partialAlertNet = "data/networks/partialAlertNet.json"
     partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
     fullNet = "data/networks/fullNet.json"
+    
+    internal_net(originalNet)
     
     # alertNetworkFile = "data/CiC17NetAlert.json"
     
@@ -365,8 +409,8 @@ if __name__=="__main__":
     # rule_folder = "emerging_rules/"
     # get_dump_cveList(rule_folder, "data/vulnsAttack.json")
     
-    # """Build the alert-based network inventory"""
-    vulnAttackFile = "data/vulnsAttack.json"
-    alert_folder = "data/TrafficLabelling/"
-    getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
-            [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
+    """Build the alert-based network inventory"""
+    # vulnAttackFile = "data/vulnsAttack.json"
+    # alert_folder = "data/TrafficLabelling/"
+    # getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
+    #         [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
