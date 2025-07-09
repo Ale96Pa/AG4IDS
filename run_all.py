@@ -4,30 +4,31 @@ import math
 
 def run_all_orange_box_controlled():
     # All experiments parameters
-    runs = {'ids_params': 
-                            {'ags': ['alertNetAG'],
-                            'ag_path_probs': [0.0],
-                            'train_percentages': [0.6],
-                            'features_modes': ['top_20'],
-                            'dt_depths': [5, 20],
-                            'min_samples_splits': [2, 10],
-                            'min_samples_leafs': [1, 10],},
-            'path_prob_params': 
-                            {'ags': ['alertNetAG'],
-                            'ag_path_probs': [0.0, 0.001, 0.01, 0.05, 0.1, 0.2],
-                            'train_percentages': [0.6],
-                            'features_modes': ['top_20'],
-                            'dt_depths': [20],
-                            'min_samples_splits': [2],
-                            'min_samples_leafs': [1],},
-            'feat_params_top': 
-                            {'ags': ['alertNetAG'],
-                            'ag_path_probs': [0.0],
-                            'train_percentages': [0.6],
-                            'features_modes': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
-                            'dt_depths': [20],
-                            'min_samples_splits': [2],
-                            'min_samples_leafs': [1],},
+    runs = {
+            # 'ids_params': 
+            #                 {'ags': ['alertNetAG'],
+            #                 'ag_path_probs': [0.0],
+            #                 'train_percentages': [0.6],
+            #                 'features_modes': ['top_20'],
+            #                 'dt_depths': [5, 20],
+            #                 'min_samples_splits': [2, 10],
+            #                 'min_samples_leafs': [1, 10],},
+            # 'path_prob_params': 
+            #                 {'ags': ['alertNetAG'],
+            #                 'ag_path_probs': [0.0, 0.001, 0.01, 0.05, 0.1, 0.2],
+            #                 'train_percentages': [0.6],
+            #                 'features_modes': ['top_20'],
+            #                 'dt_depths': [20],
+            #                 'min_samples_splits': [2],
+            #                 'min_samples_leafs': [1],},
+            # 'feat_params_top': 
+            #                 {'ags': ['alertNetAG'],
+            #                 'ag_path_probs': [0.0],
+            #                 'train_percentages': [0.6],
+            #                 'features_modes': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
+            #                 'dt_depths': [20],
+            #                 'min_samples_splits': [2],
+            #                 'min_samples_leafs': [1],},
             'feat_params_worst': 
                             {'ags': ['alertNetAG'],
                             'ag_path_probs': [0.0],
@@ -36,22 +37,22 @@ def run_all_orange_box_controlled():
                             'dt_depths': [20],
                             'min_samples_splits': [2],
                             'min_samples_leafs': [1],},
-            'ag_params': 
-                            {'ags': ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG'],
-                            'ag_path_probs': [0.0],
-                            'train_percentages': [0.6],
-                            'features_modes': ['top_20'],
-                            'dt_depths': [20],
-                            'min_samples_splits': [2],
-                            'min_samples_leafs': [1],},
-            'train_perc_params': 
-                            {'ags': ['alertNetAG'],
-                            'ag_path_probs': [0.0],
-                            'train_percentages': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
-                            'features_modes': ['top_20'],
-                            'dt_depths': [20],
-                            'min_samples_splits': [2],
-                            'min_samples_leafs': [1],},
+            # 'ag_params': 
+            #                 {'ags': ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG'],
+            #                 'ag_path_probs': [0.0],
+            #                 'train_percentages': [0.6],
+            #                 'features_modes': ['top_20'],
+            #                 'dt_depths': [20],
+            #                 'min_samples_splits': [2],
+            #                 'min_samples_leafs': [1],},
+            # 'train_perc_params': 
+            #                 {'ags': ['alertNetAG'],
+            #                 'ag_path_probs': [0.0],
+            #                 'train_percentages': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+            #                 'features_modes': ['top_20'],
+            #                 'dt_depths': [20],
+            #                 'min_samples_splits': [2],
+            #                 'min_samples_leafs': [1],},
         }
     num_runs = 10
     tot_exps = 0
@@ -160,7 +161,8 @@ def run_all_orange_box_parallel(n_parallel_processes: int = 5):
 
 def run_all_blue_box_controlled():
     # All experiments parameters
-    runs = {'path_prob_params': 
+    runs = {
+            'path_prob_params': 
                             {'ags': ['alertNetAG'],
                             'ag_path_probs': [0.0, 0.001, 0.01, 0.05, 0.1, 0.2],
                             'train_percentages': [0.6],
