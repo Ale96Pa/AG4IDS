@@ -11,7 +11,7 @@ data/Wednesday-WorkingHours.pcap_ISCX.csv
 data/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv
 data/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv
 
-results
+tmpInternalCIC.json
 results_back
 plots
 plots_back
