@@ -75,6 +75,22 @@ def clean_data_with_scenarios(scenario, full_data, args):
             cols_idxs = selector.get_support(indices=True)
             selected_data_filtered_features = selected_data_features.iloc[:,cols_idxs]
             # print('Selected features are: {}'.format(selected_data_features.columns[selector.get_support()]))
+    elif 'worst' in args.features_mode:
+        num_selected_features = int(args.features_mode.split('_')[-1])
+        _, tot_features = selected_data_features.shape
+        if num_selected_features >= tot_features:
+            print('Using all features...')
+            selected_data_filtered_features = selected_data_features
+        else:
+            print('Using the worst {} features out of {} total'.format(num_selected_features, tot_features))
+            # Create and fit selector
+            selector = SelectKBest(f_classif, k=tot_features-num_selected_features)
+            selector.fit(selected_data_features, selected_data_labels)
+            # Get columns to keep and create new dataframe with those only
+            cols_idxs = selector.get_support(indices=True)
+            cols_idxs = [i for i in range(tot_features) if i not in cols_idxs]
+            selected_data_filtered_features = selected_data_features.iloc[:,cols_idxs]
+            # print('Selected features are: {}'.format(selected_data_features.columns[selector.get_support()]))
     elif args.features_mode == 'all':
         print('Using all features...')
         selected_data_filtered_features = selected_data_features

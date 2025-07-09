@@ -5,17 +5,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 from glob import glob
 
-def get_cmap(n, name='Accent'):
+def get_cmap(n, name='Set2'):
     '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct 
     RGB color; the keyword argument name must be a standard mpl colormap name.'''
-    return plt.cm.get_cmap(name, n)
+    return plt.get_cmap(name, n)
 
 
 def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
                             box_mode = 'orange_box',
                             plot_mode = 'ids_params'):
     assert box_mode in ['orange_box', 'blue_box']
-    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params']
+    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params', 'train_perc_params']
     mechanism_name = r'$IDS \rightarrow AG$' if box_mode == 'orange_box' else r'$IDS[AG]$' if box_mode == 'blue_box' else None
 
     metrics = list(with_mechanism.keys())
@@ -97,58 +97,73 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
             'Probability of Random Path Addition' if plot_mode == 'path_prob_params' else \
             'IDS Training Features' if plot_mode in ['feat_params_top', 'feat_params_worst'] else \
             'AG used for {}'.format(mechanism_name) if plot_mode == 'ag_params' else \
+            'Percentage of Training Data (%)' if plot_mode == 'train_perc_params' else \
             None
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel('IDS Performance (Accuracy and F1-score)')
-    ax2.set_ylabel('IDS Performance (FPR)')
+    ax.set_xlabel(xlabel, fontsize=15)
+    ax.set_ylabel('IDS Performance (Accuracy and F1-score)', fontsize=15)
+    ax2.set_ylabel('IDS Performance (FPR)', fontsize=15)
     # ax.set_title('IDS Performance With and Without AG-Based Refinement')
     ax.set_xticks(x)
+    # ax.xaxis.set_tick_params(labelsize=12)
+    ax.yaxis.set_tick_params(labelsize=12)
+    ax2.yaxis.set_tick_params(labelsize=12)
     if plot_mode == 'ids_params':
-        ax.set_xticklabels(parameters, rotation=60)
+        ax.set_xticklabels(parameters, rotation=60, fontsize=15)
     elif plot_mode == 'path_prob_params':
-        ax.set_xticklabels(parameters)
+        ax.set_xticklabels(parameters, fontsize=15)
     elif plot_mode == 'feat_params_top':
-        ax.set_xticklabels(parameters)
+        ax.set_xticklabels(parameters, fontsize=15)
     elif plot_mode == 'feat_params_worst':
-        ax.set_xticklabels(parameters)
+        ax.set_xticklabels(parameters, fontsize=15)
     elif plot_mode == 'ag_params':
-        ax.set_xticklabels(parameters)
+        ax.set_xticklabels(parameters, fontsize=15)
+    elif plot_mode == 'train_perc_params':
+        ax.set_xticklabels(parameters, fontsize=15)
     else:
         raise ValueError('Something went wrong!')
     
+    lgd_delta = 0.8
     if plot_mode == 'ids_params':
-        ax.set_ylim(mins[0]-0.5, maxs[0]+1.1)
-        ax2.set_ylim(0., maxs[1]+1.1)
+        ax.set_ylim(mins[0]-0.5, maxs[0]+1.3+lgd_delta)
+        ax2.set_ylim(0., maxs[1]+1.3+lgd_delta)
     elif plot_mode == 'path_prob_params':
-        ax.set_ylim(mins[0]-0.5, maxs[0]+0.85)
-        ax2.set_ylim(0., maxs[1]+0.85)
+        ax.set_ylim(mins[0]-0.5, maxs[0]+0.2+lgd_delta)
+        ax2.set_ylim(0., maxs[1]+0.2+lgd_delta)
     elif plot_mode == 'feat_params_top': 
-        ax.set_ylim(mins[0]-0.5, maxs[0]+1.3)
-        ax2.set_ylim(0., maxs[1]+1.3)
+        ax.set_ylim(mins[0]-0.5, maxs[0]+1.3+lgd_delta)
+        ax2.set_ylim(0., maxs[1]+1.3+lgd_delta)
     elif plot_mode == 'feat_params_worst': 
-        ax.set_ylim(mins[0]-0.5, maxs[0]+1.3)
-        ax2.set_ylim(0., maxs[1]+1.3)
+        ax.set_ylim(mins[0]-0.5, maxs[0]+1.6+lgd_delta)
+        ax2.set_ylim(0., maxs[1]+1.6+lgd_delta)
     elif plot_mode == 'ag_params':
-        ax.set_ylim(mins[0]-0.5, maxs[0]+0.85)
-        ax2.set_ylim(0., maxs[1]+0.85)
+        ax.set_ylim(mins[0]-0.5, maxs[0]+0.0+lgd_delta)
+        ax2.set_ylim(0., maxs[1]+0.0+lgd_delta)
+    elif plot_mode == 'train_perc_params':
+        ax.set_ylim(mins[0]-0.5, maxs[0]+0.2+lgd_delta)
+        ax2.set_ylim(0., maxs[1]+0.2+lgd_delta)
     else:
         raise ValueError('Something went wrong!')
     
     labels = ['{} ({})'.format(metrics[int(i/2)], 'With {}'.format(mechanism_name)) if i%2 == 0 else '{} ({})'.format(metrics[math.floor(i/2)], 'Without {}'.format(mechanism_name)) for i in range(2*len(metrics))]
     handles = [plt.Rectangle((0,0),1,1, color=cmap(i), hatch='x') if i%2 != 0 else plt.Rectangle((0,0),1,1, color=cmap(i)) for i, label in enumerate(labels)]
     # plt.legend(handles, labels)
-    # Shrink current axis's height by 10% on the bottom
-    box = ax.get_position()
-    ax.set_position([box.x0, box.y0 + box.height * 0.1,
-                    box.width, box.height * 0.9])
-
-    # Put a legend below current axis
-    if plot_mode == 'ids_params':
-        lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.25),
-                fancybox=True, shadow=False, ncol=len(metrics))
-    else:
-        lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.1),
-                fancybox=True, shadow=False, ncol=len(metrics))
+    
+    # Legend placing
+    # # Shrink current axis's height by 10% on the bottom
+    # box = ax.get_position()
+    # ax.set_position([box.x0, box.y0 + box.height * 0.1,
+    #                 box.width, box.height * 0.9])
+    # # Put a legend below current axis
+    # if plot_mode == 'ids_params':
+    #     lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.25),
+    #             fancybox=True, shadow=False, ncol=len(metrics))
+    # # elif plot_mode == 'ag_params':
+    # #     lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.85),
+    # #             fancybox=True, shadow=False, ncol=len(metrics))
+    # else:
+    #     lgd = ax.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, -0.1),
+    #             fancybox=True, shadow=False, ncol=len(metrics))
+    lgd = ax.legend(handles, labels, loc='upper left', fancybox=True, shadow=False, ncol=len(metrics), fontsize=10.5)
 
     ax.grid(True, linestyle='--', alpha=0.5)
 
@@ -156,13 +171,14 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
     os.makedirs('plots/{}'.format(box_mode), exist_ok=True)
     plt.savefig('plots/{}/{}_bar_chart.pdf'.format(box_mode, plot_mode), bbox_extra_artists=(lgd,), bbox_inches='tight')
     # plt.show()
+    plt.close()
 
 
 def plot_radar_chart(parameters, without_mechanism, with_mechanism,
                             box_mode = 'orange_box',
                             plot_mode = 'ids_params'):
     assert box_mode in ['orange_box', 'blue_box']
-    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params']
+    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params', 'train_perc_params']
     mechanism_name = r'$IDS \rightarrow AG$' if box_mode == 'orange_box' else r'$IDS[AG]$' if box_mode == 'blue_box' else None
 
     metrics = list(with_mechanism.keys())
@@ -170,7 +186,7 @@ def plot_radar_chart(parameters, without_mechanism, with_mechanism,
     num_params = len(parameters)
     angles = np.linspace(0, 2 * np.pi, num_params, endpoint=False).tolist()
     angles += angles[:1]  # close the loop
-    cmap = get_cmap(6)
+    cmap = get_cmap(2*len(metrics))
 
     # Create subplots
     num_metrics = len(metrics)
@@ -202,7 +218,7 @@ def plot_radar_chart(parameters, without_mechanism, with_mechanism,
 
         if metric in ['Accuracy', 'F1-score']:
             ax.set_ylim(bottom = math.floor(mins), top = math.ceil(maxs))
-            ax.set_yticks(np.linspace(math.floor(mins), math.ceil(maxs), num=4))
+            ax.set_yticks(np.linspace(math.floor(mins), math.ceil(maxs), num=5))
 
         ax.set_title(metric, size=14, y=1.1)
 
@@ -230,26 +246,28 @@ def plot_radar_chart(parameters, without_mechanism, with_mechanism,
     os.makedirs('plots/{}'.format(box_mode), exist_ok=True)
     plt.savefig('plots/{}/{}_radar_chart.pdf'.format(box_mode, plot_mode))
     # plt.show()
+    plt.close()
 
 
 
 def extract_results_for_params(params, box_mode='orange_box', plot_mode='ids_params'):
     assert box_mode in ['orange_box', 'blue_box']
-    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params']
+    assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params', 'train_perc_params']
     results_folder = 'results/{}'.format(box_mode)
     # parameter_values = ['{}x{}x{}'.format(depth, split, leaf) for depth in dt_depth for split in min_samples_split for leaf in min_samples_leaf]
     metrics = ['Accuracy', 'F1-score', 'FPR']
     without_mechanism = {met: [] for met in metrics}
     with_mechanism = {met: [] for met in metrics}
     relevant_results = [f.path for f in os.scandir(results_folder) if f.is_dir() and 
-                        any('AG:type_{}_'.format(ag) in f.path for ag in params['ag']) and 
-                        any('additional_path_prob_{}-'.format(ag_path_prob) in f.path for ag_path_prob in params['ag_path_prob']) and 
-                        any('DATA:p_{}_'.format(train_percentage) in f.path for train_percentage in params['train_percentage']) and 
-                        any('feat_{}'.format(features_mode) in f.path for features_mode in params['features_mode']) and 
-                        any('IDS:depth_{}_'.format(dep) in f.path for dep in params['dt_depth']) and 
-                        any('min_split_{}_'.format(sp) in f.path for sp in params['min_samples_split']) and 
-                        any('min_leaf_{}-'.format(le) in f.path for le in params['min_samples_leaf'])]
-    # print(relevant_results)
+                        any('AG:type_{}_'.format(ag) in f.path for ag in params['ags']) and 
+                        any('additional_path_prob_{}-'.format(ag_path_prob) in f.path for ag_path_prob in params['ag_path_probs']) and 
+                        any('DATA:p_{}_'.format(train_percentage) in f.path for train_percentage in params['train_percentages']) and 
+                        any('feat_{}'.format(features_mode) in f.path for features_mode in params['features_modes']) and 
+                        any('IDS:depth_{}_'.format(dep) in f.path for dep in params['dt_depths']) and 
+                        any('min_split_{}_'.format(sp) in f.path for sp in params['min_samples_splits']) and 
+                        any('min_leaf_{}-'.format(le) in f.path for le in params['min_samples_leafs'])]
+    # if plot_mode == 'feat_params_worst' and box_mode == 'orange_box':
+    #     print(relevant_results)
     if plot_mode == 'ids_params':
         sorting_func = lambda x: (int(x.split('depth_')[-1].split('_')[0]), 
                                 int(x.split('min_split_')[-1].split('_')[0]),
@@ -261,13 +279,14 @@ def extract_results_for_params(params, box_mode='orange_box', plot_mode='ids_par
     elif plot_mode == 'ag_params':
         # order_list = ['alertNetAG', 'CiC17NetAG']
         sorting_func = lambda x: x.split('AG:type_')[-1].split('_')[0]
+    elif plot_mode == 'train_perc_params':
+        sorting_func = lambda x: float(x.split('DATA:p_')[-1].split('_')[0])
     else:
         raise ValueError('Something went wrong!')
     
     relevant_results = sorted(relevant_results, key=sorting_func)
     parameter_values = []
     for exp_setting in relevant_results:
-        print(plot_mode)
         if plot_mode == 'ids_params':
             param_label = '{} x {} x {}'.format(exp_setting.split('depth_')[-1].split('_')[0],
                                                     exp_setting.split('min_split_')[-1].split('_')[0],
@@ -284,14 +303,21 @@ def extract_results_for_params(params, box_mode='orange_box', plot_mode='ids_par
         elif plot_mode == 'ag_params':
             ag_name = exp_setting.split('AG:type_')[-1].split('_')[0]
             if ag_name == 'alertNetAG':
-                param_label = 'Emerging Threats'
+                param_label = 'ET'
             elif ag_name == 'CiC17NetAG':
-                param_label = 'Scraping'
+                param_label = 'Scrape'
+            elif ag_name == 'fullNetAG':
+                param_label = 'ET + Scrape'
+            elif ag_name == 'partialAlertNetAG':
+                param_label = 'Sub(ET)'
+            elif ag_name == 'partialAlertOriginalNetAG':
+                param_label = 'Sub(ET) + Scrape'
             else:
                 param_label = 'Mix'
+        elif plot_mode == 'train_perc_params':
+            param_label = '{:.0f}'.format(100.*float(exp_setting.split('DATA:p_')[-1].split('_')[0]))
         else:
             raise ValueError('Something went wrong!')
-        print('param_label: {}'.format(param_label))
         parameter_values.append(param_label)
         file_name_template = 'unrefined_results_*.json' if box_mode == 'orange_box' else 'uninjected_results_*.json' if box_mode == 'blue_box' else None
         unrefined_results_files = glob(os.path.join(exp_setting, file_name_template))
@@ -346,79 +372,95 @@ def plot_all():
     box_modes = ['orange_box', 'blue_box']
     all_plots_params = {'orange_box': {
                                         'ids_params': 
-                                                        {'ag': ['alertNetAG'],
-                                                        'ag_path_prob': [0.0],
-                                                        'train_percentage': [0.6],
-                                                        'features_mode': ['top_20'],
-                                                        'dt_depth': [5, 20],
-                                                        'min_samples_split': [2, 10],
-                                                        'min_samples_leaf': [1, 10],},
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [5, 20],
+                                                        'min_samples_splits': [2, 10],
+                                                        'min_samples_leafs': [1, 10],},
                                         'path_prob_params': 
-                                                        {'ag': ['alertNetAG'],
-                                                        'ag_path_prob': [0.0, 0.001, 0.01, 0.05, 0.1],
-                                                        'train_percentage': [0.6],
-                                                        'features_mode': ['top_20'],
-                                                        'dt_depth': [20],
-                                                        'min_samples_split': [2],
-                                                        'min_samples_leaf': [1],},
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0, 0.001, 0.01, 0.05, 0.1, 0.2],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
                                         'feat_params_top': 
-                                                        {'ag': ['alertNetAG'],
-                                                        'ag_path_prob': [0.0],
-                                                        'train_percentage': [0.6],
-                                                        'features_mode': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
-                                                        'dt_depth': [20],
-                                                        'min_samples_split': [2],
-                                                        'min_samples_leaf': [1],},
-                                        # 'feat_params_worst': 
-                                        #                 {'ag': ['alertNetAG'],
-                                        #                 'ag_path_prob': [0.0],
-                                        #                 'train_percentage': [0.6],
-                                        #                 'features_mode': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
-                                        #                 'dt_depth': [20],
-                                        #                 'min_samples_split': [2],
-                                        #                 'min_samples_leaf': [1],},
-                                        # 'ag_params': 
-                                        #                 {'ag': ['alertNetAG', 'CiC17NetAG'],
-                                        #                 'ag_path_prob': [0.0],
-                                        #                 'train_percentage': [0.6],
-                                        #                 'features_mode': ['top_20'],
-                                        #                 'dt_depth': [20],
-                                        #                 'min_samples_split': [2],
-                                        #                 'min_samples_leaf': [1],},
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
+                                        'feat_params_worst': 
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
+                                        'ag_params': 
+                                                        {'ags': ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
+                                        'train_perc_params': 
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
                                     },
                         'blue_box': {
                                         'path_prob_params': 
-                                                        {'ag': ['alertNetAG'],
-                                                        'ag_path_prob': [0.0, 0.001, 0.01, 0.05, 0.1],
-                                                        'train_percentage': [0.6],
-                                                        'features_mode': ['worst_30'],
-                                                        'dt_depth': [20],
-                                                        'min_samples_split': [2],
-                                                        'min_samples_leaf': [1],},
-                                        # 'feat_params_top': 
-                                        #                 {'ag': ['alertNetAG'],
-                                        #                 'ag_path_prob': [0.0],
-                                        #                 'train_percentage': [0.6],
-                                        #                 'features_mode': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
-                                        #                 'dt_depth': [20],
-                                        #                 'min_samples_split': [2],
-                                        #                 'min_samples_leaf': [1],},
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0, 0.001, 0.01, 0.05, 0.1, 0.2],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
+                                        'feat_params_top': 
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
                                         'feat_params_worst': 
-                                                        {'ag': ['alertNetAG'],
-                                                        'ag_path_prob': [0.0],
-                                                        'train_percentage': [0.6],
-                                                        'features_mode': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
-                                                        'dt_depth': [20],
-                                                        'min_samples_split': [2],
-                                                        'min_samples_leaf': [1],},
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
                                         'ag_params': 
-                                                        {'ag': ['alertNetAG', 'CiC17NetAG'],
-                                                        'ag_path_prob': [0.0],
-                                                        'train_percentage': [0.6],
-                                                        'features_mode': ['worst_30'],
-                                                        'dt_depth': [20],
-                                                        'min_samples_split': [2],
-                                                        'min_samples_leaf': [1],},
+                                                        {'ags': ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
+                                        'train_perc_params': 
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [20],
+                                                        'min_samples_splits': [2],
+                                                        'min_samples_leafs': [1],},
                                     }
                         }
     for box_mode in box_modes:
@@ -430,13 +472,13 @@ def plot_all():
 
 
 def plot_for_dt_params(box_mode='orange_box'):
-    params = {'ag': ['alertNetAG'],
-            'ag_path_prob': [0.0],
-            'train_percentage': [0.2],
-            'features_mode': ['top_10'],
-            'dt_depth': [5, 20],
-            'min_samples_split': [2, 10],
-            'min_samples_leaf': [1, 10],}
+    params = {'ags': ['alertNetAG'],
+            'ag_path_probs': [0.0],
+            'train_percentages': [0.2],
+            'features_modes': ['top_10'],
+            'dt_depths': [5, 20],
+            'min_samples_splits': [2, 10],
+            'min_samples_leafs': [1, 10],}
     parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='ids_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
@@ -451,13 +493,13 @@ def plot_for_dt_params(box_mode='orange_box'):
 
 
 def plot_for_feat_params_top(box_mode='orange_box'):
-    params = {'ag': ['alertNetAG'],
-            'ag_path_prob': [0.0],
-            'train_percentage': [0.2],
-            'features_mode': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
-            'dt_depth': [20],
-            'min_samples_split': [2],
-            'min_samples_leaf': [1],}
+    params = {'ags': ['alertNetAG'],
+            'ag_path_probs': [0.0],
+            'train_percentages': [0.2],
+            'features_modes': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
+            'dt_depths': [20],
+            'min_samples_splits': [2],
+            'min_samples_leafs': [1],}
     parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='feat_params_top')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
@@ -472,13 +514,13 @@ def plot_for_feat_params_top(box_mode='orange_box'):
     
 
 def plot_for_feat_params_worst(box_mode='orange_box'):
-    params = {'ag': ['alertNetAG'],
-            'ag_path_prob': [0.0],
-            'train_percentage': [0.2],
-            'features_mode': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
-            'dt_depth': [20],
-            'min_samples_split': [2],
-            'min_samples_leaf': [1],}
+    params = {'ags': ['alertNetAG'],
+            'ag_path_probs': [0.0],
+            'train_percentages': [0.2],
+            'features_modes': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
+            'dt_depths': [20],
+            'min_samples_splits': [2],
+            'min_samples_leafs': [1],}
     parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='feat_params_worst')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
@@ -493,13 +535,13 @@ def plot_for_feat_params_worst(box_mode='orange_box'):
 
 
 def plot_for_train_perc_params(box_mode='orange_box'):
-    params = {'ag': ['alertNetAG'],
-            'ag_path_prob': [0.0],
-            'train_percentage': [0.2, 0.4, 0.6, 0.8],
-            'features_mode': ['all'],
-            'dt_depth': [20],
-            'min_samples_split': [2],
-            'min_samples_leaf': [1],}
+    params = {'ags': ['alertNetAG'],
+            'ag_path_probs': [0.0],
+            'train_percentages': [0.2, 0.4, 0.6, 0.8],
+            'features_modes': ['all'],
+            'dt_depths': [20],
+            'min_samples_splits': [2],
+            'min_samples_leafs': [1],}
     parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='train_perc_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
@@ -514,13 +556,13 @@ def plot_for_train_perc_params(box_mode='orange_box'):
 
 
 def plot_for_path_prob_params(box_mode='orange_box'):
-    params = {'ag': ['alertNetAG'],
-            'ag_path_prob': [0.0, 0.001, 0.01, 0.05, 0.1],
-            'train_percentage': [0.6],
-            'features_mode': ['all'],
-            'dt_depth': [20],
-            'min_samples_split': [2],
-            'min_samples_leaf': [1],}
+    params = {'ags': ['alertNetAG'],
+            'ag_path_probs': [0.0, 0.001, 0.01, 0.05, 0.1],
+            'train_percentages': [0.6],
+            'features_modes': ['all'],
+            'dt_depths': [20],
+            'min_samples_splits': [2],
+            'min_samples_leafs': [1],}
     parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='path_prob_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
@@ -535,13 +577,13 @@ def plot_for_path_prob_params(box_mode='orange_box'):
 
 
 def plot_for_ag_params(box_mode='orange_box'):
-    params = {'ag': ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG'],
-            'ag_path_prob': [0.0],
-            'train_percentage': [0.6],
-            'features_mode': ['all'],
-            'dt_depth': [20],
-            'min_samples_split': [2],
-            'min_samples_leaf': [1],}
+    params = {'ags': ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG'],
+            'ag_path_probs': [0.0],
+            'train_percentages': [0.6],
+            'features_modes': ['all'],
+            'dt_depths': [20],
+            'min_samples_splits': [2],
+            'min_samples_leafs': [1],}
     parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='ag_params')
     plot_grouped_bar_chart(parameters=parameter_values,
                         without_mechanism=without_mechanism,
