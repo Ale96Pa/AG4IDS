@@ -1,7 +1,7 @@
 import pygraphviz as pgv
 import networkx as nx
 import matplotlib.pyplot as plt
-from ag_utils import merge_nodes, merge_all_edges, find_node_from_ip, merge_all_nodes_by_priviledge
+from ag_utils import merge_all_edges, find_node_from_ip, merge_all_nodes_by_priviledge
 
 
 
