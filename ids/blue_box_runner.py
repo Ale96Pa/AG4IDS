@@ -1,17 +1,16 @@
+import math, os, sys, json, random
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import f_classif
-from settings import gather_settings
-from ag_utils import find_node_from_ip, import_ag
+from ids.settings import gather_settings
 from ids_utils import read_data, define_dt_ids, dt_trainer, dt_tester
 import networkx as nx
-import math
-import os
-import json
-import random
+
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+from attackgraph.ag_utils import find_node_from_ip, import_ag
 
 
 

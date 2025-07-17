@@ -1,8 +1,6 @@
-import json, math, time, csv, sys, os, itertools, random
-import pandas as pd
+import json, time, itertools, stats
 import networkx as nx
 import numpy as np
-import stats
 import matplotlib.pyplot as plt
 
 """
@@ -392,20 +390,20 @@ if __name__ == "__main__":
     partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
     fullNet = "data/networks/fullNet.json"
     
-    # for netfile in [originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet]:
-    #     graphfile = netfile.replace("networks","ags").replace(".json","AG.graphml")
-    #     G = build_multiag(netfile,graphfile)
-    #     with open(netfile) as nf:
-    #         vulnerabilities = json.load(nf)["vulnerabilities"]
-    #     pathfile = netfile.replace("networks","paths").replace(".json","Path.json")
-    #     compute_paths(G,vulnerabilities,pathfile,sources=[
-    #         "kali","fw","win81"
-    #         ],
-    #         goals=[
-    #         "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16',
-    #         '192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14',
-    #         '192.168.10.15','192.168.10.25'
-    #         ])
+    for netfile in [originalNet,partialAlertOriginalNet,fullNet,onlyAlertNet,partialAlertNet]:
+        graphfile = netfile.replace("networks","ags").replace(".json","AG.graphml")
+        G = build_multiag(netfile,graphfile)
+        with open(netfile) as nf:
+            vulnerabilities = json.load(nf)["vulnerabilities"]
+        pathfile = netfile.replace("networks","paths").replace(".json","Path.json")
+        compute_paths(G,vulnerabilities,pathfile,sources=[
+            "kali","fw","win81"
+            ],
+            goals=[
+            "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16',
+            '192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14',
+            '192.168.10.15','192.168.10.25'
+            ])
     
     plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet])#,onlyAlertNet,partialAlertNet]) #{impact, likelihood, risk}
     

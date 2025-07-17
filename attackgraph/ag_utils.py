@@ -1,7 +1,9 @@
-import os
+import os, sys
 import networkx as nx
 import numpy as np
-from ids_utils import get_all_flows_from_data
+
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+from ids.ids_utils import get_all_flows_from_data
 
 
 def merge_nodes(G, nodes, new_node):
