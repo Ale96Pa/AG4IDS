@@ -36,16 +36,18 @@ main.py
 │   ├── networks/
 │   ├── vulns.json
 │   ├── vulnsAttack.json
-│   └── TrafficLabelling/
-└── emerging_rules/
+│   ├── TrafficLabelling/
+│   └── emerging_rules/
+└── results/
 ```
+
+The folder `attackgraph` includes all the files for the AG generation simulations; the folder `ids` includes all the files for the AG-integrated IDS and IDS refinement simultations; the folder `data` includes all the datasets; the folder `results` reports the results for reproducibility.
 
 ## Requirements
 
 - Python 3.x
 - JSON files with network and vulnerability data
 - Pre-downloaded NVD datasets and Snort rules
-
 
 ## Pipeline Overview
 
