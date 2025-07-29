@@ -20,12 +20,12 @@ if __name__=="__main__":
         
     """First generation of network inventory from CIC-IDS"""
     vulnerabilityFile = "data/vulns.json"
-    get_dump_nvd(vulnerabilityFile)
-    listCve = getVulnsByService("ubu16")
+    # get_dump_nvd(vulnerabilityFile)
+    listCve = getVulnsByService("ubu16",vulnerabilityFile)
     generate_devices(originalNet,vulnerabilityFile)
     
     """Retrieving vulnerabilities from the rule dataset"""
-    rule_folder = "emerging_rules/"
+    rule_folder = "data/emerging_rules/"
     get_dump_cveList(rule_folder, "data/vulnsAttack.json")
     
     """Build the alert-based network inventory"""
