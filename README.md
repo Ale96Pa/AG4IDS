@@ -1,21 +1,51 @@
-# Attack Graph-Integrated Intrusion Detection System Prototype
+# **Attack Graph-Integrated Intrusion Detection System Prototype**
 
-This project demonstrates the lifecycle of integrating attack graph modeling with intrusion detection systems (IDS). It leverages vulnerability databases, network inventories, rule-based alerts, and attack graph (AG) analysis to enhance threat detection and response capabilities.
+---
+
+## Abstract
+
+Cyber attack detection and response are pivotal to ensuring a robust cybersecurity posture in any organization. This task becomes even more challenging in complex network environments, where attackers may follow multiple sophisticated paths to compromise critical services.
+
+To support threat detection, **Intrusion Detection Systems (IDSs)** are widely used to identify anomalous behaviors. In parallel, **Attack Graphs (AGs)** offer a powerful model for analyzing attacker strategies and informing response decisions.
+
+Traditionally, IDSs and AGs have been treated in isolation, each facing limitations such as high false positive rates, poor scalability, and limited adaptability to evolving threats. Although recent research has begun exploring their integration, a comprehensive and systematic analysis is still missing.
+
+This project addresses that gap by:
+
+- Reviewing **\totalcount{}** relevant works
+- Proposing a novel **taxonomy** of IDS–AG integration:
+  - **AG-based IDS refinement**
+  - **AG-integrated IDSs**
+  - **IDS-based AG generation**
+  - **Hybrid approaches**
+
+Our findings reveal that most current methods rely on static assumptions, overlooking the dynamic and evolving nature of real-world threats. To address this, we introduce a new **IDS–AG lifecycle** that supports continuous detection and response. We also provide a simple prototype implementation to demonstrate its benefits and highlight future directions for adaptive and resilient network security.
+
+---
 
 ## Project Structure
 
+```plaintext
 main.py
 ├── buildIDSnet.py
 ├── attackgraph/
-│ └── agBuilder.py
+│   └── agBuilder.py
 ├── ids/
-│ └── run_all.py
+│   └── run_all.py
 ├── data/
-│ ├── networks/
-│ ├── vulns.json
-│ ├── vulnsAttack.json
-│ └── TrafficLabelling/
+│   ├── networks/
+│   ├── vulns.json
+│   ├── vulnsAttack.json
+│   └── TrafficLabelling/
 └── emerging_rules/
+```
+
+## Requirements
+
+- Python 3.x
+- JSON files with network and vulnerability data
+- Pre-downloaded NVD datasets and Snort rules
+
 
 ## Pipeline Overview
 
@@ -54,12 +84,6 @@ For each network variant:
   - `run_all_orange_box()`
   - `run_all_orange_box_parallel()`
   - `run_all_orange_box_controlled()`
-
-## Requirements
-
-- Python 3.x
-- JSON files with network and vulnerability data
-- Pre-downloaded NVD datasets and Snort rules
 
 ## How to Run
 
