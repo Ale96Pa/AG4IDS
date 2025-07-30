@@ -1,7 +1,13 @@
+import os
 import json
 import numpy as np
 import stats
 import matplotlib.pyplot as plt
+
+def get_cmap(n, name='Set2'):
+    '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct 
+    RGB color; the keyword argument name must be a standard mpl colormap name.'''
+    return plt.get_cmap(name, n)
 
 def renameModel(strFile):
     if "alertNet" in strFile: return "onlyAlert"
@@ -60,23 +66,29 @@ def plot_risk(metric, listNetFile):
     # width = 0.25  # the width of the bars
     multiplier = 1.5
 
+    cmap = get_cmap(6)
     fig, ax = plt.subplots(layout='constrained')
 
+    counter = 0
     for attribute, measurement in models.items():
         # offset = width * multiplier
         offset = width * multiplier - (1 - gap) / 2
-        rects = ax.bar(x + offset, measurement, width, label=attribute)
-        ax.bar_label(rects, padding=3, fontsize=9, rotation=90)
+        rects = ax.bar(x + offset, measurement, width, label=attribute, color=cmap(counter))
+        ax.bar_label(rects, padding=3, fontsize=10, rotation=90)
         multiplier += 1
+        counter += 1
 
-    ax.set_ylabel('Avg. risk')
+    ax.set_ylabel('Average risk')
     ax.set_xlabel('Victims')
-    ax.set_xticks(x + width, victims, rotation=90)
+    ax.set_xticks(x + width, victims, rotation=60)
     ax.set_yticks(np.arange(0, 1.1, 0.2))
-    ax.legend(loc='upper left', ncol=3)
+    ax.legend(loc='upper left', fancybox=True, shadow=False, ncol=3)
     ax.set_ylim(0, 1.1)
 
-    plt.savefig("results/risk.png")
+    ax.grid(True, linestyle='--', alpha=0.5)
+
+    os.makedirs('plots/green_box', exist_ok=True)
+    plt.savefig("plots/green_box/risk.png")
 
 if __name__ == "__main__":   
     originalNet = "data/networks/CiC17Net.json"

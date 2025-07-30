@@ -18,6 +18,10 @@ plots_back
 prediction_mismatches.txt
 prediction_of_attacks.txt
 
+.vscode
+results
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
