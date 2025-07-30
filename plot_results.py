@@ -1,6 +1,7 @@
 import os
 import json
 import math
+import stats
 import matplotlib.pyplot as plt
 import numpy as np
 from glob import glob
@@ -124,8 +125,8 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
     
     lgd_delta = 0.8
     if plot_mode == 'ids_params':
-        ax.set_ylim(mins[0]-0.5, maxs[0]+1.3+lgd_delta)
-        ax2.set_ylim(0., maxs[1]+1.3+lgd_delta)
+        ax.set_ylim(mins[0]-0.5, maxs[0]+1.5+lgd_delta)
+        ax2.set_ylim(0., maxs[1]+1.5+lgd_delta)
     elif plot_mode == 'path_prob_params':
         ax.set_ylim(mins[0]-0.5, maxs[0]+0.2+lgd_delta)
         ax2.set_ylim(0., maxs[1]+0.2+lgd_delta)
@@ -249,7 +250,6 @@ def plot_radar_chart(parameters, without_mechanism, with_mechanism,
     plt.close()
 
 
-
 def extract_results_for_params(params, box_mode='orange_box', plot_mode='ids_params'):
     assert box_mode in ['orange_box', 'blue_box']
     assert plot_mode in ['ids_params', 'path_prob_params', 'feat_params_top', 'feat_params_worst', 'ag_params', 'train_perc_params']
@@ -296,22 +296,26 @@ def extract_results_for_params(params, box_mode='orange_box', plot_mode='ids_par
         elif plot_mode in ['feat_params_top', 'feat_params_worst']:
             feat_mode_name = exp_setting.split('feat_')[-1].split('_')[0]
             if feat_mode_name in ['top', 'worst']:
-                param_label = '{}-{}'.format(exp_setting.split('feat_')[-1].split('_')[0].capitalize(),
+                if exp_setting.split('feat_')[-1].split('_')[0] == 'top':
+                    precondition = 'Best'
+                else:
+                    precondition = 'Worst'
+                param_label = '{}-{}'.format(precondition,
                                             exp_setting.split('feat_')[-1].split('-')[0].split('_')[-1])
             elif feat_mode_name == 'all':
                 param_label = '{}'.format(exp_setting.split('feat_')[-1].split('_')[0].capitalize())
         elif plot_mode == 'ag_params':
             ag_name = exp_setting.split('AG:type_')[-1].split('_')[0]
             if ag_name == 'alertNetAG':
-                param_label = 'ET'
+                param_label = 'ET' #'Emerging\nThreats'
             elif ag_name == 'CiC17NetAG':
-                param_label = 'Scrape'
+                param_label = 'Scrape' #'Services'
             elif ag_name == 'fullNetAG':
-                param_label = 'ET + Scrape'
+                param_label = 'ET + Scrape' #'Emerging\nThreats\n+\nServices'
             elif ag_name == 'partialAlertNetAG':
-                param_label = 'Sub(ET)'
+                param_label = 'Sub(ET)' #'Emerging\nThreats\nSubset'
             elif ag_name == 'partialAlertOriginalNetAG':
-                param_label = 'Sub(ET) + Scrape'
+                param_label = 'Sub(ET) + Scrape' #'Emerging\nThreats\nSubset\n+\nScrape'
             else:
                 param_label = 'Mix'
         elif plot_mode == 'train_perc_params':
@@ -461,6 +465,14 @@ def plot_all():
                                                         'dt_depths': [20],
                                                         'min_samples_splits': [2],
                                                         'min_samples_leafs': [1],},
+                                        'ids_params': 
+                                                        {'ags': ['alertNetAG'],
+                                                        'ag_path_probs': [0.0],
+                                                        'train_percentages': [0.6],
+                                                        'features_modes': ['top_20'],
+                                                        'dt_depths': [5, 20],
+                                                        'min_samples_splits': [2, 10],
+                                                        'min_samples_leafs': [1, 10],},
                                     }
                         }
     for box_mode in box_modes:
@@ -469,156 +481,99 @@ def plot_all():
             plot_for_mode_and_params(plot_mode=plot_mode,
                                     params=params,
                                     box_mode=box_mode)
+    # AG Generation
+    originalNet = "data/networks/CiC17Net.json"
+    partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
+    fullNet = "data/networks/fullNet.json"
+    plot_risk("risk",[originalNet,partialAlertOriginalNet,fullNet])
 
 
-def plot_for_dt_params(box_mode='orange_box'):
-    params = {'ags': ['alertNetAG'],
-            'ag_path_probs': [0.0],
-            'train_percentages': [0.2],
-            'features_modes': ['top_10'],
-            'dt_depths': [5, 20],
-            'min_samples_splits': [2, 10],
-            'min_samples_leafs': [1, 10],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='ids_params')
-    plot_grouped_bar_chart(parameters=parameter_values,
-                        without_mechanism=without_mechanism,
-                        with_mechanism=with_mechanism,
-                        box_mode=box_mode,
-                        plot_mode='ids_params')
-    plot_radar_chart(parameters=parameter_values,
-                    without_mechanism=without_mechanism,
-                    with_mechanism=with_mechanism,
-                    box_mode=box_mode,
-                    plot_mode='ids_params')
+def renameModel(strFile):
+    if "alertNet" in strFile: return "onlyAlert"
+    if "CiC17" in strFile: return r"Without $AG|IDS$"
+    if "fullNet" in strFile: return r"With $AG|IDS$ (full)"
+    if "partialAlertNet" in strFile: return "onlyAlert (partial)"
+    else: return r"With $AG|IDS$ (partial)"
 
 
-def plot_for_feat_params_top(box_mode='orange_box'):
-    params = {'ags': ['alertNetAG'],
-            'ag_path_probs': [0.0],
-            'train_percentages': [0.2],
-            'features_modes': ['top_10', 'top_15', 'top_20', 'top_40', 'all'],
-            'dt_depths': [20],
-            'min_samples_splits': [2],
-            'min_samples_leafs': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='feat_params_top')
-    plot_grouped_bar_chart(parameters=parameter_values,
-                        without_mechanism=without_mechanism,
-                        with_mechanism=with_mechanism,
-                        box_mode=box_mode,
-                        plot_mode='feat_params_top')
-    plot_radar_chart(parameters=parameter_values,
-                    without_mechanism=without_mechanism,
-                    with_mechanism=with_mechanism,
-                    box_mode=box_mode,
-                    plot_mode='feat_params_top')
+def plot_risk(metric, listNetFile):
+    victims_ip={
+        "Web srv 16":["192.168.10.50"],
+        "Ubu srv 12":["192.168.10.51"],
+        "Win7 Pro 64B":['192.168.10.9'],
+        "Win8.1 64B":['192.168.10.5'],
+        "WinVista 64B":['192.168.10.8'],
+        "Win10pro 32B":['192.168.10.14'],
+        "Win10 64B":['192.168.10.15'],
+        "MAC":['192.168.10.25']
+    }
+        
+    dictVictimRisk={}
+    for netFile in listNetFile:
+        pathFile = netFile.replace("networks","paths").replace(".json","Path.json")
+        victims_risk = {}
+        with open(pathFile) as nf: paths = json.load(nf)["paths"]
+        for p in paths:
+            stepsP = p["path"]
+            for v in victims_ip.keys():
+                for ipV in victims_ip[v]:
+                    if ipV in stepsP[len(stepsP)-1]:
+                        if v not in victims_risk.keys(): victims_risk[v] = [p[metric]]
+                        else: victims_risk[v].append(p[metric])
+        
+        model = renameModel(pathFile.split("paths/")[1])
+        dictVictimRisk[model] = victims_risk
     
+    models={}
+    victims = victims_ip.keys()
+    
+    for mod in dictVictimRisk.keys():
+        victims_risk = dictVictimRisk[mod]
+        ag_risk_values = []
+        
+        for v in victims:
+            if v in victims_risk.keys():
+                avgAGrisk = round(stats.mean(victims_risk[v]),2)
+                ag_risk_values.append(avgAGrisk)
+            else: ag_risk_values.append(0)
 
-def plot_for_feat_params_worst(box_mode='orange_box'):
-    params = {'ags': ['alertNetAG'],
-            'ag_path_probs': [0.0],
-            'train_percentages': [0.2],
-            'features_modes': ['worst_15', 'worst_30', 'worst_50', 'worst_65', 'all'],
-            'dt_depths': [20],
-            'min_samples_splits': [2],
-            'min_samples_leafs': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='feat_params_worst')
-    plot_grouped_bar_chart(parameters=parameter_values,
-                        without_mechanism=without_mechanism,
-                        with_mechanism=with_mechanism,
-                        box_mode=box_mode,
-                        plot_mode='feat_params_worst')
-    plot_radar_chart(parameters=parameter_values,
-                    without_mechanism=without_mechanism,
-                    with_mechanism=with_mechanism,
-                    box_mode=box_mode,
-                    plot_mode='feat_params_worst')
+        models[mod] = ag_risk_values    
 
+    x = np.arange(len(victims))  # the label locations
+    num_in_group = len(dictVictimRisk.keys())
+    gap = 0.25
+    width = (1 - gap) / num_in_group  # the width of the bars
+    # width = 0.25  # the width of the bars
+    multiplier = 1.5
 
-def plot_for_train_perc_params(box_mode='orange_box'):
-    params = {'ags': ['alertNetAG'],
-            'ag_path_probs': [0.0],
-            'train_percentages': [0.2, 0.4, 0.6, 0.8],
-            'features_modes': ['all'],
-            'dt_depths': [20],
-            'min_samples_splits': [2],
-            'min_samples_leafs': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='train_perc_params')
-    plot_grouped_bar_chart(parameters=parameter_values,
-                        without_mechanism=without_mechanism,
-                        with_mechanism=with_mechanism,
-                        box_mode=box_mode,
-                        plot_mode='train_perc_params')
-    plot_radar_chart(parameters=parameter_values,
-                    without_mechanism=without_mechanism,
-                    with_mechanism=with_mechanism,
-                    box_mode=box_mode,
-                    plot_mode='train_perc_params')
+    cmap = get_cmap(6)
+    fig, ax = plt.subplots(figsize=(10, 6))
 
+    counter = 0
+    for attribute, measurement in models.items():
+        # offset = width * multiplier
+        offset = width * multiplier - (1 - gap) / 2
+        rects = ax.bar(x + offset, measurement, width, label=attribute, color=cmap(counter*2))
+        ax.bar_label(rects, padding=3, fontsize=15, rotation=90)
+        multiplier += 1
+        counter += 1
 
-def plot_for_path_prob_params(box_mode='orange_box'):
-    params = {'ags': ['alertNetAG'],
-            'ag_path_probs': [0.0, 0.001, 0.01, 0.05, 0.1],
-            'train_percentages': [0.6],
-            'features_modes': ['all'],
-            'dt_depths': [20],
-            'min_samples_splits': [2],
-            'min_samples_leafs': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='path_prob_params')
-    plot_grouped_bar_chart(parameters=parameter_values,
-                        without_mechanism=without_mechanism,
-                        with_mechanism=with_mechanism,
-                        box_mode=box_mode,
-                        plot_mode='path_prob_params')
-    plot_radar_chart(parameters=parameter_values,
-                    without_mechanism=without_mechanism,
-                    with_mechanism=with_mechanism,
-                    box_mode=box_mode,
-                    plot_mode='path_prob_params')
+    ax.set_ylabel('Average risk', fontsize=15)
+    ax.set_xlabel('Victims', fontsize=15)
+    ax.set_xticks(x + width, victims, rotation=60)
+    ax.set_yticks(np.arange(0, 1.1, 0.2))
+    ax.xaxis.set_tick_params(labelsize=12)
+    ax.yaxis.set_tick_params(labelsize=12)
+    ax.legend(loc='upper left', fancybox=True, shadow=False, ncol=3, fontsize=10.5)
+    ax.set_ylim(0, 1.1)
 
+    ax.grid(True, linestyle='--', alpha=0.5)
 
-def plot_for_ag_params(box_mode='orange_box'):
-    params = {'ags': ['alertNetAG', 'CiC17NetAG', 'fullNetAG', 'partialAlertNetAG', 'partialAlertOriginalNetAG'],
-            'ag_path_probs': [0.0],
-            'train_percentages': [0.6],
-            'features_modes': ['all'],
-            'dt_depths': [20],
-            'min_samples_splits': [2],
-            'min_samples_leafs': [1],}
-    parameter_values, without_mechanism, with_mechanism = extract_results_for_params(params=params, box_mode=box_mode, plot_mode='ag_params')
-    plot_grouped_bar_chart(parameters=parameter_values,
-                        without_mechanism=without_mechanism,
-                        with_mechanism=with_mechanism,
-                        box_mode=box_mode,
-                        plot_mode='ag_params')
-    plot_radar_chart(parameters=parameter_values,
-                    without_mechanism=without_mechanism,
-                    with_mechanism=with_mechanism,
-                    box_mode=box_mode,
-                    plot_mode='ag_params')
+    plt.tight_layout()
+    os.makedirs('plots/green_box', exist_ok=True)
+    plt.savefig("plots/green_box/risk.pdf")
+    plt.close()
 
 
 if __name__ == '__main__':
-    # plot_for_dt_params()
     plot_all()
-
-
-    # # Sample data
-    # parameter_values = ['Param1', 'Param2', 'Param3', 'Param4']
-    # # Performance values without and with the new mechanism
-    # without_mechanism = {
-    #     'Acc': [75, 78, 80, 82],
-    #     'F1': [70, 72, 74, 76],
-    #     'FPR': [68, 70, 73, 75],
-    #     'Precision': [68, 70, 73, 75],
-    #     # 'Recall': [70, 72, 74, 76],
-    # }
-    # with_mechanism = {
-    #     'Acc': [80, 83, 85, 87],
-    #     'F1': [76, 78, 80, 82],
-    #     'FPR': [74, 76, 78, 80],
-    #     'Precision': [68, 70, 73, 75],
-    #     # 'Recall': [76, 78, 80, 82],
-    # }
-    # plot_grouped_bar_chart(parameters=parameter_values,
-    #                         without_mechanism=without_mechanism,
-    #                         with_mechanism=with_mechanism)
