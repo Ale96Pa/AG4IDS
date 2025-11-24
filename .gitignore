@@ -22,6 +22,11 @@ prediction_of_attacks.txt
 .vscode
 results
 
+full_list.txt
+latex_table_maker.py
+new_list.txt
+substitutions.txt
+table_back.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

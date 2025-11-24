@@ -6,51 +6,56 @@ from matplotlib.ticker import MaxNLocator
 
 COLORS=['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6','#ffffcc',
         '#e5d8bd','#fddaec','#f2f2f2', "#1919194F","#00ff914e","#a6ff009c",
+        "#76fff6c3",'#f2f2f2', "#1919194F","#00ff914e","#a6ff009c",
         "#76fff6c3",]
 
 
 KEYWORD_MATCH = {
-                "Unspecified": r"$\star$",
-                "Cloud computing": r"$\triangleleft$",
-                "Cyber-Physical Systems": "CPS",
-                "Smart Grids": "SG",
-                "Internet of Things": r"$\triangleright$",
-                "AMI System": r"$\natural$",
-                "Software Defined Networking": r"$\flat$",
-                "Smart Cities": "SC",
-                "Enterprise network system": r"$\sharp$",
-                "Smart home system": r"$\blacksquare$",
-                "Industrial Control Systems": "ICS",
-                "SOCs": r"$\amalg$",
-                "Custom": "Custom",
-                "Logic": "Logic",
-                "Topologic": "Topologic",
-                "Bayesian": "Bayes",
-                "Scenario": "Scenario",
-                "None": "None",
-                "Neural Network": "NN",
-                "Bayesian Network": "BN",
-                "Markov Chain": "MC",
-                "Artificial Immune System": "AIS",
-                "Signature not ML": "Signature",
+                # Integration (RSQ1)
+                "Alert Correlation": "Alert Corr.",
+                "Vulnerability Analysis": "Vuln. An.",
+                "Response": "Resp.",
+                "Detection Refinement": "Det. Ref.",
+                "IDS Optimization": "IDS Optim.",
+                "Runtime Detection": "Run. Det.",
+                
+                # IDS detection (RSQ2)
+                "Signature not ML": "Sig. not ML",
                 "Anomaly and ML": "An+ML",
                 "Agnostic": "Ag",
-                "Hybrid": r"$\unlhd$",
-                "Signature and ML": "S+ML",
+                # "Hybrid": r"$\unlhd$",
+                "Signature and ML": r"$\ast$", # "SML",
                 "Anomaly not ML": "An",
-                "Network": "NIDS",
-                "Host": "HIDS",
+                
+                # IDS scale (RSQ2)
+                "Network": "NI",
+                "Host": "HI",
+                
+                # AGs (RSQ3)
+                "Host-based": "HB",
+                "State-based": "SB",
+                "Vulnerability-based": "VB",
+                "Attack scenario-based": "AB",
+                # "Custom": "Custom",
+                # "Logic": "Logic",
+                # "Topologic": "Topologic",
+                # "Bayesian": "Bayes",
+                # "Scenario": "Scenario",
+                
+                # Attacks (RSQ4)
                 "DDoS": "DDoS",
-                "Multi-step attacks": "Multi",
+                "Multi-step attacks": r"$\rtimes$",
                 "Remote Code Execution": r"$\dagger$",
                 "DoS": "DoS",
                 "U2R": r"$\ddagger$",
                 "R2L": r"$\unrhd$",
-                "Key Loggers": r"$\ast$",
+                "Key Loggers": "K", # r"$\ast$"
                 "OS scan": r"$\bullet$",
                 "Probing": r"$\circ$",
                 "Port scan": r"$\diamond$",
                 "SSH Brute Force": r"$\clubsuit$",
+                
+                # Dataset (RSQ4)
                 "DARPA2000": "DARPA",
                 "Simulation": "Sim",
                 "Defcon CTF'17": r"$\spadesuit$",
@@ -60,12 +65,40 @@ KEYWORD_MATCH = {
                 "CTU-13": r"$\triangle$",
                 "CICIoT2023": r"$\blacktriangle$",
                 "CPTC-2018": r"$\triangledown$",
-                "Alert Correlation": "Alert Corr.",
-                "Vulnerability Detection": "Vuln. Det.",
-                "Response": "Response",
-                "Detection Refinement": "Detect. Refin.",
-                "IDS Optimization": "IDS Optim.",
-                "Runtime Detection": "Runtime Det.",
+                "Custom": "Custom",
+                
+                "DARPA-CT-2019": r"$\pitchfork$", # "TBD",
+                "StreamSpot": r"$\Vdash$", # "TBD",
+                # "CTF23": r"$\gtrdot$", # "TBD",
+                "4SICS-2015": r"$\gtrdot$", # "4S",
+                "CCDC-2018": r"$\unlhd$", #r"$\ast$", # "TBD",
+
+
+                # Applications (RSQ5)
+                "Unspecified": "U", # r"$\pitchfork$",
+                "Cloud computing": r"$\triangleleft$",
+                "Cyber-Physical Systems": "CPS",
+                "Smart Grids": "SG",
+                "Internet of Things": r"$\triangleright$",
+                "AMI System": r"$\natural$",
+                "Software Defined Networking": r"$\flat$",
+                "Smart Cities": "C",
+                "Enterprise network system": r"$\sharp$",
+                "Smart home system": r"$\blacksquare$",
+                "Industrial Control Systems": "ICS",
+                "SOCs": r"$\amalg$",
+
+                "Edge computing": "E",
+
+                # ML (RSQ6)
+                "None": "None",
+                "Neural Network": "NN",
+                "Bayesian Network": "B",
+                "Markov Chain": "MC",
+                "Artificial Immune System": "AI",
+                "Decision Tree": "DT", # r"$\Vdash$",
+                "Support Vector Machine": "SV", # r"$\gtrdot$",
+                "Probabilistic Automaton": "PA",
                 }
 
 
@@ -73,84 +106,90 @@ def ag_generation_data():
     occurrencies = {
         "Integration (RSQ1)": 
                                 {
-                                    "Alert Correlation": 29,
-                                    "Vulnerability Detection": 23,
+                                    "Alert Correlation": 43,
+                                    "Vulnerability Analysis": 6,
+                                    "Response": 8,
                                 },
         "Detection (RSQ2)":
                             {
-                                "Signature not ML": 25,
-                                "Anomaly and ML": 10,
-                                "Agnostic": 13,
-                                "Hybrid": 1,
-                                "Signature and ML": 3,
+                                "Signature not ML": 37,
+                                "Anomaly and ML": 5,
+                                "Agnostic": 3,
+                                "Signature and ML": 1,
                                 "Anomaly not ML": 0
                             },
         "IDS (RSQ2)": 
                         {
-                            "Network": 11,
-                            "Host": 4,
-                            "Agnostic": 37
+                            "Network": 32,
+                            "Host": 3,
+                            "Agnostic": 11
                         },
         "AG (RSQ3)": 
                     {
-                        "Custom": 7,
-                        "Logic": 15,
-                        "Topologic": 12,
-                        "Bayesian": 6,
-                        "Scenario": 12
+                        "Attack scenario-based": 19,
+                        "Vulnerability-based": 2,
+                        "Host-based": 10,
+                        "State-based": 15,
                     },
         "Attacks (RSQ4)": 
                             {
-                                "DDoS": 16,
+                                "DDoS": 13,
                                 "None": 0,
-                                "Multi-step attacks": 33,
+                                "Multi-step attacks": 29,
                                 "Remote Code Execution": 0,
-                                "DoS": 20,
-                                "Unspecified": 1,
+                                "DoS": 3,
+                                "Unspecified": 2,
                                 "U2R": 2,
                                 "R2L": 2,
                                 "Key Loggers": 0,
                                 "OS scan": 0,
                                 "Probing": 1,
                                 "Port scan": 1,
-                                "SSH Brute Force": 1
+                                "SSH Brute Force": 0
                             },
         "Dataset (RSQ4)": 
                             {
-                                "DARPA2000": 17,
+                                "DARPA2000": 15,
                                 "Custom": 9,
-                                "Simulation": 13,
+                                "Simulation": 11,
                                 "Defcon CTF'17": 1,
-                                "CSE-CIC-IDS-2018": 3,
-                                "ISCXIDS2012": 2,
-                                "NLS-KDD": 1,
-                                "CTU-13": 1,
-                                "CICIoT2023": 1,
-                                "CPTC-2018": 1,
-                                "Unspecified": 6
+                                "CSE-CIC-IDS-2018": 1,
+                                "ISCXIDS2012": 1,
+                                "NLS-KDD": 0,
+                                "CTU-13": 0,
+                                "CICIoT2023": 0,
+                                "CPTC-2018": 2,
+                                "Unspecified": 5,
+                                "4SICS-2015": 1,
+                                "CCDC-2018": 1,
                             },
         "Application (RSQ5)" : 
                                 {
-                                    "Unspecified": 25,
+                                    "Unspecified": 24,
                                     "Cloud computing": 1,
-                                    "Cyber-Physical Systems": 6,
-                                    "Smart Grids": 7,
-                                    "Internet of Things": 5,
+                                    "Cyber-Physical Systems": 5,
+                                    "Smart Grids": 6,
+                                    "Internet of Things": 2,
                                     "AMI System": 0,
                                     "Software Defined Networking": 1,
-                                    "Smart Cities": 2,
-                                    "Enterprise network system": 1,
+                                    "Edge computing": 1,
+                                    "Smart Cities": 1,
+                                    "Enterprise network system": 0,
                                     "Smart home system": 1,
-                                    "Industrial Control Systems": 2,
-                                    "SOCs": 1
+                                    "Industrial Control Systems": 3,
+                                    "SOCs": 1,
+                                    "Edge computing": 1,
                                 },
         "ML (RSQ6)": 
                     {
-                        "None": 30,
-                        "Neural Network": 9,
-                        "Bayesian Network": 3,
-                        "Markov Chain": 8,
-                        "Artificial Immune System": 2
+                        "None": 31,
+                        "Neural Network": 6,
+                        "Bayesian Network": 1,
+                        "Markov Chain": 5,
+                        "Artificial Immune System": 1,
+                        "Decision Tree": 0,
+                        "Support Vector Machine": 0,
+                        "Probabilistic Automaton": 2,
                     },
     }
 
@@ -162,85 +201,88 @@ def post_ag_data():
     occurrencies = {
         "Integration (RSQ1)": 
                                 {
-                                    "Alert Correlation": 13,
-                                    "Response": 6,
-                                    "Detection Refinement": 5
+                                    "Alert Correlation": 22,
+                                    "Vulnerability Analysis": 0, 
+                                    "Runtime Detection": 0,
+                                    "Response": 17,
+                                    "Detection Refinement": 15
                                 },
         "Detection (RSQ2)":
                             {
-                                "Signature not ML": 10,
-                                "Anomaly and ML": 7,
-                                "Agnostic": 5,
+                                "Signature not ML": 22,
+                                "Anomaly and ML": 4,
+                                "Agnostic": 1,
                                 "Hybrid": 0,
-                                "Signature and ML": 2,
+                                "Signature and ML": 3,
                                 "Anomaly not ML": 0
                             },
         "IDS (RSQ2)": 
                         {
-                            "Network": 21,
-                            "Host": 2,
-                            "Agnostic": 1
+                            "Network": 27,
+                            "Host": 1,
+                            "Agnostic": 2
                         },
         "AG (RSQ3)": 
                     {
-                        "Custom": 9,
-                        "Logic": 8,
-                        "Topologic": 4,
-                        "Bayesian": 3,
-                        "Scenario": 0
+                        "Attack scenario-based": 11,
+                        "Vulnerability-based": 7,
+                        "State-based": 9,
+                        "Host-based": 3,
                     },
         "Attacks (RSQ4)": 
                             {
                                 "DDoS": 9,
-                                "None": 5,
-                                "Multi-step attacks": 7,
+                                "None": 0,
+                                "Multi-step attacks": 14,
                                 "Remote Code Execution": 1,
-                                "DoS": 11,
-                                "Unspecified": 1,
-                                "U2R": 1,
-                                "R2L": 1,
+                                "DoS": 2,
+                                "Unspecified": 4,
+                                "U2R": 3,
+                                "R2L": 3,
                                 "Key Loggers": 1,
                                 "OS scan": 1,
-                                "Probing": 1,
+                                "Probing": 3,
                                 "Port scan": 0,
                                 "SSH Brute Force": 0
                             },
         "Dataset (RSQ4)": 
                             {
-                                "DARPA2000": 6,
-                                "Custom": 9,
-                                "Simulation": 3,
-                                "Defcon CTF'17": 1,
-                                "CSE-CIC-IDS-2018": 1,
-                                "ISCXIDS2012": 1,
+                                "DARPA2000": 7,
+                                "Custom": 12,
+                                "Simulation": 10,
+                                "Defcon CTF'17": 0,
+                                "CSE-CIC-IDS-2018": 0,
+                                "ISCXIDS2012": 0,
                                 "NLS-KDD": 0,
                                 "CTU-13": 0,
                                 "CICIoT2023": 0,
                                 "CPTC-2018": 0,
-                                "Unspecified": 4
+                                "Unspecified": 1
                             },
         "Application (RSQ5)" : 
                                 {
-                                    "Unspecified": 14,
-                                    "Cloud computing": 2,
-                                    "Cyber-Physical Systems": 3,
+                                    "Unspecified": 15,
+                                    "Cloud computing": 3,
+                                    "Cyber-Physical Systems": 4,
                                     "Smart Grids": 3,
                                     "Internet of Things": 0,
                                     "AMI System": 1,
-                                    "Software Defined Networking": 1,
-                                    "Smart Cities": 0,
+                                    "Software Defined Networking": 2,
+                                    "Smart Cities": 1,
                                     "Enterprise network system": 0,
                                     "Smart home system": 0,
-                                    "Industrial Control Systems": 0,
-                                    "SOCs": 0
+                                    "Industrial Control Systems": 1,
+                                    "SOCs": 0,
+                                    "Edge computing": 0,
                                 },
         "ML (RSQ6)": 
                     {
-                        "None": 15,
-                        "Neural Network": 4,
-                        "Bayesian Network": 2,
+                        "None": 19,
+                        "Neural Network": 5,
+                        "Bayesian Network": 1,
                         "Markov Chain": 1,
-                        "Artificial Immune System": 2
+                        "Artificial Immune System": 3,
+                        "Decision Tree": 1,
                     },
     }
 
@@ -252,85 +294,90 @@ def ids_integrated_ag_data():
     occurrencies = {
         "Integration (RSQ1)": 
                                 {
-                                    "Alert Correlation": 13,
-                                    "IDS Optimization": 6,
-                                    "Runtime Detection": 6,
+                                    "Alert Correlation": 12,
+                                    "Detection Refinement": 8,
+                                    "Runtime Detection": 9,
                                 },
         "Detection (RSQ2)":
                             {
-                                "Signature not ML": 11,
-                                "Anomaly and ML": 7,
+                                "Signature not ML": 12,
+                                "Anomaly and ML": 6,
                                 "Agnostic": 0,
-                                "Hybrid": 3,
-                                "Signature and ML": 3,
-                                "Anomaly not ML": 1
+                                "Hybrid": 0,
+                                "Signature and ML": 1,
+                                "Anomaly not ML": 0
                             },
         "IDS (RSQ2)": 
                         {
-                            "Network": 23,
+                            "Network": 17,
                             "Host": 2,
                             "Agnostic": 0
                         },
         "AG (RSQ3)": 
                     {
-                        "Custom": 10,
-                        "Logic": 10,
-                        "Topologic": 3,
-                        "Bayesian": 2,
-                        "Scenario": 0
+                        "Host-based": 6,
+                        "State-based": 6,
+                        "Vulnerability-based": 2,
+                        "Attack scenario-based": 5,
                     },
         "Attacks (RSQ4)": 
                             {
-                                "DDoS": 11,
+                                "DDoS": 7,
                                 "None": 0,
-                                "Multi-step attacks": 0,
+                                "Multi-step attacks": 6,
                                 "Remote Code Execution": 1,
-                                "DoS": 17,
-                                "Unspecified": 9,
-                                "U2R": 3,
-                                "R2L": 3,
+                                "DoS": 1,
+                                "Unspecified": 5,
+                                "U2R": 0,
+                                "R2L": 0,
                                 "Key Loggers": 1,
                                 "OS scan": 1,
                                 "Probing": 0,
                                 "Port scan": 1,
-                                "SSH Brute Force": 1
+                                "SSH Brute Force": 0
                             },
         "Dataset (RSQ4)": 
                             {
-                                "DARPA2000": 9,
-                                "Custom": 7,
-                                "Simulation": 7,
-                                "Defcon CTF'17": 1,
-                                "CSE-CIC-IDS-2018": 2,
-                                "ISCXIDS2012": 0,
+                                "DARPA2000": 5,
+                                "Custom": 8,
+                                "Simulation": 4,
+                                "Defcon CTF'17": 0,
+                                "CSE-CIC-IDS-2018": 1,
+                                "ISCXIDS2012": 1,
                                 "NLS-KDD": 0,
                                 "CTU-13": 0,
-                                "CICIoT2023": 1,
+                                "CICIoT2023": 0,
                                 "CPTC-2018": 0,
-                                "Unspecified": 0
+                                "Unspecified": 0,
+                                "DARPA-CT-2019": 0,
+                                "StreamSpot": 0,
+                                "CTF23": 0,
+                                "4SICS-2015": 0,
+                                "CCDC-2018": 0,
                             },
         "Application (RSQ5)" : 
                                 {
                                     "Unspecified": 13,
-                                    "Cloud computing": 1,
+                                    "Cloud computing": 0,
                                     "Cyber-Physical Systems": 0,
-                                    "Smart Grids": 6,
-                                    "Internet of Things": 3,
+                                    "Smart Grids": 2,
+                                    "Internet of Things": 1,
                                     "AMI System": 1,
                                     "Software Defined Networking": 1,
                                     "Smart Cities": 0,
                                     "Enterprise network system": 0,
                                     "Smart home system": 0,
-                                    "Industrial Control Systems": 0,
-                                    "SOCs": 0
+                                    "Industrial Control Systems": 1,
+                                    "SOCs": 0,
+                                    "Edge computing": 0,
                                 },
         "ML (RSQ6)": 
                     {
-                        "None": 12,
-                        "Neural Network": 4,
-                        "Bayesian Network": 7,
+                        "None": 9,
+                        "Neural Network": 2,
+                        "Bayesian Network": 5,
                         "Markov Chain": 1,
-                        "Artificial Immune System": 1
+                        "Decision Tree": 2
                     },
     }
 
@@ -405,5 +452,6 @@ def plot(category):
 
 
 if __name__ == "__main__":
-    for category in ['ag_gen', 'post_ag', 'ids_integrated_ag']:
+    categories = ['ag_gen', 'post_ag', 'ids_integrated_ag'] # ['ag_gen', 'post_ag', 'ids_integrated_ag']
+    for category in categories:
         plot(category)
