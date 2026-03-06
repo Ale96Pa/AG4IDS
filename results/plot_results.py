@@ -19,10 +19,9 @@ def plot_grouped_bar_chart(parameters, without_mechanism, with_mechanism,
     mechanism_name = r'$IDS \rightarrow AG$' if box_mode == 'orange_box' else r'$IDS[AG]$' if box_mode == 'blue_box' else None
 
     metrics = list(with_mechanism.keys())
-    # Set up the bar chart
-    x = np.arange(len(parameters))  # the label locations
+    x = np.arange(len(parameters))
     group_width = 0.8
-    width = group_width / (len(metrics))  # the width of the bars
+    width = group_width / (len(metrics))
     # offsets = np.linspace(-width, width, num=len(metrics))  # offsets for each metric
     offsets = [(i - len(metrics) / 2) * width + width for i in range(len(metrics))]
     cmap = get_cmap(2*len(metrics))

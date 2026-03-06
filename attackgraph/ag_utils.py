@@ -96,21 +96,11 @@ def find_node_from_ip(G, ip, verbose=False):
 
 
 def keep_only_ips_in_nodes_names(G):
-    # print('Number of nodes before renaming: {}'.format(G.number_of_nodes()))
-    # print('Number of edges before renaming: {}'.format(G.number_of_edges()))
-    # print('Nodes: {}'.format(list(G.nodes(data=True))))
-    # print('Edges: {}'.format(list(G.edges(data=True))))
     G = nx.relabel_nodes(G, lambda x: x.split('-')[-1])
-    # print('Number of nodes after renaming: {}'.format(G.number_of_nodes()))
-    # print('Number of edges after renaming: {}'.format(G.number_of_edges()))
-    # print('Nodes: {}'.format(list(G.nodes(data=True))))
-    # print('Edges: {}'.format(list(G.edges(data=True))))
     return G
 
 
 def augment_ag(G, path_prob, flows):
-    # print('Number of nodes before random addition: {}'.format(G.number_of_nodes()))
-    # print('Number of edges before random addition: {}'.format(G.number_of_edges()))
     for flow in flows:
         if np.random.uniform(0.0, 1.0) < path_prob:
             source = flow.split('-')[0]
@@ -125,8 +115,6 @@ def augment_ag(G, path_prob, flows):
                 destination = find_node_from_ip(G, destination)
             if not G.has_edge(source, destination):
                 G.add_edge(source, destination)
-    # print('Number of nodes after random addition: {}'.format(G.number_of_nodes()))
-    # print('Number of edges after random addition: {}'.format(G.number_of_edges()))
     return G
 
 

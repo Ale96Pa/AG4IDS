@@ -313,9 +313,9 @@ def run_all_blue_box_parallel(n_parallel_processes: int = 5):
 
 
 if __name__ == '__main__':
-    # run_all_orange_box()
-    # run_all_orange_box_parallel()
-    # run_all_blue_box()
-    # run_all_blue_box_parallel()
+    run_all_orange_box()
+    run_all_orange_box_parallel()
+    run_all_blue_box()
+    run_all_blue_box_parallel()
     run_all_orange_box_controlled()
-    # run_all_blue_box_controlled()
+    run_all_blue_box_controlled()

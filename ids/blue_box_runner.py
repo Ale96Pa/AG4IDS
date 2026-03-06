@@ -74,7 +74,7 @@ def preprocess_data(full_data, scenario, options):
             # Create and fit selector
             selector = SelectKBest(f_classif, k=tot_features-num_selected_features)
             selector.fit(selected_data_features, selected_data_labels)
-            # Get columns to keep and create new dataframe with those only
+
             cols_idxs = selector.get_support(indices=True)
             cols_idxs = [i for i in range(tot_features) if i not in cols_idxs]
             selected_data_filtered_features = selected_data_features.iloc[:,cols_idxs]

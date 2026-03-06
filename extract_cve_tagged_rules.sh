@@ -19,7 +19,7 @@ done
 CVE_RULES_FILE="cve_tagged_dos_rules.rules"
 > $CVE_RULES_FILE
 
-# Extract rules containing CVE references
+# Extract rules with CVE references
 for file in $RULES_DIR/*.rules; do
     grep "reference:cve" $file >> $CVE_RULES_FILE
 done

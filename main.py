@@ -1,6 +1,6 @@
 import os, sys, json
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-from buildIDSnet import internal_net,get_dump_nvd,getVulnsByService,generate_devices, get_dump_cveList, getVulnsByAlert
+from buildIDSnet import internal_net,getVulnsByService,generate_devices, get_dump_cveList, getVulnsByAlert
 from attackgraph.agBuilder import build_multiag,compute_paths,plot_risk
 import ids.run_all as ra
 

@@ -4,15 +4,19 @@
 
 ## Abstract
 
-Cyber attack detection and response are pivotal to ensuring a robust cybersecurity posture in any organization. This task becomes even more challenging in complex network environments, where attackers may follow multiple sophisticated paths to compromise critical services.
-
-To support threat detection, **Intrusion Detection Systems (IDSs)** are widely used to identify anomalous behaviors. In parallel, **Attack Graphs (AGs)** offer a powerful model for analyzing attacker strategies and informing response decisions.
-
-Traditionally, IDSs and AGs have been treated in isolation, each facing limitations such as high false positive rates, poor scalability, and limited adaptability to evolving threats. Although recent research has begun exploring their integration, a comprehensive and systematic analysis is still missing.
+Cyber attack detection and response is complex due to high-volume, intricate network traffic that facilitates concealed attacks.
+While Intrusion Detection Systems (IDSs) identify anomalous network behaviors, Attack Graphs (AGs) are the premier threat model for analyzing attacker strategies and informing response.
+Despite the conceptual connection being recognized in early research, the field of AG and IDS integration lacks a common structure.
+This paper provides the first systematic analysis of these efforts, reviewing **73** works.
+Our novel taxonomy reveals the literature is dominated by specialized, single-purpose integrations---for instance, using AGs to reduce IDS false positives, or IDS alerts to prune AGs.
+The analysis highlights the absence of a unifying framework that addresses the combined limitations of IDSs and AGs as an integrated system.
+To bridge this gap, we propose a novel AG-IDS lifecycle.
+This formalizes a process where IDSs refine AG models, and those updated AGs subsequently improve IDS detection.
+We present a proof-of-concept implementation of this lifecycle, demonstrating its advantages for detection and response.
 
 This project addresses that gap by:
 
-- Reviewing **\totalcount{}** relevant works
+- Reviewing **73** relevant works
 - Proposing a novel **taxonomy** of IDS–AG integration:
   - **AG-based IDS refinement**
   - **AG-integrated IDSs**

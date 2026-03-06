@@ -5,7 +5,7 @@ from ag_utils import merge_all_edges, find_node_from_ip, merge_all_nodes_by_priv
 
 
 
-G = nx.read_graphml('data/ags/alertNetAG.graphml') # alertNetAG.graphml or CiC17NetAG.graphml
+G = nx.read_graphml('data/ags/alertNetAG.graphml')
 print('Nodes: {}'.format(list(G.nodes(data=True))))
 print('Edges: {}'.format(list(G.edges(data=True))))
 

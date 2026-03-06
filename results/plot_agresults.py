@@ -3,6 +3,7 @@ import numpy as np
 import stats
 import matplotlib.pyplot as plt
 
+
 def renameModel(strFile):
     if "alertNet" in strFile: return "onlyAlert"
     if "CiC17" in strFile: return "AG"

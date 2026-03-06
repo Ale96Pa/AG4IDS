@@ -13,8 +13,6 @@ import os
 import json
 import random
 
-
-
 def clean_data_with_scenarios(scenario, full_data, args):
 
     '''

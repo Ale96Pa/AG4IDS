@@ -54,9 +54,6 @@ def compute_risk_analysis(vuln_ids, vulns_list):
     lik_risk = (sum(lambda_exploit_scores)-min(lambda_exploit_scores))/sum(lambda_exploit_scores) if len(lambda_exploit_scores)>0 else 0
     imp_risk = (impact_scores[len(impact_scores)-1])/max(impact_scores) if len(impact_scores)>0 and max(impact_scores)>0 else 0
 
-    # if lik_risk>1: lik_risk=1
-    # if imp_risk>1: imp_risk=1
-
     return {
         "impact": imp_risk,
         "likelihood": lik_risk,
