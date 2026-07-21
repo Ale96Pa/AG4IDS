@@ -85,7 +85,6 @@ def get_dump_cveList(ruleFolder, vulnFile):
             default=lambda o: o.__dict__, indent=2)
         outfile.write(json_data)
 
-
 def generate_devices(network_file,vulnerabilityFile):
     all_devs=[]
     vulnerabilities=[]
@@ -388,29 +387,242 @@ def internal_net(originalNet): #TODO: delete
             default=lambda o: o.__dict__, indent=2)
         outfile.write(json_data)
 
-if __name__=="__main__":
-    originalNet = "data/networks/CiC17Net.json"
-    onlyAlertNet = "data/networks/alertNet.json"
-    partialAlertNet = "data/networks/partialAlertNet.json"
-    partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
-    fullNet = "data/networks/fullNet.json"
+"""
+CIC-IDS
+"""
+# if __name__=="__main__":
+#     originalNet = "data/networks/CiC17Net.json"
+#     onlyAlertNet = "data/networks/alertNet.json"
+#     partialAlertNet = "data/networks/partialAlertNet.json"
+#     partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
+#     fullNet = "data/networks/fullNet.json"
     
-    internal_net(originalNet)
+#     internal_net(originalNet)
+    
+#     # alertNetworkFile = "data/CiC17NetAlert.json"
+    
+#     """First generation of network inventory from CIC-IDS"""
+#     # vulnerabilityFile = "data/vulns.json"
+#     # get_dump_nvd(vulnerabilityFile)
+#     # listCve = getVulnsByService("ubu16")
+#     # generate_devices(originalNet,vulnerabilityFile)
+    
+#     """Retrieving vulnerabilities from the rule dataset"""
+#     # rule_folder = "emerging_rules/"
+#     # get_dump_cveList(rule_folder, "data/vulnsAttack.json")
+    
+#     """Build the alert-based network inventory"""
+#     # vulnAttackFile = "data/vulnsAttack.json"
+#     # alert_folder = "data/TrafficLabelling/"
+#     # getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
+#     #         [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
+
+
+def generate_devices_cidds(network_file,vulnerabilityFile):
+    all_devs=[]
+    vulnerabilities=[]
+    
+    for service in SERVICES:
+        vulns_srv, vulnsObjs = getVulnsByService(service,vulnerabilityFile)
+        vulnerabilities+=vulnsObjs
+        ips=[]
+        # Server subnet
+        if service=="dns":
+            ips = ["192.168.100.3"]
+            hostname = "dns"
+            typeHost = "serverSubnet"
+        elif service=="ubu144":
+            ips = ["192.168.100.6"]
+            hostname = "web"
+            typeHost = "serverSubnet"
+        elif service=="mac":
+            ips = ["192.168.100.4"]
+            hostname = "mail"
+            typeHost = "serverSubnet"
+        elif service=="winvista":
+            ips = ["192.168.100.5"]
+            hostname = "file"
+            typeHost = "serverSubnet"
+        
+        # Management subnet
+        elif service=="win7":
+            ips = ["192.168.200.8","192.168.200.9"]
+            hostname = "workstationWindows7Mng"
+            typeHost = "MngSubnet"
+        elif service=="ubu164":
+            ips = ["192.168.200.5"]
+            hostname = "debian1Mng"
+            typeHost = "MngSubnet"
+        elif service=="ubu144":
+            ips = ["192.168.200.4"]
+            hostname = "debian2Mng"
+            typeHost = "MngSubnet"
+        elif service=="win8":
+            ips = ["192.168.200.3"] 
+            hostname = "printerMng"
+            typeHost = "MngSubnet"        
+        
+        # Office subnet
+        elif service=="win7":
+            ips = ["192.168.210.5","192.168.210.4"]
+            hostname = "workstationWindows7Office"
+            typeHost = "OfficeSubnet"
+        elif service=="win8":
+            ips = ["192.168.210.3"] 
+            hostname = "printerOffice"
+            typeHost = "OfficeSubnet"
+        
+        # Developer subnet
+        elif service=="ubu16":
+            ips = ["192.168.220.4","192.168.220.5","192.168.220.6","192.168.220.7","192.168.220.8","192.168.220.9",
+                   "192.168.220.10","192.168.220.11","192.168.220.12","192.168.220.13","192.168.220.14","192.168.220.15","192.168.220.16"]
+            hostname = "DebDeveloper"
+            typeHost = "DevSubnet"
+        elif service=="win8":
+            ips = ["192.168.220.3"] 
+            hostname = "printerDev"
+            typeHost = "DevSubnet"
+        
+        # External subnet
+        elif service=="kali":
+            ips = ["205.174.165.73","205.174.165.74","205.174.165.75"]
+            hostname = "entryPoint"
+            typeHost = "ExtSubnet"
+        elif service=="ubu16":
+            ips = ["192.168.10.50","192.168.10.51","192.168.10.52"]
+            hostname = "WebServer"
+            typeHost = "ExtSubnet"
+        
+        elif service=="fw":
+            ips = ["205.174.165.80"]
+            hostname = "Fortinet"
+            typeHost = "firewall"
+        
+        
+        for ip in ips:
+            all_devs.append(
+                {
+                    "id": hostname+"-"+service+"-"+ip,
+                    "hostname": service+"-"+ip,
+                    "type": typeHost,
+                    "network_interfaces": [
+                        {
+                            "ipaddress": ip,
+                            "macaddress": "ff:ff:ff:ff:ff:ff",
+                            "ports": [
+                                {
+                                    "number": 0,
+                                    "state": "open",
+                                    "protocol": "TCP",
+                                    "services": [
+                                        {
+                                            "name": "all",
+                                            "cpe_list": [],
+                                            "cve_list": vulns_srv
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "local_applications": []
+                }     
+        )
+    
+    edges=[]
+    for devSrc in all_devs:
+        idSrc = devSrc["id"]
+        typeSrc = devSrc["type"]
+        hostSrc = devSrc["hostname"]
+        for devDst in all_devs:
+            idDst = devDst["id"]
+            typeDst = devDst["type"]
+            hostDst = devDst["hostname"]
+            if idSrc==idDst: continue
+            
+            if "entryPoint" in idSrc and "firewall" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})           
+            if "serverSubnet" in typeSrc and "serverSubnet" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})
+                edges.append({"host_link":["fw-205.174.165.80",hostSrc]})
+                edges.append({"host_link":[hostSrc,"fw-205.174.165.80"]})
+                edges.append({"host_link":["fw-205.174.165.80",hostDst]})
+                edges.append({"host_link":[hostDst,"fw-205.174.165.80"]})
+            if "MngSubnet" in typeSrc and "MngSubnet" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})
+                edges.append({"host_link":["fw-205.174.165.80",hostSrc]})
+                edges.append({"host_link":[hostSrc,"fw-205.174.165.80"]})
+                edges.append({"host_link":["fw-205.174.165.80",hostDst]})
+                edges.append({"host_link":[hostDst,"fw-205.174.165.80"]})
+            if "OfficeSubnet" in typeSrc and "OfficeSubnet" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})
+                edges.append({"host_link":["fw-205.174.165.80",hostSrc]})
+                edges.append({"host_link":[hostSrc,"fw-205.174.165.80"]})
+                edges.append({"host_link":["fw-205.174.165.80",hostDst]})
+                edges.append({"host_link":[hostDst,"fw-205.174.165.80"]})
+            if "DevSubnet" in typeSrc and "DevSubnet" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})
+                edges.append({"host_link":["fw-205.174.165.80",hostSrc]})
+                edges.append({"host_link":[hostSrc,"fw-205.174.165.80"]})
+                edges.append({"host_link":["fw-205.174.165.80",hostDst]})
+                edges.append({"host_link":[hostDst,"fw-205.174.165.80"]})
+    
+    unique_edges = []
+    seen = set()
+    for e in edges:
+        key = tuple(e["host_link"])
+        if key not in seen:
+            seen.add(key)
+            unique_edges.append(e)
+    edges = unique_edges
+    
+    edgesG=[]
+    for e in edges:
+        edgesG.append(e["host_link"])
+    G = nx.DiGraph()
+    G.add_edges_from(edgesG)
+    nx.write_graphml(G, "CIDDS-data/networkCIDDS.graphml")
+            
+    with open(network_file, "w") as outfile:
+        json_data = json.dumps({"devices":all_devs,
+                                "vulnerabilities":vulnerabilities,
+                                "edges":edges}, 
+            default=lambda o: o.__dict__, indent=2)
+        outfile.write(json_data)
+
+
+
+"""
+CIDDS
+"""
+if __name__=="__main__":
+    originalNet = "CIDDS-data/networks/CIDDSNet.json"
+    onlyAlertNet = "CIDDS-data/networks/alertNet.json"
+    partialAlertNet = "CIDDS-data/networks/partialAlertNet.json"
+    partialAlertOriginalNet = "CIDDS-data/networks/partialAlertOriginalNet.json"
+    fullNet = "CIDDS-data/networks/fullNet.json"
+    
+    # internal_net(originalNet)
     
     # alertNetworkFile = "data/CiC17NetAlert.json"
     
-    """First generation of network inventory from CIC-IDS"""
-    # vulnerabilityFile = "data/vulns.json"
+    """First generation of network inventory from CIDDS"""
+    vulnerabilityFile = "data/vulns.json"
     # get_dump_nvd(vulnerabilityFile)
     # listCve = getVulnsByService("ubu16")
-    # generate_devices(originalNet,vulnerabilityFile)
+    generate_devices_cidds(originalNet,vulnerabilityFile)
     
-    """Retrieving vulnerabilities from the rule dataset"""
+    # """Retrieving vulnerabilities from the rule dataset"""
     # rule_folder = "emerging_rules/"
     # get_dump_cveList(rule_folder, "data/vulnsAttack.json")
     
     """Build the alert-based network inventory"""
-    # vulnAttackFile = "data/vulnsAttack.json"
-    # alert_folder = "data/TrafficLabelling/"
-    # getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
-    #         [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
+    vulnAttackFile = "data/vulnsAttack.json"
+    alert_folder = "data/TrafficLabelling/"
+    getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
+            [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])

@@ -4,11 +4,19 @@ from buildIDSnet import internal_net,getVulnsByService,generate_devices, get_dum
 from attackgraph.agBuilder import build_multiag,compute_paths,plot_risk
 import ids.run_all as ra
 
-originalNet = "data/networks/CiC17Net.json"
-onlyAlertNet = "data/networks/alertNet.json"
-partialAlertNet = "data/networks/partialAlertNet.json"
-partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
-fullNet = "data/networks/fullNet.json"
+"""CIC-IDS"""
+# originalNet = "data/networks/CiC17Net.json"
+# onlyAlertNet = "data/networks/alertNet.json"
+# partialAlertNet = "data/networks/partialAlertNet.json"
+# partialAlertOriginalNet = "data/networks/partialAlertOriginalNet.json"
+# fullNet = "data/networks/fullNet.json"
+
+"""CIDDS"""
+originalNet = "CIDDS-data/networks/CIDDSNet.json"
+onlyAlertNet = "CIDDS-data/networks/alertNet.json"
+partialAlertNet = "CIDDS-data/networks/partialAlertNet.json"
+partialAlertOriginalNet = "CIDDS-data/networks/partialAlertOriginalNet.json"
+fullNet = "CIDDS-data/networks/fullNet.json"
 
 if __name__=="__main__":
     
@@ -16,23 +24,23 @@ if __name__=="__main__":
     PREPARATION: dataset preprocessing
     """
     
-    internal_net(originalNet)
+    # internal_net(originalNet)
         
-    """First generation of network inventory from CIC-IDS"""
-    vulnerabilityFile = "data/vulns.json"
-    # get_dump_nvd(vulnerabilityFile)
-    listCve = getVulnsByService("ubu16",vulnerabilityFile)
-    generate_devices(originalNet,vulnerabilityFile)
+    # """First generation of network inventory from CIC-IDS"""
+    # vulnerabilityFile = "data/vulns.json"
+    # # get_dump_nvd(vulnerabilityFile)
+    # listCve = getVulnsByService("ubu16",vulnerabilityFile)
+    # generate_devices(originalNet,vulnerabilityFile)
     
-    """Retrieving vulnerabilities from the rule dataset"""
-    rule_folder = "data/emerging_rules/"
-    get_dump_cveList(rule_folder, "data/vulnsAttack.json")
+    # """Retrieving vulnerabilities from the rule dataset"""
+    # rule_folder = "data/emerging_rules/"
+    # get_dump_cveList(rule_folder, "data/vulnsAttack.json")
     
-    """Build the alert-based network inventory"""
-    vulnAttackFile = "data/vulnsAttack.json"
-    alert_folder = "data/TrafficLabelling/"
-    getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
-            [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
+    # """Build the alert-based network inventory"""
+    # vulnAttackFile = "data/vulnsAttack.json"
+    # alert_folder = "data/TrafficLabelling/"
+    # getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
+    #         [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
     
     """
     ATTACK GRAPH GENERATION
@@ -43,14 +51,19 @@ if __name__=="__main__":
         with open(netfile) as nf:
             vulnerabilities = json.load(nf)["vulnerabilities"]
         pathfile = netfile.replace("networks","paths").replace(".json","Path.json")
-        compute_paths(G,vulnerabilities,pathfile,sources=[
-            "kali","fw","win81"
-            ],
-            goals=[
-            "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16',
-            '192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14',
-            '192.168.10.15','192.168.10.25'
-            ])
+        
+        ### CIC-IDS
+        # compute_paths(G,vulnerabilities,pathfile,sources=[
+        #     "kali","fw","win81"
+        #     ],
+        #     goals=[
+        #     "192.168.10.50","192.168.10.51",'192.168.10.19','192.168.10.17','192.168.10.16',
+        #     '192.168.10.12','192.168.10.9','192.168.10.5','192.168.10.8','192.168.10.14',
+        #     '192.168.10.15','192.168.10.25'
+        #     ])
+        
+        ### CIDDS
+        compute_paths(G,vulnerabilities,pathfile,sources=["kali"],goals=[])
     
     plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet])
     
