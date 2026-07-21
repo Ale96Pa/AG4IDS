@@ -267,6 +267,14 @@ def writePartialNet(content,dictDevAttack,attacks,filename):
                     elif "partialAlertNet" in filename: allCVE+=partialCveList
                     elif "partialAlertOriginalNet" in filename: allCVE+=oldCve+partialCveList
                     else: allCVE += oldCve+cveAttackList
+                    
+            allCVE = list(dict.fromkeys(allCVE))
+            if not allCVE and vulnerabilities:
+                rnd_vuln = random.choice(vulnerabilities)
+                rnd_id = rnd_vuln["id"] if isinstance(rnd_vuln, dict) else rnd_vuln
+                allCVE.append(rnd_id)
+                if isinstance(rnd_vuln, dict):
+                    added_vulns.append(rnd_vuln)
             
             ifaceObjs.append({
                 "ipaddress": ip,
@@ -600,22 +608,175 @@ def generate_devices_cidds(network_file,vulnerabilityFile):
 """
 CIDDS
 """
+# if __name__=="__main__":
+#     originalNet = "CIDDS-data/networks/CIDDSNet.json"
+#     onlyAlertNet = "CIDDS-data/networks/alertNet.json"
+#     partialAlertNet = "CIDDS-data/networks/partialAlertNet.json"
+#     partialAlertOriginalNet = "CIDDS-data/networks/partialAlertOriginalNet.json"
+#     fullNet = "CIDDS-data/networks/fullNet.json"
+    
+#     # internal_net(originalNet)
+    
+#     # alertNetworkFile = "data/CiC17NetAlert.json"
+    
+#     """First generation of network inventory from CIDDS"""
+#     vulnerabilityFile = "data/vulns.json"
+#     # get_dump_nvd(vulnerabilityFile)
+#     # listCve = getVulnsByService("ubu16")
+#     generate_devices_cidds(originalNet,vulnerabilityFile)
+    
+#     # """Retrieving vulnerabilities from the rule dataset"""
+#     # rule_folder = "emerging_rules/"
+#     # get_dump_cveList(rule_folder, "data/vulnsAttack.json")
+    
+#     """Build the alert-based network inventory"""
+#     vulnAttackFile = "data/vulnsAttack.json"
+#     alert_folder = "data/TrafficLabelling/"
+#     getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
+#             [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
+
+def generate_devices_cicddos(network_file,vulnerabilityFile):
+    all_devs=[]
+    vulnerabilities=[]
+    
+    for service in SERVICES:
+        vulns_srv, vulnsObjs = getVulnsByService(service,vulnerabilityFile)
+        vulnerabilities+=vulnsObjs
+        ips=[]
+        
+        # Testbed
+        
+        if service=="ubu16":
+            ips = ["192.168.50.1"]
+            hostname = "WebServer"
+            typeHost = "Testbed"
+            
+        elif service=="win7":
+            ips = ["192.168.50.8"]
+            hostname = "workstationWindows7"
+            typeHost = "Testbed"
+        elif service=="winvista":
+            ips = ["192.168.50.5"]
+            hostname = "workstationWindowsVista"
+            typeHost = "Testbed"
+        elif service=="win10":
+            ips = ["192.168.50.7"]
+            hostname = "workstationWindows10"
+            typeHost = "Testbed"  
+        elif service=="win81":
+            ips = ["192.168.50.6"]
+            hostname = "workstationWindows8"
+            typeHost = "Testbed"
+        
+        
+        # External subnet
+        elif service=="kali":
+            ips = ["205.174.165.73"]
+            hostname = "entryPoint"
+            typeHost = "ExtSubnet"
+        
+        elif service=="fw":
+            ips = ["205.174.165.81"]
+            hostname = "Fortinet"
+            typeHost = "firewall"
+        
+        
+        for ip in ips:
+            all_devs.append(
+                {
+                    "id": hostname+"-"+service+"-"+ip,
+                    "hostname": service+"-"+ip,
+                    "type": typeHost,
+                    "network_interfaces": [
+                        {
+                            "ipaddress": ip,
+                            "macaddress": "ff:ff:ff:ff:ff:ff",
+                            "ports": [
+                                {
+                                    "number": 0,
+                                    "state": "open",
+                                    "protocol": "TCP",
+                                    "services": [
+                                        {
+                                            "name": "all",
+                                            "cpe_list": [],
+                                            "cve_list": vulns_srv
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "local_applications": []
+                }     
+        )
+    
+    edges=[]
+    for devSrc in all_devs:
+        idSrc = devSrc["id"]
+        typeSrc = devSrc["type"]
+        hostSrc = devSrc["hostname"]
+        for devDst in all_devs:
+            idDst = devDst["id"]
+            typeDst = devDst["type"]
+            hostDst = devDst["hostname"]
+            if idSrc==idDst: continue
+            
+            if "entryPoint" in idSrc and "firewall" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})           
+            if "Testbed" in typeSrc and "Testbed" in typeDst:
+                edges.append({"host_link":[hostSrc,hostDst]})
+                edges.append({"host_link":[hostDst,hostSrc]})
+                edges.append({"host_link":["fw-205.174.165.81",hostSrc]})
+                edges.append({"host_link":[hostSrc,"fw-205.174.165.81"]})
+                edges.append({"host_link":["fw-205.174.165.81",hostDst]})
+                edges.append({"host_link":[hostDst,"fw-205.174.165.81"]})
+    
+    unique_edges = []
+    seen = set()
+    for e in edges:
+        key = tuple(e["host_link"])
+        if key not in seen:
+            seen.add(key)
+            unique_edges.append(e)
+    edges = unique_edges
+    
+    edgesG=[]
+    for e in edges:
+        edgesG.append(e["host_link"])
+    G = nx.DiGraph()
+    G.add_edges_from(edgesG)
+    nx.write_graphml(G, "CICDDOS-data/networkCICDDOS.graphml")
+            
+    with open(network_file, "w") as outfile:
+        json_data = json.dumps({"devices":all_devs,
+                                "vulnerabilities":vulnerabilities,
+                                "edges":edges}, 
+            default=lambda o: o.__dict__, indent=2)
+        outfile.write(json_data)
+
+
+
+"""
+CICDDOS
+"""
 if __name__=="__main__":
-    originalNet = "CIDDS-data/networks/CIDDSNet.json"
-    onlyAlertNet = "CIDDS-data/networks/alertNet.json"
-    partialAlertNet = "CIDDS-data/networks/partialAlertNet.json"
-    partialAlertOriginalNet = "CIDDS-data/networks/partialAlertOriginalNet.json"
-    fullNet = "CIDDS-data/networks/fullNet.json"
+    originalNet = "CICDDOS-data/networks/CICDDOSNet.json"
+    onlyAlertNet = "CICDDOS-data/networks/alertNet.json"
+    partialAlertNet = "CICDDOS-data/networks/partialAlertNet.json"
+    partialAlertOriginalNet = "CICDDOS-data/networks/partialAlertOriginalNet.json"
+    fullNet = "CICDDOS-data/networks/fullNet.json"
     
     # internal_net(originalNet)
     
     # alertNetworkFile = "data/CiC17NetAlert.json"
     
-    """First generation of network inventory from CIDDS"""
+    """First generation of network inventory from CICDDOS"""
     vulnerabilityFile = "data/vulns.json"
     # get_dump_nvd(vulnerabilityFile)
     # listCve = getVulnsByService("ubu16")
-    generate_devices_cidds(originalNet,vulnerabilityFile)
+    generate_devices_cicddos(originalNet,vulnerabilityFile)
     
     # """Retrieving vulnerabilities from the rule dataset"""
     # rule_folder = "emerging_rules/"
@@ -626,3 +787,4 @@ if __name__=="__main__":
     alert_folder = "data/TrafficLabelling/"
     getVulnsByAlert(alert_folder, vulnAttackFile, originalNet, 
             [onlyAlertNet,partialAlertNet,partialAlertOriginalNet,fullNet])
+

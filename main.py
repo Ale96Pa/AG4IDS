@@ -12,11 +12,18 @@ import ids.run_all as ra
 # fullNet = "data/networks/fullNet.json"
 
 """CIDDS"""
-originalNet = "CIDDS-data/networks/CIDDSNet.json"
-onlyAlertNet = "CIDDS-data/networks/alertNet.json"
-partialAlertNet = "CIDDS-data/networks/partialAlertNet.json"
-partialAlertOriginalNet = "CIDDS-data/networks/partialAlertOriginalNet.json"
-fullNet = "CIDDS-data/networks/fullNet.json"
+# originalNet = "CIDDS-data/networks/CIDDSNet.json"
+# onlyAlertNet = "CIDDS-data/networks/alertNet.json"
+# partialAlertNet = "CIDDS-data/networks/partialAlertNet.json"
+# partialAlertOriginalNet = "CIDDS-data/networks/partialAlertOriginalNet.json"
+# fullNet = "CIDDS-data/networks/fullNet.json"
+
+"""CIDDS"""
+originalNet = "CICDDOS-data/networks/CICDDOSNet.json"
+onlyAlertNet = "CICDDOS-data/networks/alertNet.json"
+partialAlertNet = "CICDDOS-data/networks/partialAlertNet.json"
+partialAlertOriginalNet = "CICDDOS-data/networks/partialAlertOriginalNet.json"
+fullNet = "CICDDOS-data/networks/fullNet.json"
 
 if __name__=="__main__":
     
@@ -62,7 +69,7 @@ if __name__=="__main__":
         #     '192.168.10.15','192.168.10.25'
         #     ])
         
-        ### CIDDS
+        ### CIDDS & CICDDOS
         compute_paths(G,vulnerabilities,pathfile,sources=["kali"],goals=[])
     
     plot_risk("likelihood",[originalNet,partialAlertOriginalNet,fullNet])

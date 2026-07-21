@@ -1,0 +1,735 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d1" for="edge" attr.name="vuln" attr.type="string"/>
+<key id="d0" for="node" attr.name="type" attr.type="string"/>
+<graph edgedefault="directed"><node id="root@kali-205.174.165.73">
+  <data key="d0">state</data>
+</node>
+<node id="root@fw-205.174.165.81">
+  <data key="d0">state</data>
+</node>
+<node id="user@kali-205.174.165.73"/>
+<node id="guest@kali-205.174.165.73"/>
+<node id="user@fw-205.174.165.81"/>
+<node id="guest@fw-205.174.165.81"/>
+<node id="guest@win81-192.168.50.6">
+  <data key="d0">state</data>
+</node>
+<node id="user@ubu16-192.168.50.1">
+  <data key="d0">state</data>
+</node>
+<node id="root@win81-192.168.50.6"/>
+<node id="user@win81-192.168.50.6"/>
+<node id="root@ubu16-192.168.50.1"/>
+<node id="guest@ubu16-192.168.50.1"/>
+<node id="user@win7-192.168.50.8">
+  <data key="d0">state</data>
+</node>
+<node id="root@win7-192.168.50.8"/>
+<node id="guest@win7-192.168.50.8"/>
+<node id="user@winvista-192.168.50.5">
+  <data key="d0">state</data>
+</node>
+<node id="root@winvista-192.168.50.5"/>
+<node id="guest@winvista-192.168.50.5"/>
+<node id="user@win10-192.168.50.7">
+  <data key="d0">state</data>
+</node>
+<node id="root@win10-192.168.50.7"/>
+<node id="guest@win10-192.168.50.7"/>
+<edge source="root@kali-205.174.165.73" target="root@fw-205.174.165.81" id="kali-205.174.165.73CVE-2024-50566fw-205.174.165.81">
+  <data key="d1">CVE-2024-50566</data>
+</edge>
+<edge source="root@kali-205.174.165.73" target="root@fw-205.174.165.81" id="kali-205.174.165.73CVE-2023-26206fw-205.174.165.81">
+  <data key="d1">CVE-2023-26206</data>
+</edge>
+<edge source="root@kali-205.174.165.73" target="user@kali-205.174.165.73" id="kali-205.174.165.73CVE-anykali-205.174.165.73">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="root@fw-205.174.165.81" target="user@fw-205.174.165.81" id="fw-205.174.165.81CVE-anyfw-205.174.165.81">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@kali-205.174.165.73" target="guest@kali-205.174.165.73" id="kali-205.174.165.73CVE-anykali-205.174.165.73">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@kali-205.174.165.73" target="user@fw-205.174.165.81" id="kali-205.174.165.73CVE-2021-36190fw-205.174.165.81">
+  <data key="d1">CVE-2021-36190</data>
+</edge>
+<edge source="user@kali-205.174.165.73" target="user@fw-205.174.165.81" id="kali-205.174.165.73CVE-2017-3134fw-205.174.165.81">
+  <data key="d1">CVE-2017-3134</data>
+</edge>
+<edge source="user@kali-205.174.165.73" target="user@fw-205.174.165.81" id="kali-205.174.165.73CVE-2013-4604fw-205.174.165.81">
+  <data key="d1">CVE-2013-4604</data>
+</edge>
+<edge source="guest@kali-205.174.165.73" target="user@fw-205.174.165.81" id="kali-205.174.165.73CVE-2018-13376fw-205.174.165.81">
+  <data key="d1">CVE-2018-13376</data>
+</edge>
+<edge source="guest@kali-205.174.165.73" target="user@fw-205.174.165.81" id="kali-205.174.165.73CVE-2017-7336fw-205.174.165.81">
+  <data key="d1">CVE-2017-7336</data>
+</edge>
+<edge source="user@fw-205.174.165.81" target="guest@fw-205.174.165.81" id="fw-205.174.165.81CVE-anyfw-205.174.165.81">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@fw-205.174.165.81" target="user@win81-192.168.50.6" id="fw-205.174.165.81CVE-2018-8438win81-192.168.50.6">
+  <data key="d1">CVE-2018-8438</data>
+</edge>
+<edge source="user@fw-205.174.165.81" target="user@win7-192.168.50.8" id="fw-205.174.165.81CVE-2010-1886win7-192.168.50.8">
+  <data key="d1">CVE-2010-1886</data>
+</edge>
+<edge source="user@fw-205.174.165.81" target="user@win10-192.168.50.7" id="fw-205.174.165.81CVE-2020-0569win10-192.168.50.7">
+  <data key="d1">CVE-2020-0569</data>
+</edge>
+<edge source="user@fw-205.174.165.81" target="user@win10-192.168.50.7" id="fw-205.174.165.81CVE-2021-34527win10-192.168.50.7">
+  <data key="d1">CVE-2021-34527</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@kali-205.174.165.73" id="fw-205.174.165.81CVE-2017-0007kali-205.174.165.73">
+  <data key="d1">CVE-2017-0007</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win81-192.168.50.6" id="fw-205.174.165.81CVE-2016-3349win81-192.168.50.6">
+  <data key="d1">CVE-2016-3349</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win81-192.168.50.6" id="fw-205.174.165.81CVE-2015-6103win81-192.168.50.6">
+  <data key="d1">CVE-2015-6103</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win81-192.168.50.6" id="fw-205.174.165.81CVE-2015-0006win81-192.168.50.6">
+  <data key="d1">CVE-2015-0006</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win81-192.168.50.6" id="fw-205.174.165.81CVE-2016-3239win81-192.168.50.6">
+  <data key="d1">CVE-2016-3239</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win81-192.168.50.6" id="fw-205.174.165.81CVE-2017-0143win81-192.168.50.6">
+  <data key="d1">CVE-2017-0143</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win81-192.168.50.6" id="fw-205.174.165.81CVE-2016-7214win81-192.168.50.6">
+  <data key="d1">CVE-2016-7214</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@ubu16-192.168.50.1" id="fw-205.174.165.81CVE-2017-8900ubu16-192.168.50.1">
+  <data key="d1">CVE-2017-8900</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@ubu16-192.168.50.1" id="fw-205.174.165.81CVE-2016-9774ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-9774</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@ubu16-192.168.50.1" id="fw-205.174.165.81CVE-2016-1255ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1255</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@ubu16-192.168.50.1" id="fw-205.174.165.81CVE-2020-10279ubu16-192.168.50.1">
+  <data key="d1">CVE-2020-10279</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@ubu16-192.168.50.1" id="fw-205.174.165.81CVE-2018-1000135ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-1000135</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@ubu16-192.168.50.1" id="fw-205.174.165.81CVE-2018-6634ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-6634</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="root@ubu16-192.168.50.1" id="fw-205.174.165.81CVE-2016-1240ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1240</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win7-192.168.50.8" id="fw-205.174.165.81CVE-2017-7157win7-192.168.50.8">
+  <data key="d1">CVE-2017-7157</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win7-192.168.50.8" id="fw-205.174.165.81CVE-2011-1971win7-192.168.50.8">
+  <data key="d1">CVE-2011-1971</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win7-192.168.50.8" id="fw-205.174.165.81CVE-2012-1870win7-192.168.50.8">
+  <data key="d1">CVE-2012-1870</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win7-192.168.50.8" id="fw-205.174.165.81CVE-2019-8825win7-192.168.50.8">
+  <data key="d1">CVE-2019-8825</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win7-192.168.50.8" id="fw-205.174.165.81CVE-2021-35538win7-192.168.50.8">
+  <data key="d1">CVE-2021-35538</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win7-192.168.50.8" id="fw-205.174.165.81CVE-2011-1873win7-192.168.50.8">
+  <data key="d1">CVE-2011-1873</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@winvista-192.168.50.5" id="fw-205.174.165.81CVE-2011-0086winvista-192.168.50.5">
+  <data key="d1">CVE-2011-0086</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@winvista-192.168.50.5" id="fw-205.174.165.81CVE-2011-1894winvista-192.168.50.5">
+  <data key="d1">CVE-2011-1894</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@winvista-192.168.50.5" id="fw-205.174.165.81CVE-2009-0551winvista-192.168.50.5">
+  <data key="d1">CVE-2009-0551</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@winvista-192.168.50.5" id="fw-205.174.165.81CVE-2010-0232winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0232</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@winvista-192.168.50.5" id="fw-205.174.165.81CVE-2008-1453winvista-192.168.50.5">
+  <data key="d1">CVE-2008-1453</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@winvista-192.168.50.5" id="fw-205.174.165.81CVE-2009-2516winvista-192.168.50.5">
+  <data key="d1">CVE-2009-2516</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="root@winvista-192.168.50.5" id="fw-205.174.165.81CVE-2010-0236winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0236</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win10-192.168.50.7" id="fw-205.174.165.81CVE-2021-0152win10-192.168.50.7">
+  <data key="d1">CVE-2021-0152</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win10-192.168.50.7" id="fw-205.174.165.81CVE-2019-8773win10-192.168.50.7">
+  <data key="d1">CVE-2019-8773</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win10-192.168.50.7" id="fw-205.174.165.81CVE-2021-0075win10-192.168.50.7">
+  <data key="d1">CVE-2021-0075</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win10-192.168.50.7" id="fw-205.174.165.81CVE-2019-8623win10-192.168.50.7">
+  <data key="d1">CVE-2019-8623</data>
+</edge>
+<edge source="guest@fw-205.174.165.81" target="user@win10-192.168.50.7" id="fw-205.174.165.81CVE-2019-4652win10-192.168.50.7">
+  <data key="d1">CVE-2019-4652</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@ubu16-192.168.50.1" id="win81-192.168.50.6CVE-2017-8900ubu16-192.168.50.1">
+  <data key="d1">CVE-2017-8900</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@ubu16-192.168.50.1" id="win81-192.168.50.6CVE-2016-9774ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-9774</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@ubu16-192.168.50.1" id="win81-192.168.50.6CVE-2016-1255ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1255</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@ubu16-192.168.50.1" id="win81-192.168.50.6CVE-2020-10279ubu16-192.168.50.1">
+  <data key="d1">CVE-2020-10279</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@ubu16-192.168.50.1" id="win81-192.168.50.6CVE-2018-1000135ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-1000135</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@ubu16-192.168.50.1" id="win81-192.168.50.6CVE-2018-6634ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-6634</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="root@ubu16-192.168.50.1" id="win81-192.168.50.6CVE-2016-1240ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1240</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@fw-205.174.165.81" id="win81-192.168.50.6CVE-2018-13376fw-205.174.165.81">
+  <data key="d1">CVE-2018-13376</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@fw-205.174.165.81" id="win81-192.168.50.6CVE-2017-7336fw-205.174.165.81">
+  <data key="d1">CVE-2017-7336</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win7-192.168.50.8" id="win81-192.168.50.6CVE-2017-7157win7-192.168.50.8">
+  <data key="d1">CVE-2017-7157</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win7-192.168.50.8" id="win81-192.168.50.6CVE-2011-1971win7-192.168.50.8">
+  <data key="d1">CVE-2011-1971</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win7-192.168.50.8" id="win81-192.168.50.6CVE-2012-1870win7-192.168.50.8">
+  <data key="d1">CVE-2012-1870</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win7-192.168.50.8" id="win81-192.168.50.6CVE-2019-8825win7-192.168.50.8">
+  <data key="d1">CVE-2019-8825</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win7-192.168.50.8" id="win81-192.168.50.6CVE-2021-35538win7-192.168.50.8">
+  <data key="d1">CVE-2021-35538</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win7-192.168.50.8" id="win81-192.168.50.6CVE-2011-1873win7-192.168.50.8">
+  <data key="d1">CVE-2011-1873</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@winvista-192.168.50.5" id="win81-192.168.50.6CVE-2011-0086winvista-192.168.50.5">
+  <data key="d1">CVE-2011-0086</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@winvista-192.168.50.5" id="win81-192.168.50.6CVE-2011-1894winvista-192.168.50.5">
+  <data key="d1">CVE-2011-1894</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@winvista-192.168.50.5" id="win81-192.168.50.6CVE-2009-0551winvista-192.168.50.5">
+  <data key="d1">CVE-2009-0551</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@winvista-192.168.50.5" id="win81-192.168.50.6CVE-2010-0232winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0232</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@winvista-192.168.50.5" id="win81-192.168.50.6CVE-2008-1453winvista-192.168.50.5">
+  <data key="d1">CVE-2008-1453</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@winvista-192.168.50.5" id="win81-192.168.50.6CVE-2009-2516winvista-192.168.50.5">
+  <data key="d1">CVE-2009-2516</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="root@winvista-192.168.50.5" id="win81-192.168.50.6CVE-2010-0236winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0236</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win10-192.168.50.7" id="win81-192.168.50.6CVE-2021-0152win10-192.168.50.7">
+  <data key="d1">CVE-2021-0152</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win10-192.168.50.7" id="win81-192.168.50.6CVE-2019-8773win10-192.168.50.7">
+  <data key="d1">CVE-2019-8773</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win10-192.168.50.7" id="win81-192.168.50.6CVE-2021-0075win10-192.168.50.7">
+  <data key="d1">CVE-2021-0075</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win10-192.168.50.7" id="win81-192.168.50.6CVE-2019-8623win10-192.168.50.7">
+  <data key="d1">CVE-2019-8623</data>
+</edge>
+<edge source="guest@win81-192.168.50.6" target="user@win10-192.168.50.7" id="win81-192.168.50.6CVE-2019-4652win10-192.168.50.7">
+  <data key="d1">CVE-2019-4652</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="guest@ubu16-192.168.50.1" id="ubu16-192.168.50.1CVE-anyubu16-192.168.50.1">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="user@win81-192.168.50.6" id="ubu16-192.168.50.1CVE-2018-8438win81-192.168.50.6">
+  <data key="d1">CVE-2018-8438</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="user@fw-205.174.165.81" id="ubu16-192.168.50.1CVE-2021-36190fw-205.174.165.81">
+  <data key="d1">CVE-2021-36190</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="user@fw-205.174.165.81" id="ubu16-192.168.50.1CVE-2017-3134fw-205.174.165.81">
+  <data key="d1">CVE-2017-3134</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="user@fw-205.174.165.81" id="ubu16-192.168.50.1CVE-2013-4604fw-205.174.165.81">
+  <data key="d1">CVE-2013-4604</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="user@win7-192.168.50.8" id="ubu16-192.168.50.1CVE-2010-1886win7-192.168.50.8">
+  <data key="d1">CVE-2010-1886</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="user@win10-192.168.50.7" id="ubu16-192.168.50.1CVE-2020-0569win10-192.168.50.7">
+  <data key="d1">CVE-2020-0569</data>
+</edge>
+<edge source="user@ubu16-192.168.50.1" target="user@win10-192.168.50.7" id="ubu16-192.168.50.1CVE-2021-34527win10-192.168.50.7">
+  <data key="d1">CVE-2021-34527</data>
+</edge>
+<edge source="root@win81-192.168.50.6" target="user@win81-192.168.50.6" id="win81-192.168.50.6CVE-anywin81-192.168.50.6">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="root@win81-192.168.50.6" target="root@fw-205.174.165.81" id="win81-192.168.50.6CVE-2024-50566fw-205.174.165.81">
+  <data key="d1">CVE-2024-50566</data>
+</edge>
+<edge source="root@win81-192.168.50.6" target="root@fw-205.174.165.81" id="win81-192.168.50.6CVE-2023-26206fw-205.174.165.81">
+  <data key="d1">CVE-2023-26206</data>
+</edge>
+<edge source="user@win81-192.168.50.6" target="guest@win81-192.168.50.6" id="win81-192.168.50.6CVE-anywin81-192.168.50.6">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@win81-192.168.50.6" target="user@fw-205.174.165.81" id="win81-192.168.50.6CVE-2021-36190fw-205.174.165.81">
+  <data key="d1">CVE-2021-36190</data>
+</edge>
+<edge source="user@win81-192.168.50.6" target="user@fw-205.174.165.81" id="win81-192.168.50.6CVE-2017-3134fw-205.174.165.81">
+  <data key="d1">CVE-2017-3134</data>
+</edge>
+<edge source="user@win81-192.168.50.6" target="user@fw-205.174.165.81" id="win81-192.168.50.6CVE-2013-4604fw-205.174.165.81">
+  <data key="d1">CVE-2013-4604</data>
+</edge>
+<edge source="user@win81-192.168.50.6" target="user@win7-192.168.50.8" id="win81-192.168.50.6CVE-2010-1886win7-192.168.50.8">
+  <data key="d1">CVE-2010-1886</data>
+</edge>
+<edge source="user@win81-192.168.50.6" target="user@win10-192.168.50.7" id="win81-192.168.50.6CVE-2020-0569win10-192.168.50.7">
+  <data key="d1">CVE-2020-0569</data>
+</edge>
+<edge source="user@win81-192.168.50.6" target="user@win10-192.168.50.7" id="win81-192.168.50.6CVE-2021-34527win10-192.168.50.7">
+  <data key="d1">CVE-2021-34527</data>
+</edge>
+<edge source="root@ubu16-192.168.50.1" target="user@ubu16-192.168.50.1" id="ubu16-192.168.50.1CVE-anyubu16-192.168.50.1">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="root@ubu16-192.168.50.1" target="root@fw-205.174.165.81" id="ubu16-192.168.50.1CVE-2024-50566fw-205.174.165.81">
+  <data key="d1">CVE-2024-50566</data>
+</edge>
+<edge source="root@ubu16-192.168.50.1" target="root@fw-205.174.165.81" id="ubu16-192.168.50.1CVE-2023-26206fw-205.174.165.81">
+  <data key="d1">CVE-2023-26206</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win81-192.168.50.6" id="ubu16-192.168.50.1CVE-2016-3349win81-192.168.50.6">
+  <data key="d1">CVE-2016-3349</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win81-192.168.50.6" id="ubu16-192.168.50.1CVE-2015-6103win81-192.168.50.6">
+  <data key="d1">CVE-2015-6103</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win81-192.168.50.6" id="ubu16-192.168.50.1CVE-2015-0006win81-192.168.50.6">
+  <data key="d1">CVE-2015-0006</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win81-192.168.50.6" id="ubu16-192.168.50.1CVE-2016-3239win81-192.168.50.6">
+  <data key="d1">CVE-2016-3239</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win81-192.168.50.6" id="ubu16-192.168.50.1CVE-2017-0143win81-192.168.50.6">
+  <data key="d1">CVE-2017-0143</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win81-192.168.50.6" id="ubu16-192.168.50.1CVE-2016-7214win81-192.168.50.6">
+  <data key="d1">CVE-2016-7214</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@fw-205.174.165.81" id="ubu16-192.168.50.1CVE-2018-13376fw-205.174.165.81">
+  <data key="d1">CVE-2018-13376</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@fw-205.174.165.81" id="ubu16-192.168.50.1CVE-2017-7336fw-205.174.165.81">
+  <data key="d1">CVE-2017-7336</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win7-192.168.50.8" id="ubu16-192.168.50.1CVE-2017-7157win7-192.168.50.8">
+  <data key="d1">CVE-2017-7157</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win7-192.168.50.8" id="ubu16-192.168.50.1CVE-2011-1971win7-192.168.50.8">
+  <data key="d1">CVE-2011-1971</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win7-192.168.50.8" id="ubu16-192.168.50.1CVE-2012-1870win7-192.168.50.8">
+  <data key="d1">CVE-2012-1870</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win7-192.168.50.8" id="ubu16-192.168.50.1CVE-2019-8825win7-192.168.50.8">
+  <data key="d1">CVE-2019-8825</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win7-192.168.50.8" id="ubu16-192.168.50.1CVE-2021-35538win7-192.168.50.8">
+  <data key="d1">CVE-2021-35538</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win7-192.168.50.8" id="ubu16-192.168.50.1CVE-2011-1873win7-192.168.50.8">
+  <data key="d1">CVE-2011-1873</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@winvista-192.168.50.5" id="ubu16-192.168.50.1CVE-2011-0086winvista-192.168.50.5">
+  <data key="d1">CVE-2011-0086</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@winvista-192.168.50.5" id="ubu16-192.168.50.1CVE-2011-1894winvista-192.168.50.5">
+  <data key="d1">CVE-2011-1894</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@winvista-192.168.50.5" id="ubu16-192.168.50.1CVE-2009-0551winvista-192.168.50.5">
+  <data key="d1">CVE-2009-0551</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@winvista-192.168.50.5" id="ubu16-192.168.50.1CVE-2010-0232winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0232</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@winvista-192.168.50.5" id="ubu16-192.168.50.1CVE-2008-1453winvista-192.168.50.5">
+  <data key="d1">CVE-2008-1453</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@winvista-192.168.50.5" id="ubu16-192.168.50.1CVE-2009-2516winvista-192.168.50.5">
+  <data key="d1">CVE-2009-2516</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="root@winvista-192.168.50.5" id="ubu16-192.168.50.1CVE-2010-0236winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0236</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win10-192.168.50.7" id="ubu16-192.168.50.1CVE-2021-0152win10-192.168.50.7">
+  <data key="d1">CVE-2021-0152</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win10-192.168.50.7" id="ubu16-192.168.50.1CVE-2019-8773win10-192.168.50.7">
+  <data key="d1">CVE-2019-8773</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win10-192.168.50.7" id="ubu16-192.168.50.1CVE-2021-0075win10-192.168.50.7">
+  <data key="d1">CVE-2021-0075</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win10-192.168.50.7" id="ubu16-192.168.50.1CVE-2019-8623win10-192.168.50.7">
+  <data key="d1">CVE-2019-8623</data>
+</edge>
+<edge source="guest@ubu16-192.168.50.1" target="user@win10-192.168.50.7" id="ubu16-192.168.50.1CVE-2019-4652win10-192.168.50.7">
+  <data key="d1">CVE-2019-4652</data>
+</edge>
+<edge source="user@win7-192.168.50.8" target="guest@win7-192.168.50.8" id="win7-192.168.50.8CVE-anywin7-192.168.50.8">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@win7-192.168.50.8" target="user@win81-192.168.50.6" id="win7-192.168.50.8CVE-2018-8438win81-192.168.50.6">
+  <data key="d1">CVE-2018-8438</data>
+</edge>
+<edge source="user@win7-192.168.50.8" target="user@fw-205.174.165.81" id="win7-192.168.50.8CVE-2021-36190fw-205.174.165.81">
+  <data key="d1">CVE-2021-36190</data>
+</edge>
+<edge source="user@win7-192.168.50.8" target="user@fw-205.174.165.81" id="win7-192.168.50.8CVE-2017-3134fw-205.174.165.81">
+  <data key="d1">CVE-2017-3134</data>
+</edge>
+<edge source="user@win7-192.168.50.8" target="user@fw-205.174.165.81" id="win7-192.168.50.8CVE-2013-4604fw-205.174.165.81">
+  <data key="d1">CVE-2013-4604</data>
+</edge>
+<edge source="user@win7-192.168.50.8" target="user@win10-192.168.50.7" id="win7-192.168.50.8CVE-2020-0569win10-192.168.50.7">
+  <data key="d1">CVE-2020-0569</data>
+</edge>
+<edge source="user@win7-192.168.50.8" target="user@win10-192.168.50.7" id="win7-192.168.50.8CVE-2021-34527win10-192.168.50.7">
+  <data key="d1">CVE-2021-34527</data>
+</edge>
+<edge source="root@win7-192.168.50.8" target="user@win7-192.168.50.8" id="win7-192.168.50.8CVE-anywin7-192.168.50.8">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="root@win7-192.168.50.8" target="root@fw-205.174.165.81" id="win7-192.168.50.8CVE-2024-50566fw-205.174.165.81">
+  <data key="d1">CVE-2024-50566</data>
+</edge>
+<edge source="root@win7-192.168.50.8" target="root@fw-205.174.165.81" id="win7-192.168.50.8CVE-2023-26206fw-205.174.165.81">
+  <data key="d1">CVE-2023-26206</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win81-192.168.50.6" id="win7-192.168.50.8CVE-2016-3349win81-192.168.50.6">
+  <data key="d1">CVE-2016-3349</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win81-192.168.50.6" id="win7-192.168.50.8CVE-2015-6103win81-192.168.50.6">
+  <data key="d1">CVE-2015-6103</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win81-192.168.50.6" id="win7-192.168.50.8CVE-2015-0006win81-192.168.50.6">
+  <data key="d1">CVE-2015-0006</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win81-192.168.50.6" id="win7-192.168.50.8CVE-2016-3239win81-192.168.50.6">
+  <data key="d1">CVE-2016-3239</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win81-192.168.50.6" id="win7-192.168.50.8CVE-2017-0143win81-192.168.50.6">
+  <data key="d1">CVE-2017-0143</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win81-192.168.50.6" id="win7-192.168.50.8CVE-2016-7214win81-192.168.50.6">
+  <data key="d1">CVE-2016-7214</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@fw-205.174.165.81" id="win7-192.168.50.8CVE-2018-13376fw-205.174.165.81">
+  <data key="d1">CVE-2018-13376</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@fw-205.174.165.81" id="win7-192.168.50.8CVE-2017-7336fw-205.174.165.81">
+  <data key="d1">CVE-2017-7336</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@ubu16-192.168.50.1" id="win7-192.168.50.8CVE-2017-8900ubu16-192.168.50.1">
+  <data key="d1">CVE-2017-8900</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@ubu16-192.168.50.1" id="win7-192.168.50.8CVE-2016-9774ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-9774</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@ubu16-192.168.50.1" id="win7-192.168.50.8CVE-2016-1255ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1255</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@ubu16-192.168.50.1" id="win7-192.168.50.8CVE-2020-10279ubu16-192.168.50.1">
+  <data key="d1">CVE-2020-10279</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@ubu16-192.168.50.1" id="win7-192.168.50.8CVE-2018-1000135ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-1000135</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@ubu16-192.168.50.1" id="win7-192.168.50.8CVE-2018-6634ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-6634</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="root@ubu16-192.168.50.1" id="win7-192.168.50.8CVE-2016-1240ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1240</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@winvista-192.168.50.5" id="win7-192.168.50.8CVE-2011-0086winvista-192.168.50.5">
+  <data key="d1">CVE-2011-0086</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@winvista-192.168.50.5" id="win7-192.168.50.8CVE-2011-1894winvista-192.168.50.5">
+  <data key="d1">CVE-2011-1894</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@winvista-192.168.50.5" id="win7-192.168.50.8CVE-2009-0551winvista-192.168.50.5">
+  <data key="d1">CVE-2009-0551</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@winvista-192.168.50.5" id="win7-192.168.50.8CVE-2010-0232winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0232</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@winvista-192.168.50.5" id="win7-192.168.50.8CVE-2008-1453winvista-192.168.50.5">
+  <data key="d1">CVE-2008-1453</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@winvista-192.168.50.5" id="win7-192.168.50.8CVE-2009-2516winvista-192.168.50.5">
+  <data key="d1">CVE-2009-2516</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="root@winvista-192.168.50.5" id="win7-192.168.50.8CVE-2010-0236winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0236</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win10-192.168.50.7" id="win7-192.168.50.8CVE-2021-0152win10-192.168.50.7">
+  <data key="d1">CVE-2021-0152</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win10-192.168.50.7" id="win7-192.168.50.8CVE-2019-8773win10-192.168.50.7">
+  <data key="d1">CVE-2019-8773</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win10-192.168.50.7" id="win7-192.168.50.8CVE-2021-0075win10-192.168.50.7">
+  <data key="d1">CVE-2021-0075</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win10-192.168.50.7" id="win7-192.168.50.8CVE-2019-8623win10-192.168.50.7">
+  <data key="d1">CVE-2019-8623</data>
+</edge>
+<edge source="guest@win7-192.168.50.8" target="user@win10-192.168.50.7" id="win7-192.168.50.8CVE-2019-4652win10-192.168.50.7">
+  <data key="d1">CVE-2019-4652</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="guest@winvista-192.168.50.5" id="winvista-192.168.50.5CVE-anywinvista-192.168.50.5">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="user@win81-192.168.50.6" id="winvista-192.168.50.5CVE-2018-8438win81-192.168.50.6">
+  <data key="d1">CVE-2018-8438</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="user@fw-205.174.165.81" id="winvista-192.168.50.5CVE-2021-36190fw-205.174.165.81">
+  <data key="d1">CVE-2021-36190</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="user@fw-205.174.165.81" id="winvista-192.168.50.5CVE-2017-3134fw-205.174.165.81">
+  <data key="d1">CVE-2017-3134</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="user@fw-205.174.165.81" id="winvista-192.168.50.5CVE-2013-4604fw-205.174.165.81">
+  <data key="d1">CVE-2013-4604</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="user@win7-192.168.50.8" id="winvista-192.168.50.5CVE-2010-1886win7-192.168.50.8">
+  <data key="d1">CVE-2010-1886</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="user@win10-192.168.50.7" id="winvista-192.168.50.5CVE-2020-0569win10-192.168.50.7">
+  <data key="d1">CVE-2020-0569</data>
+</edge>
+<edge source="user@winvista-192.168.50.5" target="user@win10-192.168.50.7" id="winvista-192.168.50.5CVE-2021-34527win10-192.168.50.7">
+  <data key="d1">CVE-2021-34527</data>
+</edge>
+<edge source="root@winvista-192.168.50.5" target="user@winvista-192.168.50.5" id="winvista-192.168.50.5CVE-anywinvista-192.168.50.5">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="root@winvista-192.168.50.5" target="root@fw-205.174.165.81" id="winvista-192.168.50.5CVE-2024-50566fw-205.174.165.81">
+  <data key="d1">CVE-2024-50566</data>
+</edge>
+<edge source="root@winvista-192.168.50.5" target="root@fw-205.174.165.81" id="winvista-192.168.50.5CVE-2023-26206fw-205.174.165.81">
+  <data key="d1">CVE-2023-26206</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win81-192.168.50.6" id="winvista-192.168.50.5CVE-2016-3349win81-192.168.50.6">
+  <data key="d1">CVE-2016-3349</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win81-192.168.50.6" id="winvista-192.168.50.5CVE-2015-6103win81-192.168.50.6">
+  <data key="d1">CVE-2015-6103</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win81-192.168.50.6" id="winvista-192.168.50.5CVE-2015-0006win81-192.168.50.6">
+  <data key="d1">CVE-2015-0006</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win81-192.168.50.6" id="winvista-192.168.50.5CVE-2016-3239win81-192.168.50.6">
+  <data key="d1">CVE-2016-3239</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win81-192.168.50.6" id="winvista-192.168.50.5CVE-2017-0143win81-192.168.50.6">
+  <data key="d1">CVE-2017-0143</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win81-192.168.50.6" id="winvista-192.168.50.5CVE-2016-7214win81-192.168.50.6">
+  <data key="d1">CVE-2016-7214</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@fw-205.174.165.81" id="winvista-192.168.50.5CVE-2018-13376fw-205.174.165.81">
+  <data key="d1">CVE-2018-13376</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@fw-205.174.165.81" id="winvista-192.168.50.5CVE-2017-7336fw-205.174.165.81">
+  <data key="d1">CVE-2017-7336</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@ubu16-192.168.50.1" id="winvista-192.168.50.5CVE-2017-8900ubu16-192.168.50.1">
+  <data key="d1">CVE-2017-8900</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@ubu16-192.168.50.1" id="winvista-192.168.50.5CVE-2016-9774ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-9774</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@ubu16-192.168.50.1" id="winvista-192.168.50.5CVE-2016-1255ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1255</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@ubu16-192.168.50.1" id="winvista-192.168.50.5CVE-2020-10279ubu16-192.168.50.1">
+  <data key="d1">CVE-2020-10279</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@ubu16-192.168.50.1" id="winvista-192.168.50.5CVE-2018-1000135ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-1000135</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@ubu16-192.168.50.1" id="winvista-192.168.50.5CVE-2018-6634ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-6634</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="root@ubu16-192.168.50.1" id="winvista-192.168.50.5CVE-2016-1240ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1240</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win7-192.168.50.8" id="winvista-192.168.50.5CVE-2017-7157win7-192.168.50.8">
+  <data key="d1">CVE-2017-7157</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win7-192.168.50.8" id="winvista-192.168.50.5CVE-2011-1971win7-192.168.50.8">
+  <data key="d1">CVE-2011-1971</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win7-192.168.50.8" id="winvista-192.168.50.5CVE-2012-1870win7-192.168.50.8">
+  <data key="d1">CVE-2012-1870</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win7-192.168.50.8" id="winvista-192.168.50.5CVE-2019-8825win7-192.168.50.8">
+  <data key="d1">CVE-2019-8825</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win7-192.168.50.8" id="winvista-192.168.50.5CVE-2021-35538win7-192.168.50.8">
+  <data key="d1">CVE-2021-35538</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win7-192.168.50.8" id="winvista-192.168.50.5CVE-2011-1873win7-192.168.50.8">
+  <data key="d1">CVE-2011-1873</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win10-192.168.50.7" id="winvista-192.168.50.5CVE-2021-0152win10-192.168.50.7">
+  <data key="d1">CVE-2021-0152</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win10-192.168.50.7" id="winvista-192.168.50.5CVE-2019-8773win10-192.168.50.7">
+  <data key="d1">CVE-2019-8773</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win10-192.168.50.7" id="winvista-192.168.50.5CVE-2021-0075win10-192.168.50.7">
+  <data key="d1">CVE-2021-0075</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win10-192.168.50.7" id="winvista-192.168.50.5CVE-2019-8623win10-192.168.50.7">
+  <data key="d1">CVE-2019-8623</data>
+</edge>
+<edge source="guest@winvista-192.168.50.5" target="user@win10-192.168.50.7" id="winvista-192.168.50.5CVE-2019-4652win10-192.168.50.7">
+  <data key="d1">CVE-2019-4652</data>
+</edge>
+<edge source="user@win10-192.168.50.7" target="guest@win10-192.168.50.7" id="win10-192.168.50.7CVE-anywin10-192.168.50.7">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="user@win10-192.168.50.7" target="user@win81-192.168.50.6" id="win10-192.168.50.7CVE-2018-8438win81-192.168.50.6">
+  <data key="d1">CVE-2018-8438</data>
+</edge>
+<edge source="user@win10-192.168.50.7" target="user@fw-205.174.165.81" id="win10-192.168.50.7CVE-2021-36190fw-205.174.165.81">
+  <data key="d1">CVE-2021-36190</data>
+</edge>
+<edge source="user@win10-192.168.50.7" target="user@fw-205.174.165.81" id="win10-192.168.50.7CVE-2017-3134fw-205.174.165.81">
+  <data key="d1">CVE-2017-3134</data>
+</edge>
+<edge source="user@win10-192.168.50.7" target="user@fw-205.174.165.81" id="win10-192.168.50.7CVE-2013-4604fw-205.174.165.81">
+  <data key="d1">CVE-2013-4604</data>
+</edge>
+<edge source="user@win10-192.168.50.7" target="user@win7-192.168.50.8" id="win10-192.168.50.7CVE-2010-1886win7-192.168.50.8">
+  <data key="d1">CVE-2010-1886</data>
+</edge>
+<edge source="root@win10-192.168.50.7" target="user@win10-192.168.50.7" id="win10-192.168.50.7CVE-anywin10-192.168.50.7">
+  <data key="d1">CVE-any</data>
+</edge>
+<edge source="root@win10-192.168.50.7" target="root@fw-205.174.165.81" id="win10-192.168.50.7CVE-2024-50566fw-205.174.165.81">
+  <data key="d1">CVE-2024-50566</data>
+</edge>
+<edge source="root@win10-192.168.50.7" target="root@fw-205.174.165.81" id="win10-192.168.50.7CVE-2023-26206fw-205.174.165.81">
+  <data key="d1">CVE-2023-26206</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win81-192.168.50.6" id="win10-192.168.50.7CVE-2016-3349win81-192.168.50.6">
+  <data key="d1">CVE-2016-3349</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win81-192.168.50.6" id="win10-192.168.50.7CVE-2015-6103win81-192.168.50.6">
+  <data key="d1">CVE-2015-6103</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win81-192.168.50.6" id="win10-192.168.50.7CVE-2015-0006win81-192.168.50.6">
+  <data key="d1">CVE-2015-0006</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win81-192.168.50.6" id="win10-192.168.50.7CVE-2016-3239win81-192.168.50.6">
+  <data key="d1">CVE-2016-3239</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win81-192.168.50.6" id="win10-192.168.50.7CVE-2017-0143win81-192.168.50.6">
+  <data key="d1">CVE-2017-0143</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win81-192.168.50.6" id="win10-192.168.50.7CVE-2016-7214win81-192.168.50.6">
+  <data key="d1">CVE-2016-7214</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@fw-205.174.165.81" id="win10-192.168.50.7CVE-2018-13376fw-205.174.165.81">
+  <data key="d1">CVE-2018-13376</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@fw-205.174.165.81" id="win10-192.168.50.7CVE-2017-7336fw-205.174.165.81">
+  <data key="d1">CVE-2017-7336</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@ubu16-192.168.50.1" id="win10-192.168.50.7CVE-2017-8900ubu16-192.168.50.1">
+  <data key="d1">CVE-2017-8900</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@ubu16-192.168.50.1" id="win10-192.168.50.7CVE-2016-9774ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-9774</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@ubu16-192.168.50.1" id="win10-192.168.50.7CVE-2016-1255ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1255</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@ubu16-192.168.50.1" id="win10-192.168.50.7CVE-2020-10279ubu16-192.168.50.1">
+  <data key="d1">CVE-2020-10279</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@ubu16-192.168.50.1" id="win10-192.168.50.7CVE-2018-1000135ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-1000135</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@ubu16-192.168.50.1" id="win10-192.168.50.7CVE-2018-6634ubu16-192.168.50.1">
+  <data key="d1">CVE-2018-6634</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="root@ubu16-192.168.50.1" id="win10-192.168.50.7CVE-2016-1240ubu16-192.168.50.1">
+  <data key="d1">CVE-2016-1240</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win7-192.168.50.8" id="win10-192.168.50.7CVE-2017-7157win7-192.168.50.8">
+  <data key="d1">CVE-2017-7157</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win7-192.168.50.8" id="win10-192.168.50.7CVE-2011-1971win7-192.168.50.8">
+  <data key="d1">CVE-2011-1971</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win7-192.168.50.8" id="win10-192.168.50.7CVE-2012-1870win7-192.168.50.8">
+  <data key="d1">CVE-2012-1870</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win7-192.168.50.8" id="win10-192.168.50.7CVE-2019-8825win7-192.168.50.8">
+  <data key="d1">CVE-2019-8825</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win7-192.168.50.8" id="win10-192.168.50.7CVE-2021-35538win7-192.168.50.8">
+  <data key="d1">CVE-2021-35538</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@win7-192.168.50.8" id="win10-192.168.50.7CVE-2011-1873win7-192.168.50.8">
+  <data key="d1">CVE-2011-1873</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@winvista-192.168.50.5" id="win10-192.168.50.7CVE-2011-0086winvista-192.168.50.5">
+  <data key="d1">CVE-2011-0086</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@winvista-192.168.50.5" id="win10-192.168.50.7CVE-2011-1894winvista-192.168.50.5">
+  <data key="d1">CVE-2011-1894</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@winvista-192.168.50.5" id="win10-192.168.50.7CVE-2009-0551winvista-192.168.50.5">
+  <data key="d1">CVE-2009-0551</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@winvista-192.168.50.5" id="win10-192.168.50.7CVE-2010-0232winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0232</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@winvista-192.168.50.5" id="win10-192.168.50.7CVE-2008-1453winvista-192.168.50.5">
+  <data key="d1">CVE-2008-1453</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="user@winvista-192.168.50.5" id="win10-192.168.50.7CVE-2009-2516winvista-192.168.50.5">
+  <data key="d1">CVE-2009-2516</data>
+</edge>
+<edge source="guest@win10-192.168.50.7" target="root@winvista-192.168.50.5" id="win10-192.168.50.7CVE-2010-0236winvista-192.168.50.5">
+  <data key="d1">CVE-2010-0236</data>
+</edge>
+</graph></graphml>
