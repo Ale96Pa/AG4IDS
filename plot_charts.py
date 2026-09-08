@@ -106,28 +106,28 @@ def ag_generation_data():
     occurrencies = {
         "Integration (RSQ1)": 
                                 {
-                                    "Alert Correlation": 43,
-                                    "Vulnerability Analysis": 6,
+                                    "Alert Correlation": 44,
+                                    "Vulnerability Analysis": 7,
                                     "Response": 8,
                                 },
         "Detection (RSQ2)":
                             {
-                                "Signature not ML": 37,
+                                "Signature not ML": 38,
                                 "Anomaly and ML": 5,
-                                "Agnostic": 3,
+                                "Agnostic": 4,
                                 "Signature and ML": 1,
                                 "Anomaly not ML": 0
                             },
         "IDS (RSQ2)": 
                         {
-                            "Network": 32,
+                            "Network": 34,
                             "Host": 3,
                             "Agnostic": 11
                         },
         "AG (RSQ3)": 
                     {
-                        "Attack scenario-based": 19,
-                        "Vulnerability-based": 2,
+                        "Attack scenario-based": 20,
+                        "Vulnerability-based": 3,
                         "Host-based": 10,
                         "State-based": 15,
                     },
@@ -135,10 +135,10 @@ def ag_generation_data():
                             {
                                 "DDoS": 13,
                                 "None": 0,
-                                "Multi-step attacks": 29,
+                                "Multi-step attacks": 30,
                                 "Remote Code Execution": 0,
                                 "DoS": 3,
-                                "Unspecified": 2,
+                                "Unspecified": 3,
                                 "U2R": 2,
                                 "R2L": 2,
                                 "Key Loggers": 0,
@@ -150,7 +150,7 @@ def ag_generation_data():
         "Dataset (RSQ4)": 
                             {
                                 "DARPA2000": 15,
-                                "Custom": 9,
+                                "Custom": 11,
                                 "Simulation": 11,
                                 "Defcon CTF'17": 1,
                                 "CSE-CIC-IDS-2018": 1,
@@ -165,7 +165,7 @@ def ag_generation_data():
                             },
         "Application (RSQ5)" : 
                                 {
-                                    "Unspecified": 24,
+                                    "Unspecified": 26,
                                     "Cloud computing": 1,
                                     "Cyber-Physical Systems": 5,
                                     "Smart Grids": 6,
@@ -182,7 +182,7 @@ def ag_generation_data():
                                 },
         "ML (RSQ6)": 
                     {
-                        "None": 31,
+                        "None": 33,
                         "Neural Network": 6,
                         "Bayesian Network": 1,
                         "Markov Chain": 5,
@@ -201,7 +201,7 @@ def post_ag_data():
     occurrencies = {
         "Integration (RSQ1)": 
                                 {
-                                    "Alert Correlation": 22,
+                                    "Alert Correlation": 23,
                                     "Vulnerability Analysis": 0, 
                                     "Runtime Detection": 0,
                                     "Response": 17,
@@ -210,7 +210,7 @@ def post_ag_data():
         "Detection (RSQ2)":
                             {
                                 "Signature not ML": 22,
-                                "Anomaly and ML": 4,
+                                "Anomaly and ML": 5,
                                 "Agnostic": 1,
                                 "Hybrid": 0,
                                 "Signature and ML": 3,
@@ -218,7 +218,7 @@ def post_ag_data():
                             },
         "IDS (RSQ2)": 
                         {
-                            "Network": 27,
+                            "Network": 28,
                             "Host": 1,
                             "Agnostic": 2
                         },
@@ -226,7 +226,7 @@ def post_ag_data():
                     {
                         "Attack scenario-based": 11,
                         "Vulnerability-based": 7,
-                        "State-based": 9,
+                        "State-based": 10,
                         "Host-based": 3,
                     },
         "Attacks (RSQ4)": 
@@ -236,7 +236,7 @@ def post_ag_data():
                                 "Multi-step attacks": 14,
                                 "Remote Code Execution": 1,
                                 "DoS": 2,
-                                "Unspecified": 4,
+                                "Unspecified": 5,
                                 "U2R": 3,
                                 "R2L": 3,
                                 "Key Loggers": 1,
@@ -248,7 +248,7 @@ def post_ag_data():
         "Dataset (RSQ4)": 
                             {
                                 "DARPA2000": 7,
-                                "Custom": 12,
+                                "Custom": 13,
                                 "Simulation": 10,
                                 "Defcon CTF'17": 0,
                                 "CSE-CIC-IDS-2018": 0,
@@ -261,7 +261,7 @@ def post_ag_data():
                             },
         "Application (RSQ5)" : 
                                 {
-                                    "Unspecified": 15,
+                                    "Unspecified": 16,
                                     "Cloud computing": 3,
                                     "Cyber-Physical Systems": 4,
                                     "Smart Grids": 3,
@@ -278,7 +278,7 @@ def post_ag_data():
         "ML (RSQ6)": 
                     {
                         "None": 19,
-                        "Neural Network": 5,
+                        "Neural Network": 6,
                         "Bayesian Network": 1,
                         "Markov Chain": 1,
                         "Artificial Immune System": 3,
@@ -294,40 +294,41 @@ def ids_integrated_ag_data():
     occurrencies = {
         "Integration (RSQ1)": 
                                 {
-                                    "Alert Correlation": 12,
+                                    "Alert Correlation": 13,
                                     "Detection Refinement": 8,
                                     "Runtime Detection": 9,
+                                    "Vulnerability Analysis": 3,
                                 },
         "Detection (RSQ2)":
                             {
-                                "Signature not ML": 12,
-                                "Anomaly and ML": 6,
-                                "Agnostic": 0,
+                                "Signature not ML": 14,
+                                "Anomaly and ML": 7,
+                                "Agnostic": 1,
                                 "Hybrid": 0,
                                 "Signature and ML": 1,
                                 "Anomaly not ML": 0
                             },
         "IDS (RSQ2)": 
                         {
-                            "Network": 17,
+                            "Network": 21,
                             "Host": 2,
                             "Agnostic": 0
                         },
         "AG (RSQ3)": 
                     {
                         "Host-based": 6,
-                        "State-based": 6,
-                        "Vulnerability-based": 2,
-                        "Attack scenario-based": 5,
+                        "State-based": 7,
+                        "Vulnerability-based": 4,
+                        "Attack scenario-based": 6,
                     },
         "Attacks (RSQ4)": 
                             {
                                 "DDoS": 7,
                                 "None": 0,
-                                "Multi-step attacks": 6,
+                                "Multi-step attacks": 8,
                                 "Remote Code Execution": 1,
                                 "DoS": 1,
-                                "Unspecified": 5,
+                                "Unspecified": 7,
                                 "U2R": 0,
                                 "R2L": 0,
                                 "Key Loggers": 1,
@@ -339,8 +340,8 @@ def ids_integrated_ag_data():
         "Dataset (RSQ4)": 
                             {
                                 "DARPA2000": 5,
-                                "Custom": 8,
-                                "Simulation": 4,
+                                "Custom": 10,
+                                "Simulation": 6,
                                 "Defcon CTF'17": 0,
                                 "CSE-CIC-IDS-2018": 1,
                                 "ISCXIDS2012": 1,
@@ -357,7 +358,7 @@ def ids_integrated_ag_data():
                             },
         "Application (RSQ5)" : 
                                 {
-                                    "Unspecified": 13,
+                                    "Unspecified": 17,
                                     "Cloud computing": 0,
                                     "Cyber-Physical Systems": 0,
                                     "Smart Grids": 2,
@@ -373,9 +374,9 @@ def ids_integrated_ag_data():
                                 },
         "ML (RSQ6)": 
                     {
-                        "None": 9,
-                        "Neural Network": 2,
-                        "Bayesian Network": 5,
+                        "None": 10,
+                        "Neural Network": 3,
+                        "Bayesian Network": 7,
                         "Markov Chain": 1,
                         "Decision Tree": 2
                     },
