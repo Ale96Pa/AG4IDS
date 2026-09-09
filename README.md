@@ -96,5 +96,14 @@ For each network variant:
 ```bash
 python main.py
 
-
 ```
+
+## Case Study
+
+![Network Example](attackgraph/ag-img.png)
+
+This repository contains a proof-of-concept implementation of the proposed Attack Graph–Intrusion Detection System (AG–IDS) integration lifecycle. The case study uses the CIC-IDS2017 and CIC-DDoS2019 datasets to evaluate how IDS alerts can generate and refine attack graphs, and how updated graph knowledge can improve subsequent intrusion detection.
+
+The implementation evaluates multiple classifiers, including Decision Trees, Random Forests, Multilayer Perceptrons, Support Vector Machines, and Gaussian Naive Bayes. It investigates the effects of attack-graph quality, training-data availability, feature selection, and iterative graph refinement on detection accuracy, macro-averaged F1-score, and false-positive rate.
+
+This implementation is intended as an illustrative proof of concept rather than a production-ready detection system. It demonstrates the main lifecycle stages and their interactions while leaving large-scale deployment, real-time graph processing, and richer graph representations for future work.
